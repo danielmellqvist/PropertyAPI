@@ -10,14 +10,33 @@ namespace Entities.Models
 {
     public class RealEstate
     {
+        [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Title is a required field.")]
         [MaxLength(50)]
         public string Title { get; set; }
 
+        [Required(ErrorMessage = "Description is a required field.")]
         [MaxLength(1000)]
         public string Description { get; set; }
-        public int AddressId { get; set; }
+
+        [Required(ErrorMessage = "Street is a required field.")]
+        [MaxLength(50)]
+        public string Street { get; set; }
+
+        [Required(ErrorMessage = "ZipCode is a required field.")]
+        public int ZipCode { get; set; }
+
+        [Required(ErrorMessage = "City is a required field.")]
+        [MaxLength(50)]
+        public string City { get; set; }
+
+        [Required(ErrorMessage = "Country is a required field.")]
+        [MaxLength(50)]
+        public string Country { get; set; }
+
+        [Required(ErrorMessage = "Contact is a required field.")]
         public int ContactId { get; set; }
         public int ConstructionYearId { get; set; }
         public uint? SellingPrice { get; set; }
@@ -27,16 +46,13 @@ namespace Entities.Models
         public int RealEstateTypeId { get; set; }
 
         //Relational
-        [ForeignKey("AddressId")]
-        public Address Address { get; set; }
-
-        [ForeignKey("ContactId")]
+        [ForeignKey(nameof(ContactId))]
         public Contact Contact { get; set; }
 
-        [ForeignKey("ConstructionYearId")]
+        [ForeignKey(nameof(ConstructionYearId))]
         public ConstructionYear ConstructionYear { get; set; }
 
-        [ForeignKey("RealEstateTypeId")]
+        [ForeignKey(nameof(RealEstateTypeId))]
         public RealEstateType RealEstateType { get; set; }
     }
 }
