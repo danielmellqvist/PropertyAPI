@@ -19,12 +19,16 @@ namespace Entities.Models
 
         public DateTime CreatedOn { get; set; }
 
-        //[ForeignKey(nameof(User))]
         public Guid UserId { get; set; }
 
         public int RealEstateId { get; set; }
 
 
         // Relational
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; }
+
+        [ForeignKey(nameof(RealEstateId))]
+        public RealEstate RealEstate { get; set; }
     }
 }
