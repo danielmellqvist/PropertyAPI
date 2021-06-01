@@ -23,7 +23,7 @@ namespace WebAPI
         public Startup(IConfiguration configuration)
         {
             // Read the logging service config file
-            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "nlog.config"));
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
             Configuration = configuration;
         }

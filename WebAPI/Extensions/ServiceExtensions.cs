@@ -33,5 +33,7 @@ namespace WebAPI.Extensions
             services.AddScoped<ILoggerManager, LoggerManager>();
         }
 
+
+
     }
 }
