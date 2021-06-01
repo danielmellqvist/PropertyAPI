@@ -30,8 +30,8 @@ namespace Entities.Models
         [ForeignKey("AddressId")]
         public Address Address { get; set; }
 
-        //[ForeignKey("ContactId")]
-        //public Contact Contact { get; set; }
+        [ForeignKey("ContactId")]
+        public Contact Contact { get; set; }
 
         [ForeignKey("ConstructionYearId")]
         public ConstructionYear ConstructionYear { get; set; }
