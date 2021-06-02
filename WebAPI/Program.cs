@@ -1,5 +1,9 @@
+using Entities;
+using Entities.Initializer;
+using LoggerService.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,7 +17,23 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var logger = services.GetRequiredService<ILoggerManager>();
+                var context = services.GetRequiredService<PropertyContext>();
+                try
+                {
+                    RealEstateInitializer.Initialize(context);
+                    logger.LogInfo("Database initialized");
+                }
+                catch (Exception Ex)
+                {
+                    logger.LogError($"Error when initializing the database {Ex}");
+                }
+            }
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

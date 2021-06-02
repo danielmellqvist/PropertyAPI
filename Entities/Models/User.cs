@@ -16,6 +16,10 @@ namespace Entities.Models
         [MaxLength(150)]
         public string UserName { get; set; }
 
+        //Relations
+        public ICollection<Rating> Ratings { get; set; }
+
+        public ICollection<Rating> RatingsByMe { get; set; }
 
     }
 }

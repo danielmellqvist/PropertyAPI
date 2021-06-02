@@ -1,6 +1,9 @@
-﻿using LoggerService;
+﻿using Entities;
+using LoggerService;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -33,7 +36,13 @@ namespace WebAPI.Extensions
             services.AddScoped<ILoggerManager, LoggerManager>();
         }
 
-
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<PropertyContext>(
+                opts => opts.UseSqlServer(configuration.GetConnectionString("localConnection"),
+                b => b.MigrationsAssembly("WebAPI")));
+        }
+            
 
     }
 }

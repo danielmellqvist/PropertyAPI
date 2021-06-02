@@ -20,6 +20,8 @@ namespace WebAPI
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             // Read the logging service config file
@@ -28,7 +30,7 @@ namespace WebAPI
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,6 +38,7 @@ namespace WebAPI
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
+            services.ConfigureSqlContext(Configuration);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
