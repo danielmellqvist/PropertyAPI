@@ -30,7 +30,8 @@ namespace WebAPI
                 }
                 catch (Exception Ex)
                 {
-                    logger.LogError($"Error when initializing the database {Ex}");
+                    logger.LogError($"Error when initializing the database");
+                    logger.LogDebug($"{Ex}");
                 }
             }
             host.Run();
