@@ -22,16 +22,47 @@ namespace Entities.Initializer
 
             if (!_context.RealEstateTypes.Any())
             {
-                var realEstateTypes = new RealEstateType[]
-                {
-                    new RealEstateType { Type = "Appartment" },
-                    new RealEstateType{ Type = "House" },
-                    new RealEstateType {Type = "Office" },
-                    new RealEstateType { Type= "Warehouse" }
-                };
-                _context.AddRange(realEstateTypes);
-                _context.SaveChanges();
+                // Metod för att fylla på realestatetypes
+
+                // save till databasen
             }
+            if (!_context.Users.Any())
+            {
+                // Metod för att fylla på användare
+            }
+            if (!_context.ConstructionYears.Any())
+            {
+                // Metod för att fylla på byggår
+            }
+            if (!_context.Contacts.Any())
+            {
+                // Metod för att fylla på kontakter
+            }
+            if (!_context.Ratings.Any())
+            {
+                // Metod för att fylla på Ratings
+            }
+            if (!_context.RealEstates.Any())
+            {
+                // Metod för att fylla på RealEstates
+            }
+            if (!_context.Comments.Any())
+            {
+                // Metod för att fylla på kommentarer
+            }
+
+            //if (!_context.RealEstateTypes.Any())
+            //{
+            //    var realEstateTypes = new RealEstateType[]
+            //    {
+            //        new RealEstateType { Type = "Appartment" },
+            //        new RealEstateType{ Type = "House" },
+            //        new RealEstateType {Type = "Office" },
+            //        new RealEstateType { Type= "Warehouse" }
+            //    };
+            //    _context.AddRange(realEstateTypes);
+            //    _context.SaveChanges();
+            //}
 
         }
     }
