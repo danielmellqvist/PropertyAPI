@@ -7,10 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
 using Repository.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebAPI.Extensions
 {
@@ -40,8 +36,8 @@ namespace WebAPI.Extensions
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<PropertyContext>(
-                opts => opts.UseSqlServer(configuration.GetConnectionString("localConnection"),
+            services.AddDbContext<PropertyContext>(opts => 
+                opts.UseSqlServer(configuration.GetConnectionString("localConnection"),
                 b => b.MigrationsAssembly("WebAPI")));
         }
             
@@ -49,5 +45,6 @@ namespace WebAPI.Extensions
         {
             services.AddScoped<IRepositoryManager, RepositoryManager>();
         }
+            
     }
 }
