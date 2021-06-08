@@ -1,11 +1,12 @@
 using Entities;
-using Entities.Initializer;
+using Initializer;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace WebAPI
                 var context = services.GetRequiredService<PropertyContext>();
                 try
                 {
-                    RealEstateInitializer.Initialize(context);
+                    RealEstateInitializer.Initialize(context, logger);
                     logger.LogInfo("Database initialized");
                 }
                 catch (Exception Ex)
