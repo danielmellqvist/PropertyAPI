@@ -25,7 +25,8 @@ namespace Entities.Initializer
                     new RealEstateType{ Type = "Appartment" },
                     new RealEstateType {Type = "Office" },
                     new RealEstateType { Type= "Fort" },
-                    new RealEstateType { Type = "Hobbit hole" }
+                    new RealEstateType { Type = "Hobbit hole" },
+                    new RealEstateType { Type = "Warehouse" }
                 };
                 _context.AddRange(realEstateTypes);
                 _context.SaveChanges();
@@ -45,6 +46,8 @@ namespace Entities.Initializer
                 _context.AddRange(constructionYears);
                 _context.SaveChanges();
             }
+
+            // TODO! Droppa databasen och koppla identiteterna på IdentityDatabase istället!
             if (!_context.Users.Any())
             {
                 var users = new User[]
