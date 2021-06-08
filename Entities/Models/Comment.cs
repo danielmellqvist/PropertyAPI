@@ -17,7 +17,7 @@ namespace Entities.Models
         [MaxLength(500, ErrorMessage ="Comments can be max 500 characters")]
         public string Content { get; set; }
 
-        public string CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public Guid UserId { get; set; }
 
