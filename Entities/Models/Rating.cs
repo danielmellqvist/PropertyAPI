@@ -15,7 +15,7 @@ namespace Entities.Models
         public Guid ByUserId { get; set; }
         public Guid AboutUserId { get; set; }
 
-
+        // Relational
         [ForeignKey(nameof(ByUserId))]
         public User ByUser { get; set; }
 
