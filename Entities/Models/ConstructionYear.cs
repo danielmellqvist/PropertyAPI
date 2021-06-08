@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities.Models
 {
@@ -11,6 +7,8 @@ namespace Entities.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [Range(1599, double.PositiveInfinity)]
         public int Year { get; set; }
     }
 }
