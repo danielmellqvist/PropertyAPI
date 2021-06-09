@@ -60,7 +60,6 @@ namespace WebAPI.Controllers
             
             //var commentDto = _mapper.Map<IEnumerable<CommentFromUserDto>>(comments);
             // TODO FIX
-            return Ok(comments);
+            //return Ok(comments);
     }
-}
 }
