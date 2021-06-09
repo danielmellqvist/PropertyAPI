@@ -18,10 +18,15 @@ namespace Repository
 
         public IEnumerable<RealEstate> GetAllRealEstates(bool trackChanges)
         {
-            var result = FindAll(trackChanges)
+            return FindAll(trackChanges)
                 .OrderByDescending(x => x.CreatedUtc)
                 .ToList();
-            return result;
+        }
+
+        public RealEstate GetRealEstate(int realEstateId, bool trackChanges)
+        {
+            return FindByCondition(x => x.Id.Equals(realEstateId), trackChanges)
+                .SingleOrDefault();
         }
     }
 }

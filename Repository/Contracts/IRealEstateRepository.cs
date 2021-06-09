@@ -10,5 +10,6 @@ namespace Repository.Contracts
     public interface IRealEstateRepository
     {
         IEnumerable<RealEstate> GetAllRealEstates(bool trackChanges);
+        RealEstate GetRealEstate(int realEstateId, bool trackChanges);
     }
 }

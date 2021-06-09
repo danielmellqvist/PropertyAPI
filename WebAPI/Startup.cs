@@ -45,13 +45,13 @@ namespace WebAPI
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
 
-            // added with automapper
-            services.AddAutoMapper(typeof(Startup));
             //// trial
             //services.AddScoped<UserRepository>();
-            //services.AddScoped<IRepositoryManager, RepositoryManager>();
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opt =>
+                 opt.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });

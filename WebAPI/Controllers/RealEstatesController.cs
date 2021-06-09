@@ -30,9 +30,24 @@ namespace WebAPI.Controllers
         public IActionResult GetAllRealEstates()
         {
             var realEstates = _repository.RealEstate.GetAllRealEstates(trackChanges: false);
-            var realEstatesDto = _mapper.Map<IEnumerable<RealEstateDto>>(realEstates);
+            var realEstatesDto = _mapper.Map<IEnumerable<RealEstatesDto>>(realEstates);
             return Ok(realEstatesDto);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetRealEstate(int id)
+        {
+            var realEstate = _repository.RealEstate.GetRealEstate(id, trackChanges: false);
+            if (realEstate == null)
+            {
+                _logger.LogInfo($"Real Estate with the id : {id} doesn´t exist in the database.");
+                return NotFound();
+            }
+            else
+            {
+                var realEstateDto = _mapper.Map<RealEstateDto>(realEstate);
+                return Ok(realEstateDto);
+            }
+        }
     }
 }

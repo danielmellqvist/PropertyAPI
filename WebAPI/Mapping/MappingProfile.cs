@@ -18,7 +18,12 @@ namespace WebAPI.Mapping
 
             CreateMap<Comment, CommentFromUserDto>();
 
-            CreateMap<RealEstate, RealEstateDto>();
+            CreateMap<RealEstate, RealEstatesDto>();
+
+            CreateMap<RealEstate, RealEstateDto>()
+                .ForMember(x => x.Address, y => y.MapFrom(x => $"{x.Street}, {x.ZipCode} {x.City}"))
+                .ForMember(x => x.CreatedOn, option => option.MapFrom(x => x.CreatedUtc.ToLocalTime()))
+                ;
         }
     }
 }
