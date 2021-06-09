@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult GetCommentsFromUser(Guid id)
         {
-            List<Comment> comments = _repository.Comment.GetAllCommentsById(id, trackChanges: false);
+            List<Comment> comments = _repository.Comment.GetAllCommentsByUserId(id, trackChanges: false);
             if (comments.Count() != 0)
             {
                 var username = _context.Users.FirstOrDefault(x => x.Id == id);
@@ -53,14 +53,35 @@ namespace WebAPI.Controllers
                 _logger.LogInfo($"User with id: {id} does not exist in the Database");
                 return NotFound();
             }
-            
+
+
         }
-            
-                
-            
-            //var commentDto = _mapper.Map<IEnumerable<CommentFromUserDto>>(comments);
-            // TODO FIX
-            return Ok(comments);
+
+        [HttpGet("{id}")]
+        public IActionResult GetCommentsForRealestate(int id)
+        {
+            List<Comment> estates = _repository.Comment.GetAllCommentsByRealEstateId(id, trackChanges: false);
+            if (estates.Count() != 0)
+            {
+                List<CommentsForRealEstateDto> commentsForRealEstateDtos = new();
+                foreach (var estate in estates)
+                {
+                    var username = _context.Users.FirstOrDefault(x => x.Id == estate.UserId);
+                    CommentsForRealEstateDto commentsForRealEstateDto = new CommentsForRealEstateDto
+                    {
+                        UserName = username.UserName,
+                        Content = estate.Content,
+                        CreatedOn = estate.CreatedOn
+                    };
+                    commentsForRealEstateDtos.Add(commentsForRealEstateDto);
+                }
+                return Ok(commentsForRealEstateDtos);
+            }
+            else
+            {
+                _logger.LogInfo($"Real Estate with id: {id} does not exist in the Database");
+                return NotFound();
+            }
+        }
     }
-}
 }

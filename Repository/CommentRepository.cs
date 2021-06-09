@@ -16,10 +16,20 @@ namespace Repository
 
         }
 
-        public List<Comment> GetAllCommentsById(Guid id, bool trackChanges) => 
+        public List<Comment> GetAllCommentsByUserId(Guid id, bool trackChanges) =>
             FindAll(trackChanges)
             .Where(x => x.UserId == id)
             .OrderBy(c => c.CreatedOn)
             .Take(10).ToList();
+
+
+        public List<Comment> GetAllCommentsByRealEstateId(int id, bool trackChanges) =>
+                FindAll(trackChanges)
+                .Where(x => x.RealEstateId == id)
+                .OrderByDescending(c => c.CreatedOn)
+                .Take(10).ToList();
+
+            
+        
     }
 }
