@@ -16,6 +16,6 @@ namespace Repository.Contracts
         IRealEstateTypeRepository RealEstateType { get; }
         IUserRepository User { get; }
 
-        void Save();
+        Task SaveAsync();
     }
 }

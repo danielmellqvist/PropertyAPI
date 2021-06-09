@@ -9,7 +9,7 @@ namespace Repository.Contracts
 {
     public interface IRealEstateRepository
     {
-        IEnumerable<RealEstate> GetAllRealEstates(bool trackChanges);
-        RealEstate GetRealEstate(int realEstateId, bool trackChanges);
+        Task<IEnumerable<RealEstate>> GetAllRealEstatesAsync(bool trackChanges);
+        Task<RealEstate> GetRealEstateAsync(int realEstateId, bool trackChanges);
     }
 }

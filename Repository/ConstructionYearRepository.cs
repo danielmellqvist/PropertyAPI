@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,10 @@ namespace Repository
 
         public void CreateConstructionYear(ConstructionYear constructionYear) => Create(constructionYear);
 
-        public int GetYearFromId(int id, bool trackChanges)
+        public async Task<int> GetYearFromIdAsync(int id, bool trackChanges)
         {
-            return FindByCondition(x => x.Id.Equals(id), trackChanges).SingleOrDefault().Year;
+            var constructionYear = await FindByCondition(x => x.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
+            return constructionYear.Year;
         }
     }
 }
