@@ -15,5 +15,13 @@ namespace Repository
         {
 
         }
+
+        public IEnumerable<RealEstate> GetAllRealEstates(bool trackChanges)
+        {
+            var result = FindAll(trackChanges)
+                .OrderByDescending(x => x.CreatedUtc)
+                .ToList();
+            return result;
+        }
     }
 }

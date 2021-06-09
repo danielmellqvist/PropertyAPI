@@ -17,6 +17,8 @@ namespace WebAPI.Mapping
             CreateMap<User, CommentFromUserDto>();
 
             CreateMap<Comment, CommentFromUserDto>();
+
+            CreateMap<RealEstate, RealEstateDto>();
         }
     }
 }

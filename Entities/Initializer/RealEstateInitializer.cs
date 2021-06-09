@@ -103,7 +103,8 @@ namespace Entities.Initializer
                         SellingPrice = 8000000,
                         CanBeSold = true,
                         CanBeRented = false,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Fort").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Fort").Id,
+                        CreatedUtc = new DateTime(2021,01,10,08,00,00, DateTimeKind.Utc)
                     },
                     new RealEstate
                     {
@@ -118,7 +119,8 @@ namespace Entities.Initializer
                         RentingPrice = 22000,
                         CanBeSold = false,
                         CanBeRented = true,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Appartment").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Appartment").Id,
+                        CreatedUtc = new DateTime(2021,05,20,17,30,00, DateTimeKind.Utc)
                     },
                     new RealEstate
                     {
@@ -133,7 +135,8 @@ namespace Entities.Initializer
                         SellingPrice = 7000000,
                         CanBeSold = true,
                         CanBeRented = false,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Appartment").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Appartment").Id,
+                        CreatedUtc = new DateTime(2020,09,10,06,00,00, DateTimeKind.Utc)
                     },
                     new RealEstate
                     {
@@ -148,7 +151,8 @@ namespace Entities.Initializer
                         RentingPrice = 20000,
                         CanBeSold = false,
                         CanBeRented = true,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Office").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Office").Id,
+                        CreatedUtc = new DateTime(2020,12,24,13,00,00, DateTimeKind.Utc)
                     },
                     new RealEstate
                     {
@@ -163,7 +167,8 @@ namespace Entities.Initializer
                         SellingPrice = 2000000,
                         CanBeSold = true,
                         CanBeRented = false,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id,
+                        CreatedUtc = new DateTime(2021,06,10,09,00,00, DateTimeKind.Utc)
                     },
                     new RealEstate
                     {
@@ -179,7 +184,8 @@ namespace Entities.Initializer
                         RentingPrice = 8000,
                         CanBeSold = true,
                         CanBeRented = true,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id,
+                        CreatedUtc = new DateTime(2021,03,10,08,00,00, DateTimeKind.Utc)
                     },
                     new RealEstate
                     {
@@ -194,7 +200,8 @@ namespace Entities.Initializer
                         SellingPrice = 2300000,
                         CanBeSold = true,
                         CanBeRented = false,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id,
+                        CreatedUtc = new DateTime(2006,01,10,08,00,00, DateTimeKind.Utc)
                     },
                     new RealEstate
                     {
@@ -209,7 +216,8 @@ namespace Entities.Initializer
                         RentingPrice = 70000,
                         CanBeSold = false,
                         CanBeRented = true,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id,
+                        CreatedUtc = new DateTime(2021,01,25,18,00,00, DateTimeKind.Utc)
                     },
                     new RealEstate
                     {
@@ -224,7 +232,8 @@ namespace Entities.Initializer
                         SellingPrice = 5000000,
                         CanBeSold = true,
                         CanBeRented = false,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "House").Id,
+                        CreatedUtc = new DateTime(2021,05,05,08,00,00, DateTimeKind.Utc)
                     },
                     new RealEstate
                     {
@@ -240,7 +249,8 @@ namespace Entities.Initializer
                         RentingPrice = 90000,
                         CanBeSold = true,
                         CanBeRented = true,
-                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Hobbit hole").Id
+                        RealEstateTypeId = _context.RealEstateTypes.First(x => x.Type == "Hobbit hole").Id,
+                        CreatedUtc = new DateTime(1995,01,01,08,00,00, DateTimeKind.Utc)
                     }
                 };
                 _context.AddRange(realEstates);
