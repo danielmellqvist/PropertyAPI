@@ -8,6 +8,7 @@ namespace Entities.DataTransferObjects
 {
     public class CommentsForRealEstateDto
     {
+        // Denis
         public string UserName { get; set; }
 
         public string Content { get; set; }
