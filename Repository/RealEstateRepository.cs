@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 using System;
@@ -17,10 +18,12 @@ namespace Repository
 
         }
 
-        public async Task<IEnumerable<RealEstate>> GetAllRealEstatesAsync(bool trackChanges)
+        public async Task<IEnumerable<RealEstate>> GetAllRealEstatesAsync(RealEstateParameters realEstateParameters, bool trackChanges)
         {
             return await FindAll(trackChanges)
                 .OrderByDescending(x => x.CreatedUtc)
+                .Skip((realEstateParameters.Skip) * realEstateParameters.Take)
+                .Take(realEstateParameters.Take)
                 .ToListAsync();
         }
 

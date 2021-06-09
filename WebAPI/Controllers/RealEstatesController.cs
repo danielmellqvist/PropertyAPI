@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects;
+using Entities.RequestFeatures;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +28,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllRealEstates()
+        public async Task<IActionResult> GetAllRealEstates([FromQuery] RealEstateParameters realEstateParameters)
         {
-            var realEstates = await _repository.RealEstate.GetAllRealEstatesAsync(trackChanges: false);
+            var realEstates = await _repository.RealEstate.GetAllRealEstatesAsync(realEstateParameters, trackChanges: false);
             var realEstatesDto = _mapper.Map<IEnumerable<RealEstatesDto>>(realEstates);
             return Ok(realEstatesDto);
         }
