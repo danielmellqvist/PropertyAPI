@@ -10,6 +10,8 @@ namespace Repository.Contracts
     public interface ICommentRepository
     {
 
-        List<Comment> GetAllCommentsById(Guid id, bool trackChanges);
+        List<Comment> GetAllCommentsByUserId(Guid id, bool trackChanges);
+
+        List<Comment> GetAllCommentsByRealEstateId(int id, bool trackChanges);
     }
 }

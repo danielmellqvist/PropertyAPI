@@ -1,5 +1,5 @@
 using Entities;
-using Initializer;
+using Entities.Initializer;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

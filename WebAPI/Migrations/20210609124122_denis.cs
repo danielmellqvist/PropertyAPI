@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAPI.Migrations
 {
-    public partial class initialmarcus : Migration
+    public partial class denis : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -77,7 +77,8 @@ namespace WebAPI.Migrations
                     RentingPrice = table.Column<int>(type: "int", nullable: true),
                     CanBeSold = table.Column<bool>(type: "bit", nullable: false),
                     CanBeRented = table.Column<bool>(type: "bit", nullable: false),
-                    RealEstateTypeId = table.Column<int>(type: "int", nullable: false)
+                    RealEstateTypeId = table.Column<int>(type: "int", nullable: false),
+                    CreatedUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
