@@ -17,5 +17,10 @@ namespace Repository
         }
 
         public void CreateConstructionYear(ConstructionYear constructionYear) => Create(constructionYear);
+
+        public int GetYearFromId(int id, bool trackChanges)
+        {
+            return FindByCondition(x => x.Id.Equals(id), trackChanges).SingleOrDefault().Year;
+        }
     }
 }

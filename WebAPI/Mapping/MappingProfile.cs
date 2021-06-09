@@ -21,8 +21,8 @@ namespace WebAPI.Mapping
             CreateMap<RealEstate, RealEstatesDto>();
 
             CreateMap<RealEstate, RealEstateDto>()
-                .ForMember(x => x.Address, y => y.MapFrom(x => $"{x.Street}, {x.ZipCode} {x.City}"))
-                .ForMember(x => x.CreatedOn, option => option.MapFrom(x => x.CreatedUtc.ToLocalTime()))
+                .ForMember(destination => destination.Address, y => y.MapFrom(source => $"{source.Street}, {source.ZipCode} {source.City}"))
+                .ForMember(destination => destination.CreatedOn, y => y.MapFrom(source => source.CreatedUtc.ToLocalTime()))
                 ;
         }
     }

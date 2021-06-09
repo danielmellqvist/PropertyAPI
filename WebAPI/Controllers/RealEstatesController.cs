@@ -46,6 +46,7 @@ namespace WebAPI.Controllers
             else
             {
                 var realEstateDto = _mapper.Map<RealEstateDto>(realEstate);
+                realEstateDto.ConstructionYear = _repository.ConstructionYear.GetYearFromId(realEstate.ConstructionYearId, trackChanges: false);
                 return Ok(realEstateDto);
             }
         }

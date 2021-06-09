@@ -10,6 +10,7 @@ namespace Repository.Contracts
     public interface IConstructionYearRepository
     {
         void CreateConstructionYear(ConstructionYear constructionYear);
+        int GetYearFromId(int id, bool trackChanges);
 
     }
 }
