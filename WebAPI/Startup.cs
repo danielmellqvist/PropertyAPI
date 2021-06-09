@@ -42,6 +42,9 @@ namespace WebAPI
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
+
+            // added with automapper
+            services.AddAutoMapper(typeof(Startup));
             //// trial
             //services.AddScoped<UserRepository>();
             //services.AddScoped<IRepositoryManager, RepositoryManager>();

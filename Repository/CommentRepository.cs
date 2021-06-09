@@ -15,5 +15,11 @@ namespace Repository
         {
 
         }
+
+        public List<Comment> GetAllCommentsById(Guid id, bool trackChanges) => 
+            FindAll(trackChanges)
+            .Where(x => x.UserId == id)
+            .OrderBy(c => c.CreatedOn)
+            .Take(10).ToList();
     }
 }
