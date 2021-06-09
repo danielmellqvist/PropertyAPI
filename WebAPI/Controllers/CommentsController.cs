@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/comments")]
     [ApiController]
     public class CommentsController : ControllerBase
     {
@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("user/{id}")]
         public IActionResult GetCommentsFromUser(Guid id)
         {
             List<Comment> comments = _repository.Comment.GetAllCommentsByUserId(id, trackChanges: false);
@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("realestate/{id}")]
         public IActionResult GetCommentsForRealestate(int id)
         {
             List<Comment> estates = _repository.Comment.GetAllCommentsByRealEstateId(id, trackChanges: false);
