@@ -1,4 +1,6 @@
-﻿using LoggerService.Contracts;
+﻿using AutoMapper;
+using Entities.DataTransferObjects;
+using LoggerService.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Contracts;
@@ -15,28 +17,21 @@ namespace WebAPI.Controllers
     {
         private readonly ILoggerManager _logger;
         private readonly IRepositoryManager _repository;
+        private readonly IMapper _mapper;
 
-        public RealEstatesController(ILoggerManager loggerManager, IRepositoryManager repositoryManager)
+        public RealEstatesController(ILoggerManager loggerManager, IRepositoryManager repositoryManager, IMapper mapper)
         {
             _logger = loggerManager;
             _repository = repositoryManager;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAllRealEstates()
         {
-            try
-            {
-                var realEstates = _repository.RealEstate.GetAllRealEstates(trackChanges: false);
-                return Ok(realEstates);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"An error occured in the {nameof(GetAllRealEstates)} action. {ex}");
-                return StatusCode(500, "Internal server error");
-                throw;
-            }
-            
+            var realEstates = _repository.RealEstate.GetAllRealEstates(trackChanges: false);
+            var realEstatesDto = _mapper.Map<IEnumerable<RealEstateDto>>(realEstates);
+            return Ok(realEstatesDto);
         }
 
     }
