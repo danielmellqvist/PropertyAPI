@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/RealEstates")]
     [ApiController]
     public class RealEstatesController : ControllerBase
     {
@@ -22,11 +22,22 @@ namespace WebAPI.Controllers
             _repository = repositoryManager;
         }
 
-        //[HttpGet]
-        //public IActionResult GetRealEstates()
-        //{
-        //    //_repository.Comment.
-        //}
+        [HttpGet]
+        public IActionResult GetAllRealEstates()
+        {
+            try
+            {
+                var realEstates = _repository.RealEstate.GetAllRealEstates(trackChanges: false);
+                return Ok(realEstates);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occured in the {nameof(GetAllRealEstates)} action. {ex}");
+                return StatusCode(500, "Internal server error");
+                throw;
+            }
+            
+        }
 
     }
 }
