@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NLog;
+using Repository;
+using Repository.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,6 +43,12 @@ namespace WebAPI
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
+
+            // added with automapper
+            services.AddAutoMapper(typeof(Startup));
+            //// trial
+            //services.AddScoped<UserRepository>();
+            //services.AddScoped<IRepositoryManager, RepositoryManager>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

@@ -15,5 +15,7 @@ namespace Repository
         {
 
         }
+
+        public void CreateConstructionYear(ConstructionYear constructionYear) => Create(constructionYear);
     }
 }
