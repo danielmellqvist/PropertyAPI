@@ -53,15 +53,34 @@ namespace WebAPI.Controllers
                 _logger.LogInfo($"User with id: {id} does not exist in the Database");
                 return NotFound();
             }
-
-
         }
-            
-                
-            
-            //var commentDto = _mapper.Map<IEnumerable<CommentFromUserDto>>(comments);
-            // TODO FIX
-            return Ok(comments);
+
+        [HttpGet("{id}")]
+        public IActionResult GetCommentsForRealestate(int id)
+        {
+            List<Comment> estates = _repository.Comment.GetAllCommentsByRealEstateId(id, trackChanges: false);
+            if (estates.Count() != 0)
+            {
+                List<CommentsForRealEstateDto> commentsForRealEstateDtos = new();
+                foreach (var estate in estates)
+                {
+                    var username = _context.Users.FirstOrDefault(x => x.Id == estate.UserId);
+                    CommentsForRealEstateDto commentsForRealEstateDto = new CommentsForRealEstateDto
+                    {
+                        UserName = username.UserName,
+                        Content = estate.Content,
+                        CreatedOn = estate.CreatedOn
+                    };
+                    commentsForRealEstateDtos.Add(commentsForRealEstateDto);
+                }
+                return Ok(commentsForRealEstateDtos);
+            }
+            else
+            {
+                _logger.LogInfo($"Real Estate with id: {id} does not exist in the Database");
+                return NotFound();
+            }
+        }
     }
 }
-}
+
