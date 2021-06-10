@@ -13,5 +13,8 @@ namespace Repository.Contracts
         List<Comment> GetAllCommentsByUserId(Guid id, bool trackChanges);
 
         List<Comment> GetAllCommentsByRealEstateId(int id, bool trackChanges);
+
+        List<Comment> GetAllCommentsByRealEstateIdSkipTake(int id, int skip, int take, bool trackChanges);
+        
     }
 }

@@ -81,6 +81,33 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("realestate/{id}?skip={skip}&take={take}")]
+        public IActionResult GetCommentsForRealestateSkipTake(int id, int skip, int take)
+        {
+            List<Comment> estates = _repository.Comment.GetAllCommentsByRealEstateIdSkipTake(id, skip, take, trackChanges: false);
+            if (estates.Count() != 0)
+            {
+                List<CommentsForRealEstateDto> commentsForRealEstateDtos = new();
+                foreach (var estate in estates)
+                {
+                    var username = _context.Users.FirstOrDefault(x => x.Id == estate.UserId);
+                    CommentsForRealEstateDto commentsForRealEstateDto = new CommentsForRealEstateDto
+                    {
+                        UserName = username.UserName,
+                        Content = estate.Content,
+                        CreatedOn = estate.CreatedOn
+                    };
+                    commentsForRealEstateDtos.Add(commentsForRealEstateDto);
+                }
+                return Ok(commentsForRealEstateDtos);
+            }
+            else
+            {
+                _logger.LogInfo($"Real Estate with id: {id} does not exist in the Database");
+                return NotFound();
+            }
+        }
     }
 }
 

@@ -29,7 +29,21 @@ namespace Repository
                 .OrderByDescending(c => c.CreatedOn)
                 .Take(10).ToList();
 
-            
-        
+
+        public List<Comment> GetAllCommentsByRealEstateIdSkipTake(int id, int skip, int take, bool trackChanges)
+        {
+            if (skip != 0 &&)
+            {
+
+            }
+
+
+        }
+                FindAll(trackChanges)
+                .Where(x => x.RealEstateId == id)
+                .OrderByDescending(c => c.CreatedOn)
+                .Take(10).ToList();
+
+
     }
 }
