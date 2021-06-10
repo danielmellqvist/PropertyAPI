@@ -1,19 +1,19 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using WebAPI.Areas.Identity.Data;
 using WebAPI.Extensions;
 
 namespace WebAPI
@@ -30,11 +30,44 @@ namespace WebAPI
             Configuration = configuration;
         }
 
-        
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>( "EncryptionKey")); //TODO! Lägg till den i Identitysettings i Identity!!! Ska bara lära mig hur...
+            //var key = Encoding.ASCII.GetBytes("THIS_KEY_IS_REALLY_SECRET!123456789_() &% !!!!!EXTERMINATE");
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        var userMachine = context.HttpContext.RequestServices.GetRequiredService<UserManager<WebAPIUser>>();
+                        var user = userMachine.GetUserAsync(context.HttpContext.User);
+                        if (user is null)
+                        {
+                            context.Fail("Login failed");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    //ValidateLifetime = true, // Tim Corey
+                    //ClockSkew = TimeSpan.FromMinutes(5) // Tim Corey
+                };
+            });
+
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
@@ -71,6 +104,8 @@ namespace WebAPI
             });
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
