@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,8 @@ namespace Repository.Contracts
 
         List<Comment> GetAllCommentsByUserId(Guid id, bool trackChanges);
 
-        List<Comment> GetAllCommentsByRealEstateId(int id, bool trackChanges);
+        List<Comment> GetAllCommentsByRealEstateId(CommentsParameters commentsParameter, int id, bool trackChanges);
 
-        List<Comment> GetAllCommentsByRealEstateIdSkipTake(int id, int skip, int take, bool trackChanges);
         
     }
 }
