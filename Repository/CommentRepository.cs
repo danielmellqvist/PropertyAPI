@@ -34,6 +34,6 @@ namespace Repository
                 .Take(commentsParameters.Take)
                 .ToList();
 
-
+        public void CreateComment(Comment comment) => Create(comment);
     }
 }

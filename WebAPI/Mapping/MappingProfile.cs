@@ -24,6 +24,8 @@ namespace WebAPI.Mapping
                 .ForMember(destination => destination.Address, y => y.MapFrom(source => $"{source.Street}, {source.ZipCode} {source.City}"))
                 .ForMember(destination => destination.CreatedOn, y => y.MapFrom(source => source.CreatedUtc.ToLocalTime()))
                 ;
+
+            CreateMap<Comment, CommentForCreationDto>();
         }
     }
 }
