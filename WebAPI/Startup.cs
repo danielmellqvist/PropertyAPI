@@ -36,8 +36,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>( "EncryptionKey")); //TODO! Lägg till den i Identitysettings i Identity!!! Ska bara lära mig hur...
-            //var key = Encoding.ASCII.GetBytes("THIS_KEY_IS_REALLY_SECRET!123456789_() &% !!!!!EXTERMINATE");
+            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>( "EncryptionKey"));
 
             services.AddAuthentication(x =>
             {
@@ -66,8 +65,6 @@ namespace WebAPI
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    //ValidateLifetime = true, // Tim Corey
-                    //ClockSkew = TimeSpan.FromMinutes(5) // Tim Corey
                 };
             });
 

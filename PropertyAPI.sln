@@ -11,11 +11,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{DF7E0D8C-A8AA-414E-906F-9710EE9A1BA7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{CB558FE9-6696-4375-B886-AE1B2C62C4D7}"
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{CB558FE9-6696-4375-B886-AE1B2C62C4D7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{B362D0BB-E7AF-4AC2-8BBA-750829741E2C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{B362D0BB-E7AF-4AC2-8BBA-750829741E2C}"
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity", "Indentity\Identity.csproj", "{EAC66DFE-EDA3-4920-A52B-A68D9358034F}"
 EndProject
 Global
