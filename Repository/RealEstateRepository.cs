@@ -1,5 +1,7 @@
 ﻿using Entities;
 using Entities.Models;
+using Entities.RequestFeatures;
+using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,21 @@ namespace Repository
         public RealEstateRepository(PropertyContext context) : base(context)
         {
 
+        }
+
+        public async Task<IEnumerable<RealEstate>> GetAllRealEstatesAsync(RealEstateParameters realEstateParameters, bool trackChanges)
+        {
+            return await FindAll(trackChanges)
+                .OrderByDescending(x => x.CreatedUtc)
+                .Skip((realEstateParameters.Skip) * realEstateParameters.Take)
+                .Take(realEstateParameters.Take)
+                .ToListAsync();
+        }
+
+        public async Task<RealEstate> GetRealEstateAsync(int realEstateId, bool trackChanges)
+        {
+            return await FindByCondition(x => x.Id.Equals(realEstateId), trackChanges)
+                .SingleOrDefaultAsync();
         }
     }
 }

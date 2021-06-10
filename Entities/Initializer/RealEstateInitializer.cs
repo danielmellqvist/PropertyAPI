@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using LoggerService.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Entities.Initializer
         /// This method ensures that the data base is created and that it contains data from the start.
         /// </summary>
         /// <param name="_context"></param>
-        public static void Initialize(PropertyContext _context)
+        public static void Initialize(PropertyContext _context, ILoggerManager logger)
         {
             _context.Database.EnsureCreated();
 
@@ -380,6 +381,377 @@ namespace Entities.Initializer
                         CreatedOn = new DateTime(2020, 12, 24, 15, 00, 00, 00),
                         UserId = _context.Users.First(e => e.UserName.Contains("geek")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 46225).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Love it! Give me a crossbow and I will defend it!",
+                        CreatedOn = new DateTime(2021, 05, 05, 09, 30, 44, 58),
+                        UserId = _context.Users.First(e => e.UserName.Contains("pony")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 41304).Id
+                    },
+                    new Comment
+                    {
+                        Content = "The bit about seaview was a bit overrated, but it was lovely!",
+                        CreatedOn = new DateTime(2021, 04, 04, 10, 30, 40, 40),
+                        UserId = _context.Users.First(e => e.UserName.Contains("roach")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 22222).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks good! ",
+                        CreatedOn = new DateTime(2021, 01, 27, 23, 47, 50, 10),
+                        UserId = _context.Users.First(e => e.UserName.Contains("bis")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 55555).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Nice, when can I come by and look at the place next year? Happy new year!",
+                        CreatedOn = new DateTime(2020, 12, 31, 23, 59, 59, 10),
+                        UserId = _context.Users.First(e => e.UserName.Contains("yak")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 91761).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I was walking by that area yesterday when I saw this building, I was thinking it would be a great place to live in!",
+                        CreatedOn = new DateTime(2021, 03, 14, 08, 14, 15, 16),
+                        UserId = _context.Users.First(e => e.UserName.Contains("fink")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 30071).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks like my dream house!",
+                        CreatedOn = new DateTime(2021, 02, 14, 21, 25, 59, 23),
+                        UserId = _context.Users.First(e => e.UserName.Contains("cur")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 21202).Id
+                    },
+                    new Comment
+                    {
+                        Content = "This doesn't fancy me at all.",
+                        CreatedOn = new DateTime(2021, 04, 19, 12, 12, 12, 12),
+                        UserId = _context.Users.First(e => e.UserName.Contains("kitten")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 48302).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Trump has left his things all over the place!",
+                        CreatedOn = new DateTime(2021, 02, 20, 11, 50, 40, 40),
+                        UserId = _context.Users.First(e => e.UserName.Contains("man")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 20500).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks fantastic, I would like to go there now!",
+                        CreatedOn = new DateTime(2020, 12, 24, 15, 00, 00, 00),
+                        UserId = _context.Users.First(e => e.UserName.Contains("geek")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 46225).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Love it! Give me a crossbow and I will defend it!",
+                        CreatedOn = new DateTime(2021, 05, 05, 09, 30, 44, 58),
+                        UserId = _context.Users.First(e => e.UserName.Contains("pony")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 41304).Id
+                    },
+                    new Comment
+                    {
+                        Content = "The bit about seaview was a bit overrated, but it was lovely!",
+                        CreatedOn = new DateTime(2021, 04, 04, 10, 30, 40, 40),
+                        UserId = _context.Users.First(e => e.UserName.Contains("roach")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 22222).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks good! ",
+                        CreatedOn = new DateTime(2021, 01, 27, 23, 47, 50, 10),
+                        UserId = _context.Users.First(e => e.UserName.Contains("bis")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 55555).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Nice, when can I come by and look at the place next year? Happy new year!",
+                        CreatedOn = new DateTime(2020, 12, 31, 23, 59, 59, 10),
+                        UserId = _context.Users.First(e => e.UserName.Contains("yak")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 91761).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I was walking by that area yesterday when I saw this building, I was thinking it would be a great place to live in!",
+                        CreatedOn = new DateTime(2021, 03, 14, 08, 14, 15, 16),
+                        UserId = _context.Users.First(e => e.UserName.Contains("fink")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 30071).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks like my dream house!",
+                        CreatedOn = new DateTime(2021, 02, 14, 21, 25, 59, 23),
+                        UserId = _context.Users.First(e => e.UserName.Contains("cur")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 21202).Id
+                    },
+                    new Comment
+                    {
+                        Content = "This doesn't fancy me at all.",
+                        CreatedOn = new DateTime(2021, 04, 19, 12, 12, 12, 12),
+                        UserId = _context.Users.First(e => e.UserName.Contains("kitten")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 48302).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Trump has left his things all over the place!",
+                        CreatedOn = new DateTime(2021, 02, 20, 11, 50, 40, 40),
+                        UserId = _context.Users.First(e => e.UserName.Contains("man")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 20500).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks fantastic, I would like to go there now!",
+                        CreatedOn = new DateTime(2020, 12, 24, 15, 00, 00, 00),
+                        UserId = _context.Users.First(e => e.UserName.Contains("geek")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 46225).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Love it! Give me a crossbow and I will defend it!",
+                        CreatedOn = new DateTime(2021, 05, 05, 09, 30, 44, 58),
+                        UserId = _context.Users.First(e => e.UserName.Contains("pony")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 41304).Id
+                    },
+                    new Comment
+                    {
+                        Content = "The bit about seaview was a bit overrated, but it was lovely!",
+                        CreatedOn = new DateTime(2021, 04, 04, 10, 30, 40, 40),
+                        UserId = _context.Users.First(e => e.UserName.Contains("roach")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 22222).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks good! ",
+                        CreatedOn = new DateTime(2021, 01, 27, 23, 47, 50, 10),
+                        UserId = _context.Users.First(e => e.UserName.Contains("bis")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 55555).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Nice, when can I come by and look at the place next year? Happy new year!",
+                        CreatedOn = new DateTime(2020, 12, 31, 23, 59, 59, 10),
+                        UserId = _context.Users.First(e => e.UserName.Contains("yak")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 91761).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I was walking by that area yesterday when I saw this building, I was thinking it would be a great place to live in!",
+                        CreatedOn = new DateTime(2021, 03, 14, 08, 14, 15, 16),
+                        UserId = _context.Users.First(e => e.UserName.Contains("fink")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 30071).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks like my dream house!",
+                        CreatedOn = new DateTime(2021, 02, 14, 21, 25, 59, 23),
+                        UserId = _context.Users.First(e => e.UserName.Contains("cur")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 21202).Id
+                    },
+                    new Comment
+                    {
+                        Content = "This doesn't fancy me at all.",
+                        CreatedOn = new DateTime(2021, 04, 19, 12, 12, 12, 12),
+                        UserId = _context.Users.First(e => e.UserName.Contains("kitten")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 48302).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Trump has left his things all over the place!",
+                        CreatedOn = new DateTime(2021, 02, 20, 11, 50, 40, 40),
+                        UserId = _context.Users.First(e => e.UserName.Contains("man")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 20500).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks fantastic, I would like to go there now!",
+                        CreatedOn = new DateTime(2020, 12, 24, 15, 00, 00, 00),
+                        UserId = _context.Users.First(e => e.UserName.Contains("geek")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 46225).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Love it! Give me a crossbow and I will defend it!",
+                        CreatedOn = new DateTime(2021, 05, 05, 09, 30, 44, 58),
+                        UserId = _context.Users.First(e => e.UserName.Contains("pony")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 41304).Id
+                    },
+                    new Comment
+                    {
+                        Content = "The bit about seaview was a bit overrated, but it was lovely!",
+                        CreatedOn = new DateTime(2021, 04, 04, 10, 30, 40, 40),
+                        UserId = _context.Users.First(e => e.UserName.Contains("roach")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 22222).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks good! ",
+                        CreatedOn = new DateTime(2021, 01, 27, 23, 47, 50, 10),
+                        UserId = _context.Users.First(e => e.UserName.Contains("bis")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 55555).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Nice, when can I come by and look at the place next year? Happy new year!",
+                        CreatedOn = new DateTime(2020, 12, 31, 23, 59, 59, 10),
+                        UserId = _context.Users.First(e => e.UserName.Contains("yak")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 91761).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I was walking by that area yesterday when I saw this building, I was thinking it would be a great place to live in!",
+                        CreatedOn = new DateTime(2021, 03, 14, 08, 14, 15, 16),
+                        UserId = _context.Users.First(e => e.UserName.Contains("fink")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 30071).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks like my dream house!",
+                        CreatedOn = new DateTime(2021, 02, 14, 21, 25, 59, 23),
+                        UserId = _context.Users.First(e => e.UserName.Contains("cur")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 21202).Id
+                    },
+                    new Comment
+                    {
+                        Content = "This doesn't fancy me at all.",
+                        CreatedOn = new DateTime(2021, 04, 19, 12, 12, 12, 12),
+                        UserId = _context.Users.First(e => e.UserName.Contains("kitten")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 48302).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Trump has left his things all over the place!",
+                        CreatedOn = new DateTime(2021, 02, 20, 11, 50, 40, 40),
+                        UserId = _context.Users.First(e => e.UserName.Contains("man")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 20500).Id
+                    },
+                    new Comment
+                    {
+                        Content = "Looks fantastic, I would like to go there now!",
+                        CreatedOn = new DateTime(2020, 12, 24, 15, 00, 00, 00),
+                        UserId = _context.Users.First(e => e.UserName.Contains("geek")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 46225).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
+                    },
+                    new Comment
+                    {
+                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {

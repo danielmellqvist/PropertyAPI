@@ -44,6 +44,7 @@ namespace Entities.Models
         public bool CanBeSold { get; set; }
         public bool CanBeRented { get; set; }
         public int RealEstateTypeId { get; set; }
+        public DateTime CreatedUtc { get; set; }
 
         //Relational
         [ForeignKey(nameof(ContactId))]
