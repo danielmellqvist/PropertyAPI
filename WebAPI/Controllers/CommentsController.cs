@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
         [HttpGet("user/{id}")]
         public IActionResult GetCommentsFromUser([FromQuery] CommentsParameters commentsParameters, Guid id)
         {
-            List<Comment> comments = _repository.Comment.GetAllCommentsByUserId(id, trackChanges: false);
+            List<Comment> comments = _repository.Comment.GetAllCommentsByUserId(commentsParameters, id, trackChanges: false);
             if (comments.Count() != 0)
             {
                 var username = _context.Users.FirstOrDefault(x => x.Id == id);
