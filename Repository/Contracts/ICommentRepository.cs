@@ -15,6 +15,6 @@ namespace Repository.Contracts
 
         List<Comment> GetAllCommentsByRealEstateId(CommentsParameters commentsParameter, int id, bool trackChanges);
 
-        public void CreateComment(Comment comment);
+        void CreateComment(Comment comment);
     }
 }
