@@ -31,7 +31,5 @@ namespace WebAPI.Controllers
             _mapper = mapper;
             _context = context;
         }
-
-        [HttpGet]
     }
 }

@@ -15,5 +15,12 @@ namespace Repository
         {
 
         }
+
+        public IEnumerable<Rating> GetAllRatings(bool trackChanges) =>
+             FindAll(trackChanges)
+            .OrderBy(c => c.RatingValue)
+            .ToList();
+
+
     }
 }
