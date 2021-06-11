@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
         [HttpGet("{username}")]
         public Task<IActionResult> GetInfoByUserName(string username)
         {
-
+            var 
             return null;
         }
 
