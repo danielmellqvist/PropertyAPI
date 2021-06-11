@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entities;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using System;
@@ -11,6 +12,14 @@ namespace WebAPI.Mapping
 {
     public class MappingProfile : Profile
     {
+        private readonly PropertyContext _context;
+
+        public MappingProfile(PropertyContext context)
+        {
+            _context = context;
+        }
+
+
         // TODO
         public MappingProfile()
         {
@@ -25,7 +34,18 @@ namespace WebAPI.Mapping
                 .ForMember(destination => destination.CreatedOn, y => y.MapFrom(source => source.CreatedUtc.ToLocalTime()))
                 ;
 
-            CreateMap<Comment, CommentForCreationDto>();
+            CreateMap<CommentForCreationDto, Comment >();
+
+            CreateMap<CommentForCreationDto, CommentForReturnDto>()
+                .ForMember(x => x.UserName, y => y.MapFrom(sourceClass => (GetUserName(sourceClass.UserId))));
+
+            
+        }
+
+        private object GetUserName(Guid id)
+        {
+            var username = _context.Users.FirstOrDefault(x => x.Id == id);
+            return username.UserName;
         }
     }
 }

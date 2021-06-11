@@ -84,10 +84,10 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("{id}", Name = "CommentById")]
-        public IActionResult CreateComment([FromBody]CommentForCreationDto commentForCreationDto/*, Guid id*/)
+        [HttpPost("Create/{id}", Name = "CommentById")]
+        public IActionResult CreateComment([FromBody]CommentForCreationDto commentForCreationDto, Guid id)
         {
-            ///////////////commentForCreationDto.UserId = id;
+            commentForCreationDto.UserId = id;
             commentForCreationDto.CreatedOn = DateTime.Now;
 
             var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
@@ -98,9 +98,13 @@ namespace WebAPI.Controllers
             _repository.Comment.CreateComment(commentCreated);
             _repository.SaveAsync();
 
-            var commentToReturn = _mapper.Map<CommentForCreationDto>(commentCreated);
 
-            return CreatedAtRoute("CommentById", new { id = commentToReturn.UserId }, commentToReturn);
+
+            var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
+
+
+
+            return Ok(commentToReturn);
         }
     }
 }
