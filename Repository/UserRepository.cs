@@ -22,5 +22,11 @@ namespace Repository
             var username = FindByCondition(x => x.Id == id, trackchanges).SingleOrDefaultAsync();
             return await username;
         }
+
+        public async Task<User> GetUserId(string username, bool trackchanges)
+        {
+            var userid = FindByCondition(x => x.UserName == username, trackchanges).SingleOrDefaultAsync();
+            return await userid;
+        }
     }
 }
