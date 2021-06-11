@@ -9,7 +9,7 @@ namespace Entities.DataTransferObjects
     public class RatingDto
     {
         public Guid UserId { get; set; }
-        public int RealEstateId { get; set; }
+        public int RealEstates { get; set; }
         public int Comments { get; set; }
         public double Rating { get; set; }
     }

@@ -16,11 +16,11 @@ namespace Repository
 
         }
 
-        public IEnumerable<Rating> GetAllRatings(bool trackChanges) =>
-             FindAll(trackChanges)
-            .OrderBy(c => c.RatingValue)
+        public IEnumerable<Rating> GetAllRatingsAverage(string username, bool trackChanges) =>
+            FindAll(trackChanges)
+            .Where(x => x.AboutUserId == ...(username))
             .ToList();
-
+        //Average();
 
     }
 }
