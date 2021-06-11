@@ -84,18 +84,18 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("{id}")]
-        public IActionResult CreateComment([FromBody] CommentForCreationDto commentForCreationDto, Guid id)
-        {
-            commentForCreationDto.UserId = id;
-            commentForCreationDto.CreatedOn = DateTime.Now;
+        //[HttpPost("{id}")]
+        //public IActionResult CreateComment([FromBody] CommentForCreationDto commentForCreationDto, Guid id)
+        //{
+        //    commentForCreationDto.UserId = id;
+        //    commentForCreationDto.CreatedOn = DateTime.Now;
 
-            var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
+        //    var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
 
-            return Ok(null);
+
         }
 
-            
+
     }
 }
 
