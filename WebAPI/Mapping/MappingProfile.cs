@@ -36,16 +36,12 @@ namespace WebAPI.Mapping
 
             CreateMap<CommentForCreationDto, Comment >();
 
-            CreateMap<CommentForCreationDto, CommentForReturnDto>()
-                .ForMember(x => x.UserName, y => y.MapFrom(sourceClass => (GetUserName(sourceClass.UserId))));
+            CreateMap<CommentForCreationDto, CommentForReturnDto>();
 
             
         }
+        
 
-        private object GetUserName(Guid id)
-        {
-            var username = _context.Users.FirstOrDefault(x => x.Id == id);
-            return username.UserName;
-        }
+
     }
 }
