@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,12 @@ namespace Repository
         public UserRepository(PropertyContext context) : base(context)
         {
 
+        }
+
+        public async Task<User> GetUserName(Guid id, bool trackchanges)
+        {
+            var username = FindByCondition(x => x.Id == id, trackchanges).SingleOrDefaultAsync();
+            return await username;
         }
     }
 }
