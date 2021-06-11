@@ -92,7 +92,7 @@ namespace WebAPI.Controllers
 
             var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
 
-
+            return Ok(null);
         }
 
             
