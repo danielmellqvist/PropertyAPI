@@ -94,18 +94,17 @@ namespace WebAPI.Controllers
             _repository.Comment.CreateComment(commentCreated);
             _repository.SaveAsync();
 
-            User username = GetUserName(id);
             var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
-            commentToReturn.UserName = username.UserName;
+            commentToReturn.UserName = GetUserName(id);
 
             return Ok(commentToReturn);
         }
 
 
-        private User GetUserName(Guid id)
+        private string GetUserName(Guid id)
         {
             var username = _context.Users.FirstOrDefault(x => x.Id == id);
-            return username;
+            return username.UserName;
         }
 
     }
