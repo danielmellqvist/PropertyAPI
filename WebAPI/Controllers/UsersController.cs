@@ -31,5 +31,18 @@ namespace WebAPI.Controllers
             _mapper = mapper;
             _context = context;
         }
-    }
+
+        [HttpGet("{username}")]
+        public Task<IActionResult> GetInfoByUserName(string username)
+        {
+
+            return null;
+        }
+
+        // { "UserName": " kallekarlsson ", 
+        //    "RealEstates": 3, 
+        //    "Comments": 16, 
+        //    "Rating": 3.111111111111111 
+        //}
+}
 }

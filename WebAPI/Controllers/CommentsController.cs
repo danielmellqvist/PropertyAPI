@@ -85,28 +85,20 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("Create/{id}", Name = "CommentById")]
-        public IActionResult CreateComment([FromBody] CommentForCreationDto commentForCreationDto, Guid id)
+        public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, Guid id)
         {
             commentForCreationDto.UserId = id;
             commentForCreationDto.CreatedOn = DateTime.Now;
 
             var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
             _repository.Comment.CreateComment(commentCreated);
-            _repository.SaveAsync();
+            await _repository.SaveAsync();
 
             var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
-            commentToReturn.UserName = GetUserName(id);
+            commentToReturn.UserName = (await _repository.User.GetUserName(id, trackchanges: false)).UserName;
 
             return Ok(commentToReturn);
         }
-
-
-        private string GetUserName(Guid id)
-        {
-            var username = _context.Users.FirstOrDefault(x => x.Id == id);
-            return username.UserName;
-        }
-
     }
 }
 
