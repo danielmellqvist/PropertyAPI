@@ -112,11 +112,25 @@ namespace WebAPI.Controllers
                 _logger.LogInfo($"Real Estate with the id : {id} doesn´t exist in the database.");
                 return NotFound();
             }
-            else
+
+            var realEstateDto = _mapper.Map<RealEstateDto>(realEstate);
+            return Ok(realEstateDto);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRealEstate(int id)
+        {
+            var realEstate = await _repository.RealEstate.GetRealEstateAsync(id, trackChanges: true);
+            if (realEstate == null)
             {
-                var realEstateDto = _mapper.Map<RealEstateDto>(realEstate);
-                return Ok(realEstateDto);
+                _logger.LogInfo($"Real Estate with the id {id} did not exist");
+                return NotFound();
             }
+            _repository.RealEstate.DeleteRealEstate(realEstate);
+            await _repository.SaveAsync();
+
+            return NoContent();
         }
     }
 }

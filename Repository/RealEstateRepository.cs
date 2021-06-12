@@ -42,5 +42,10 @@ namespace Repository
         {
             await CreateAsync(realEstate);
         }
+
+        public void DeleteRealEstate(RealEstate realEstate)
+        {
+            Delete(realEstate);
+        }
     }
 }
