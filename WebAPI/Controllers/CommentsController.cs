@@ -74,7 +74,7 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("Create/{id}", Name = "CommentById")]
-        public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, Guid id)
+        public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, int id)
         {
             commentForCreationDto.UserId = id;
             commentForCreationDto.CreatedOn = DateTime.Now;

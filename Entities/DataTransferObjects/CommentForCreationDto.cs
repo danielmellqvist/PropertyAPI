@@ -16,7 +16,7 @@ namespace Entities.DataTransferObjects
 
         public DateTime CreatedOn { get; set; }
 
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
 
         public int RealEstateId { get; set; }
     }

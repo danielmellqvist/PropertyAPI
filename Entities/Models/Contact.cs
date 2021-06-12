@@ -13,7 +13,7 @@ namespace Entities.Models
         [Key]
         public int Id { get; set; }
         public int? UserId { get; set; }
-        public string? Telephone { get; set; }
+        public string Telephone { get; set; }
 
         // Relational
         //[ForeignKey(nameof(UserId))]

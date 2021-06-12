@@ -17,7 +17,7 @@ namespace Repository
 
         }
 
-        public async Task<User> GetUserName(Guid id, bool trackchanges)
+        public async Task<User> GetUserName(int id, bool trackchanges)
         {
             var username = FindByCondition(x => x.Id == id, trackchanges).SingleOrDefaultAsync();
             return await username;
