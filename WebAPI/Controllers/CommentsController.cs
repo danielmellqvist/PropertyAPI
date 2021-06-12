@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace WebAPI.Controllers
 {
     [Route("api/Comments")]
-    [ApiController]
+    //[ApiController]
     public class CommentsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParameters)
         {
             var comments = await _repository.Comment.GetAllCommentsByRealEstateIdAsync(commentParameters, id, trackChanges: false);
-            if (comments == null)
+            if (comments.Count() == 0)
             {
                 _logger.LogInfo($"There were no comments for the real estate with id {id}.");
                 return NotFound();
