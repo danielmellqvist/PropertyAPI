@@ -2,6 +2,7 @@
 using Entities;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Entities.RequestFeatures;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,9 +32,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("user/{id}")]
-        public IActionResult GetCommentsFromUser(Guid id)
+        public IActionResult GetCommentsFromUser([FromQuery] CommentsParameters commentsParameters, Guid id)
         {
-            List<Comment> comments = _repository.Comment.GetAllCommentsByUserId(id, trackChanges: false);
+            List<Comment> comments = _repository.Comment.GetAllCommentsByUserId(commentsParameters, id, trackChanges: false);
             if (comments.Count() != 0)
             {
                 var username = _context.Users.FirstOrDefault(x => x.Id == id);
@@ -56,9 +57,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("realestate/{id}")]
-        public IActionResult GetCommentsForRealestate(int id)
+        public IActionResult GetCommentsForRealestate([FromQuery] CommentsParameters commentsParameters, int id)
         {
-            List<Comment> estates = _repository.Comment.GetAllCommentsByRealEstateId(id, trackChanges: false);
+            List<Comment> estates = _repository.Comment.GetAllCommentsByRealEstateId(commentsParameters, id, trackChanges: false);
             if (estates.Count() != 0)
             {
                 List<CommentsForRealEstateDto> commentsForRealEstateDtos = new();
@@ -80,6 +81,23 @@ namespace WebAPI.Controllers
                 _logger.LogInfo($"Real Estate with id: {id} does not exist in the Database");
                 return NotFound();
             }
+        }
+
+
+        [HttpPost("Create/{id}", Name = "CommentById")]
+        public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, Guid id)
+        {
+            commentForCreationDto.UserId = id;
+            commentForCreationDto.CreatedOn = DateTime.Now;
+
+            var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
+            _repository.Comment.CreateComment(commentCreated);
+            await _repository.SaveAsync();
+
+            var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
+            commentToReturn.UserName = (await _repository.User.GetUserName(id, trackchanges: false)).UserName;
+
+            return Ok(commentToReturn);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entities;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using System;
@@ -11,6 +12,14 @@ namespace WebAPI.Mapping
 {
     public class MappingProfile : Profile
     {
+        private readonly PropertyContext _context;
+
+        public MappingProfile(PropertyContext context)
+        {
+            _context = context;
+        }
+
+
         // TODO
         public MappingProfile()
         {
@@ -24,6 +33,13 @@ namespace WebAPI.Mapping
                 .IncludeMembers(source => source.ConstructionYear)
                 .ForMember(destination => destination.Address, y => y.MapFrom(source => $"{source.Street}, {source.ZipCode} {source.City}"))
                 .ForMember(destination => destination.CreatedOn, y => y.MapFrom(source => source.CreatedUtc.ToLocalTime()))
+                ;
+
+            CreateMap<CommentForCreationDto, Comment >();
+
+            CreateMap<CommentForCreationDto, CommentForReturnDto>();
+
+            
                 .ForMember(destination => destination.ConstructionYear, y => y.MapFrom(source => source.ConstructionYear.Year));
 
             CreateMap<RealEstate, RealEstateCreatedDto>();
@@ -40,5 +56,8 @@ namespace WebAPI.Mapping
             //    .ForMember(destination => destination.ConstructionYear, y => y.MapFrom(source => source.Year))
             //    .ReverseMap();
         }
+        
+
+
     }
 }

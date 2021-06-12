@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,10 @@ namespace Repository.Contracts
     public interface ICommentRepository
     {
 
-        List<Comment> GetAllCommentsByUserId(Guid id, bool trackChanges);
+        List<Comment> GetAllCommentsByUserId(CommentsParameters commentsParameters ,Guid id, bool trackChanges);
 
-        List<Comment> GetAllCommentsByRealEstateId(int id, bool trackChanges);
+        List<Comment> GetAllCommentsByRealEstateId(CommentsParameters commentsParameter, int id, bool trackChanges);
+
+        void CreateComment(Comment comment);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Repository.Contracts;
 using System;
 using System.Collections.Generic;
@@ -16,20 +17,23 @@ namespace Repository
 
         }
 
-        public List<Comment> GetAllCommentsByUserId(Guid id, bool trackChanges) =>
+        public List<Comment> GetAllCommentsByUserId(CommentsParameters commentsParameters, Guid id, bool trackChanges) =>
             FindAll(trackChanges)
             .Where(x => x.UserId == id)
             .OrderBy(c => c.CreatedOn)
-            .Take(10).ToList();
+            .Skip(commentsParameters.Skip)
+            .Take(commentsParameters.Take)
+            .ToList();
 
 
-        public List<Comment> GetAllCommentsByRealEstateId(int id, bool trackChanges) =>
+        public List<Comment> GetAllCommentsByRealEstateId(CommentsParameters commentsParameters, int id, bool trackChanges) =>
                 FindAll(trackChanges)
                 .Where(x => x.RealEstateId == id)
-                .OrderByDescending(c => c.CreatedOn)
-                .Take(10).ToList();
+                .OrderBy(c => c.CreatedOn)
+                .Skip(commentsParameters.Skip)
+                .Take(commentsParameters.Take)
+                .ToList();
 
-            
-        
+        public void CreateComment(Comment comment) => Create(comment);
     }
 }
