@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
-    public class CommentsForRealEstateDto
+    public class UserInformationDto
     {
-        // Denis
-        public string Content { get; set; }
         public string UserName { get; set; }
-        public DateTime CreatedOn { get; set; }
+
+        public int Realestates { get; set; }
+
+        public int Comments { get; set; }
+
+        public double Rating { get; set; }
+
     }
 }

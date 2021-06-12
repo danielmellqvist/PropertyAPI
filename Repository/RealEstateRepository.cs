@@ -29,8 +29,23 @@ namespace Repository
 
         public async Task<RealEstate> GetRealEstateAsync(int realEstateId, bool trackChanges)
         {
-            return await FindByCondition(x => x.Id.Equals(realEstateId), trackChanges)
-                .SingleOrDefaultAsync();
+            var realEstate = await FindByCondition(x => x.Id.Equals(realEstateId), trackChanges).SingleOrDefaultAsync();
+            if (realEstate != null)
+            {
+                realEstate.ConstructionYear = await _context.ConstructionYears.Where(x => x.Id == realEstate.ConstructionYearId).FirstOrDefaultAsync();
+                realEstate.RealEstateType = await _context.RealEstateTypes.Where(x => x.Id == realEstate.RealEstateTypeId).FirstOrDefaultAsync();
+            }
+            return realEstate;
+        }
+
+        public async Task CreateRealEstateAsync(RealEstate realEstate)
+        {
+            await CreateAsync(realEstate);
+        }
+
+        public void DeleteRealEstate(RealEstate realEstate)
+        {
+            Delete(realEstate);
         }
     }
 }

@@ -15,5 +15,21 @@ namespace Repository
         {
 
         }
+
+
+        // ToDo: This method is not completed
+        public IEnumerable<Rating> GetAllRatingsAverage(string username, bool trackChanges) =>
+            FindAll(trackChanges)
+            .Where(x => x.AboutUserId.Equals(username))
+            //.Where(x => x.AboutUserId == ...(username))
+            .ToList();
+
+        // ToDo: Impliment this...
+        IEnumerable<Rating> IRatingRepository.GetAllRatings(bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

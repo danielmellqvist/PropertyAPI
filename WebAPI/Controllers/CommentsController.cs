@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/comments")]
-    [ApiController]
+    [Route("api/Comments")]
+    //[ApiController]
     public class CommentsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
@@ -30,6 +30,22 @@ namespace WebAPI.Controllers
             _mapper = mapper;
             _context = context;
         }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParameters)
+        {
+            var comments = await _repository.Comment.GetAllCommentsByRealEstateIdAsync(commentParameters, id, trackChanges: false);
+            if (comments.Count() == 0)
+            {
+                _logger.LogInfo($"There were no comments for the real estate with id {id}.");
+                return NotFound();
+            }
+            var commentsDto = _mapper.Map<IEnumerable<CommentsForRealEstateDto>>(comments);
+            return Ok(commentsDto);
+        }
+
+
 
         [HttpGet("user/{id}")]
         public IActionResult GetCommentsFromUser([FromQuery] CommentsParameters commentsParameters, int id)
@@ -56,46 +72,22 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("realestate/{id}")]
-        public IActionResult GetCommentsForRealestate([FromQuery] CommentsParameters commentsParameters, int id)
+
+        [HttpPost("Create/{id}", Name = "CommentById")]
+        public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, Guid id)
         {
-            List<Comment> estates = _repository.Comment.GetAllCommentsByRealEstateId(commentsParameters, id, trackChanges: false);
-            if (estates.Count() != 0)
-            {
-                List<CommentsForRealEstateDto> commentsForRealEstateDtos = new();
-                foreach (var estate in estates)
-                {
-                    var username = _context.Users.FirstOrDefault(x => x.Id == estate.UserId);
-                    CommentsForRealEstateDto commentsForRealEstateDto = new CommentsForRealEstateDto
-                    {
-                        UserName = username.UserName,
-                        Content = estate.Content,
-                        CreatedOn = estate.CreatedOn
-                    };
-                    commentsForRealEstateDtos.Add(commentsForRealEstateDto);
-                }
-                return Ok(commentsForRealEstateDtos);
-            }
-            else
-            {
-                _logger.LogInfo($"Real Estate with id: {id} does not exist in the Database");
-                return NotFound();
-            }
+            commentForCreationDto.UserId = id;
+            commentForCreationDto.CreatedOn = DateTime.Now;
+
+            var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
+            _repository.Comment.CreateComment(commentCreated);
+            await _repository.SaveAsync();
+
+            var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
+            commentToReturn.UserName = (await _repository.User.GetUserName(id, trackchanges: false)).UserName;
+
+            return Ok(commentToReturn);
         }
-
-
-        //[HttpPost("{id}")]
-        //public IActionResult CreateComment([FromBody] CommentForCreationDto commentForCreationDto, Guid id)
-        //{
-        //    commentForCreationDto.UserId = id;
-        //    commentForCreationDto.CreatedOn = DateTime.Now;
-
-        //    var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
-
-
-        //}
-
-
     }
 }
 

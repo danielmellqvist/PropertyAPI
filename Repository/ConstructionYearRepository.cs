@@ -24,5 +24,17 @@ namespace Repository
             var constructionYear = await FindByCondition(x => x.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
             return constructionYear.Year;
         }
+
+        public async Task<ConstructionYear> GetFromYearAsync(int year, bool trackChanges)
+        {
+            var constructionYear = await FindByCondition(x => x.Year.Equals(year), trackChanges).SingleOrDefaultAsync();
+            return constructionYear;
+        }
+
+        public async Task<ConstructionYear> GetConstructionYearFromIdAsync(int id, bool trackChanges)
+        {
+            var constructionYear = await FindByCondition(x => x.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
+            return constructionYear;
+        }
     }
 }

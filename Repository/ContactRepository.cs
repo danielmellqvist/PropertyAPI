@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,13 @@ namespace Repository
         {
 
         }
+
+        public async Task<Contact> GetContactByTelephoneAsync(string telephone, bool trackChanges)
+        {
+            var contact = await FindByCondition(x => x.Telephone.Equals(telephone), trackChanges).SingleOrDefaultAsync();
+            return contact;
+        }
+
+        public void CreateContact(Contact contact) => Create(contact);
     }
 }
