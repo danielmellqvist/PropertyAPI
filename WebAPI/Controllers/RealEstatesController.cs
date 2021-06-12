@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace WebAPI.Controllers
 {
     [Route("api/RealEstates")]
-    [ApiController]
+    //[ApiController]
     public class RealEstatesController : ControllerBase
     {
         private readonly ILoggerManager _logger;
@@ -32,6 +32,11 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAllRealEstates([FromQuery] RealEstateParameters realEstateParameters)
         {
             var realEstates = await _repository.RealEstate.GetAllRealEstatesAsync(realEstateParameters, trackChanges: false);
+            if (realEstates == null)
+            {
+                _logger.LogInfo($"Could not find any Real Estates");
+                return NotFound();
+            }
             var realEstatesDto = _mapper.Map<IEnumerable<RealEstatesDto>>(realEstates);
             return Ok(realEstatesDto);
         }
@@ -43,6 +48,12 @@ namespace WebAPI.Controllers
             {
                 _logger.LogError("Client did not provide a new Real Estate object in request");
                 return BadRequest("RealEstate object for creation is null");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the DTO in the CreateRealEstate action");
+                return UnprocessableEntity(ModelState);
             }
 
             var constructionYear = await _repository.ConstructionYear.GetFromYearAsync(newRealEstate.ConstructionYear, trackChanges: false);
@@ -64,7 +75,6 @@ namespace WebAPI.Controllers
                 await _repository.SaveAsync();
                 _logger.LogInfo($"Contact with the ID {contact.Id} added to the database");
             }
-
 
             var realEstateEntity = new RealEstate()
             {
