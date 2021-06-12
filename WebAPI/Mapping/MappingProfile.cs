@@ -26,11 +26,15 @@ namespace WebAPI.Mapping
             CreateMap<User, CommentFromUserDto>();
 
             CreateMap<Comment, CommentFromUserDto>();
+            CreateMap<Comment, CommentsForRealEstateDto>()
+                .ForMember(destination => destination.UserName, opt => opt.MapFrom(source => source.User.UserName));
+            CreateMap<CommentForCreationDto, Comment>();
+            CreateMap<CommentForCreationDto, CommentForReturnDto>();
+
+
 
             CreateMap<ConstructionYear, RealEstateDto>();
-
             CreateMap<RealEstate, RealEstatesDto>();
-
             CreateMap<RealEstate, RealEstateDto>()
                 .IncludeMembers(source => source.ConstructionYear)
                 .ForMember(destination => destination.Address, y => y.MapFrom(source => $"{source.Street}, {source.ZipCode} {source.City}"))
@@ -38,26 +42,8 @@ namespace WebAPI.Mapping
                 .ForMember(destination => destination.ConstructionYear, y => y.MapFrom(source => source.ConstructionYear.Year))
                 .ReverseMap();
 
-            CreateMap<CommentForCreationDto, Comment >();
-
-            CreateMap<CommentForCreationDto, CommentForReturnDto>();
-
+            
             CreateMap<RealEstate, RealEstateCreatedDto>();
-
-            //CreateMap<RealEstate, RealEstateForCreationDto>()
-            //    .IncludeMembers(x => x.Contact, x => x.ConstructionYear)
-            //    .ForMember(destination => destination.Contact, opt => opt.MapFrom(source => source.Contact.Telephone))
-            //    .ReverseMap();
-
-            //CreateMap<Contact, RealEstateForCreationDto>()
-            //    .ForMember(destination => destination.Contact, y => y.MapFrom(source => source.Telephone))
-            //    .ReverseMap();
-            //CreateMap<ConstructionYear, RealEstateForCreationDto>()
-            //    .ForMember(destination => destination.ConstructionYear, y => y.MapFrom(source => source.Year))
-            //    .ReverseMap();
         }
-        
-
-
     }
 }

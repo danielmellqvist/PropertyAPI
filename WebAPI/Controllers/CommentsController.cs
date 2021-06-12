@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/comments")]
+    [Route("api/Comments")]
     [ApiController]
     public class CommentsController : ControllerBase
     {
@@ -30,6 +30,22 @@ namespace WebAPI.Controllers
             _mapper = mapper;
             _context = context;
         }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParameters)
+        {
+            var comments = await _repository.Comment.GetAllCommentsByRealEstateIdAsync(commentParameters, id, trackChanges: false);
+            if (comments == null)
+            {
+                _logger.LogInfo($"There were no comments for the real estate with id {id}.");
+                return NotFound();
+            }
+            var commentsDto = _mapper.Map<IEnumerable<CommentsForRealEstateDto>>(comments);
+            return Ok(commentsDto);
+        }
+
+
 
         [HttpGet("user/{id}")]
         public IActionResult GetCommentsFromUser([FromQuery] CommentsParameters commentsParameters, Guid id)
@@ -52,33 +68,6 @@ namespace WebAPI.Controllers
             else
             {
                 _logger.LogInfo($"User with id: {id} does not exist in the Database");
-                return NotFound();
-            }
-        }
-
-        [HttpGet("realestate/{id}")]
-        public IActionResult GetCommentsForRealestate([FromQuery] CommentsParameters commentsParameters, int id)
-        {
-            List<Comment> estates = _repository.Comment.GetAllCommentsByRealEstateId(commentsParameters, id, trackChanges: false);
-            if (estates.Count() != 0)
-            {
-                List<CommentsForRealEstateDto> commentsForRealEstateDtos = new();
-                foreach (var estate in estates)
-                {
-                    var username = _context.Users.FirstOrDefault(x => x.Id == estate.UserId);
-                    CommentsForRealEstateDto commentsForRealEstateDto = new CommentsForRealEstateDto
-                    {
-                        UserName = username.UserName,
-                        Content = estate.Content,
-                        CreatedOn = estate.CreatedOn
-                    };
-                    commentsForRealEstateDtos.Add(commentsForRealEstateDto);
-                }
-                return Ok(commentsForRealEstateDtos);
-            }
-            else
-            {
-                _logger.LogInfo($"Real Estate with id: {id} does not exist in the Database");
                 return NotFound();
             }
         }

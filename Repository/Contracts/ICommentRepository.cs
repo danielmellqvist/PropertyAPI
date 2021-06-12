@@ -13,7 +13,7 @@ namespace Repository.Contracts
 
         List<Comment> GetAllCommentsByUserId(CommentsParameters commentsParameters ,Guid id, bool trackChanges);
 
-        List<Comment> GetAllCommentsByRealEstateId(CommentsParameters commentsParameter, int id, bool trackChanges);
+        Task<IEnumerable<Comment>> GetAllCommentsByRealEstateIdAsync(CommentsParameters commentsParameter, int id, bool trackChanges);
 
         void CreateComment(Comment comment);
     }

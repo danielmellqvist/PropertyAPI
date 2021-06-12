@@ -25,8 +25,8 @@ namespace Entities.Models
 
 
         // Relational
-        //[ForeignKey(nameof(UserId))]
-        //public User User { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; }
 
         [ForeignKey(nameof(RealEstateId))]
         public RealEstate RealEstate { get; set; }
