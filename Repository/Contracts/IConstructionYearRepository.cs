@@ -11,6 +11,7 @@ namespace Repository.Contracts
     {
         void CreateConstructionYear(ConstructionYear constructionYear);
         Task<int> GetYearFromIdAsync(int id, bool trackChanges);
-
+        Task<ConstructionYear> GetConstructionYearFromIdAsync(int id, bool trackChanges);
+        Task<ConstructionYear> GetFromYearAsync(int year, bool trackChanges);
     }
 }

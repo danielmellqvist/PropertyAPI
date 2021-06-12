@@ -18,12 +18,27 @@ namespace WebAPI.Mapping
 
             CreateMap<Comment, CommentFromUserDto>();
 
-            CreateMap<RealEstate, RealEstatesDto>();
+            CreateMap<ConstructionYear, RealEstateDto>();
 
             CreateMap<RealEstate, RealEstateDto>()
+                .IncludeMembers(source => source.ConstructionYear)
                 .ForMember(destination => destination.Address, y => y.MapFrom(source => $"{source.Street}, {source.ZipCode} {source.City}"))
                 .ForMember(destination => destination.CreatedOn, y => y.MapFrom(source => source.CreatedUtc.ToLocalTime()))
-                ;
+                .ForMember(destination => destination.ConstructionYear, y => y.MapFrom(source => source.ConstructionYear.Year));
+
+            CreateMap<RealEstate, RealEstateCreatedDto>();
+
+            //CreateMap<RealEstate, RealEstateForCreationDto>()
+            //    .IncludeMembers(x => x.Contact, x => x.ConstructionYear)
+            //    .ForMember(destination => destination.Contact, opt => opt.MapFrom(source => source.Contact.Telephone))
+            //    .ReverseMap();
+
+            //CreateMap<Contact, RealEstateForCreationDto>()
+            //    .ForMember(destination => destination.Contact, y => y.MapFrom(source => source.Telephone))
+            //    .ReverseMap();
+            //CreateMap<ConstructionYear, RealEstateForCreationDto>()
+            //    .ForMember(destination => destination.ConstructionYear, y => y.MapFrom(source => source.Year))
+            //    .ReverseMap();
         }
     }
 }

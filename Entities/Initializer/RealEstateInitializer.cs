@@ -78,10 +78,10 @@ namespace Entities.Initializer
                     new Contact { UserId = _context.Users.First(e => e.UserName.Contains("syak")).Id },
                     new Contact { UserId = _context.Users.First(e => e.UserName.Contains("man")).Id },
                     new Contact { UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id },
-                    new Contact { Telephone = 8156644497},
-                    new Contact { Telephone = 2025550470},
-                    new Contact { Telephone = 5074045838},
-                    new Contact { Telephone = 5072400020}
+                    new Contact { Telephone = "8156-644-497"},
+                    new Contact { Telephone = "2025-550-470"},
+                    new Contact { Telephone = "5074-045-838"},
+                    new Contact { Telephone = "5072-400-020"}
                 };
                 _context.AddRange(contacts);
                 _context.SaveChanges();

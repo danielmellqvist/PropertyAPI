@@ -25,14 +25,11 @@ namespace Entities.Models
         [MaxLength(50)]
         public string Street { get; set; }
 
-        [Required(ErrorMessage = "ZipCode is a required field.")]
         public int ZipCode { get; set; }
 
-        [Required(ErrorMessage = "City is a required field.")]
         [MaxLength(50)]
         public string City { get; set; }
 
-        [Required(ErrorMessage = "Country is a required field.")]
         [MaxLength(50)]
         public string Country { get; set; }
 
