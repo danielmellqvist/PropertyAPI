@@ -32,11 +32,13 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
+
+        // ToDo: Impliment this...
         [HttpGet("{username}")]
         public Task<IActionResult> GetInfoByUserName(string username)
         {
-            var 
-            return null;
+            throw new NotImplementedException();
+            //return null;
         }
 
 

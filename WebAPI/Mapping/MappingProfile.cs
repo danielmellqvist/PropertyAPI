@@ -39,9 +39,6 @@ namespace WebAPI.Mapping
 
             CreateMap<CommentForCreationDto, CommentForReturnDto>();
 
-            
-                .ForMember(destination => destination.ConstructionYear, y => y.MapFrom(source => source.ConstructionYear.Year));
-
             CreateMap<RealEstate, RealEstateCreatedDto>();
 
             //CreateMap<RealEstate, RealEstateForCreationDto>()
