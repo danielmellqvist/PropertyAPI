@@ -1,11 +1,12 @@
-﻿using Identity.Model;
+﻿using Entities;
+using Entities.Models;
+using Identity.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -16,22 +17,24 @@ using WebAPI.Data;
 
 namespace WebAPI.Controllers
 {
-    //[Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class AccountController : ControllerBase
     {
-        private readonly IdentityContext _dbContext;
+        private readonly IdentityContext _idDbContext;
+        private readonly PropertyContext _propertyContext;
         private readonly UserManager<WebAPIUser> _userManager;
         private readonly SignInManager<WebAPIUser> _signInManager;
         private readonly IConfiguration _config;
 
-        public AccountController(IdentityContext dbContext,
+        public AccountController(IdentityContext idDbContext,
+            PropertyContext propertyContext,
             UserManager<WebAPIUser> userManager,
             SignInManager<WebAPIUser> signInManager,
             IConfiguration config)
         {
-            _dbContext = dbContext;
+            _idDbContext = idDbContext;
+            _propertyContext = propertyContext;
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
@@ -41,7 +44,7 @@ namespace WebAPI.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Token([FromBody] AccountLoginModel loginModel)
         {
-            var user = _dbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email); //Skulle den inte logga in på username?
+            var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email);
             if (user is not null)
             {
                 var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
@@ -75,18 +78,20 @@ namespace WebAPI.Controllers
             {
                 return Ok("Login failed, please fill in a user name and password");
             }
-
-            //return Ok("Login failed, did not enter the if-statement");
         }
 
         [AllowAnonymous]
         [HttpPost("api/account/register")]
         public async Task<ActionResult> Register([FromBody] AccountLoginModel loginModel)
         {
+            if (loginModel.Password != loginModel.ConfirmPassword)
+            {
+                return Ok("The confirm password does not match the password");
+            }
             var webApiSecuredUser = new WebAPIUser()
             {
                 Email = loginModel.Email,
-                UserName = loginModel.UserName,
+                UserName = loginModel.Email,
                 EmailConfirmed = true // TODO! Lägga till emailconfirmation?
             };
 
@@ -94,11 +99,14 @@ namespace WebAPI.Controllers
 
             if (result.Succeeded)
             {
+                var newUser = new User { UserName = webApiSecuredUser.UserName };
+                _propertyContext.Users.Add(newUser);
+                _propertyContext.SaveChanges();
                 return Ok(new { Result = "Register success" });
             }
             else
             {
-                StringBuilder errorString = new StringBuilder();
+                StringBuilder errorString = new();
                 foreach (var error in result.Errors)
                 {
                     errorString.Append(error.Description);
@@ -106,5 +114,5 @@ namespace WebAPI.Controllers
                 return Ok(new { Result = $"Registration failed: {errorString }" });
             }
         }
-}
     }
+}

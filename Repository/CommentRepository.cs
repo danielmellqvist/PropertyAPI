@@ -17,7 +17,7 @@ namespace Repository
 
         }
 
-        public List<Comment> GetAllCommentsByUserId(CommentsParameters commentsParameters, Guid id, bool trackChanges) =>
+        public List<Comment> GetAllCommentsByUserId(CommentsParameters commentsParameters, int id, bool trackChanges) =>
             FindAll(trackChanges)
             .Where(x => x.UserId == id)
             .OrderBy(c => c.CreatedOn)

@@ -11,7 +11,6 @@ namespace WebAPI.Data
 {
     public class IdentityContext : IdentityDbContext<WebAPIUser>
     {
-        // TODO! Går det att flytta denna mapp till Identitybiblioteket?
         public IdentityContext(DbContextOptions<IdentityContext> options)
             : base(options)
         {

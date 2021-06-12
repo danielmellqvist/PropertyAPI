@@ -10,7 +10,7 @@ namespace Entities.Models
     public class User
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(150)]

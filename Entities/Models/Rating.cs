@@ -12,8 +12,8 @@ namespace Entities.Models
         public int Id { get; set; }
         public int RatingValue { get; set; }
 
-        public Guid ByUserId { get; set; }
-        public Guid AboutUserId { get; set; }
+        public int ByUserId { get; set; }
+        public int AboutUserId { get; set; }
 
         // Relational
         [ForeignKey(nameof(ByUserId))]

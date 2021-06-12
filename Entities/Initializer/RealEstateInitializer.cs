@@ -11,13 +11,12 @@ namespace Entities.Initializer
     public class RealEstateInitializer
     {
         /// <summary>
-        /// This method ensures that the data base is created and that it contains data from the start.
+        /// This method fills the Properties database with data.
         /// </summary>
         /// <param name="_context"></param>
         public static void Initialize(PropertyContext _context, ILoggerManager logger)
         {
-            _context.Database.EnsureCreated();
-
+            // Adds the realestate types (we added two of our own).
             if (!_context.RealEstateTypes.Any())
             {
                 var realEstateTypes = new RealEstateType[]
@@ -32,6 +31,7 @@ namespace Entities.Initializer
                 _context.AddRange(realEstateTypes);
                 _context.SaveChanges();
             }
+            // Adds the different construction years
             if (!_context.ConstructionYears.Any())
             {
                 var constructionYears = new ConstructionYear[]
@@ -47,32 +47,12 @@ namespace Entities.Initializer
                 _context.AddRange(constructionYears);
                 _context.SaveChanges();
             }
-
-            // TODO! Droppa databasen och koppla identiteterna på IdentityDatabase istället!
-            if (!_context.Users.Any())
-            {
-                var users = new User[]
-                {
-                    new User { UserName = "Tykepony" },
-                    new User { UserName = "Dumbocockroach" },
-                    new User { UserName = "Anarchistibis" },
-                    new User { UserName = "Doofusyak" },
-                    new User { UserName = "Squirrelfink" },
-                    new User { UserName = "Bogeyman" },
-                    new User { UserName = "Gasbagcur" },
-                    new User { UserName = "Mutantkitten" },
-                    new User { UserName = "kangaroogeek" },
-                    new User { UserName = "gorillaunicorn" }
-                };
-                _context.AddRange(users);
-                _context.SaveChanges();
-            }
-
+            // Creates contacts, connects to the users in the database
             if (!_context.Contacts.Any())
             {
                 var contacts = new Contact[]
                 {
-                    new Contact { UserId = _context.Users.First(e => e.UserName.Contains("Tyke")).Id },
+                    new Contact { UserId = _context.Users.First(e => e.UserName.Contains("tyke")).Id },
                     new Contact { UserId = _context.Users.First(e => e.UserName.Contains("roach")).Id },
                     new Contact { UserId = _context.Users.First(e => e.UserName.Contains("bis")).Id },
                     new Contact { UserId = _context.Users.First(e => e.UserName.Contains("syak")).Id },
@@ -86,7 +66,7 @@ namespace Entities.Initializer
                 _context.AddRange(contacts);
                 _context.SaveChanges();
             }
-
+            // Adds the realestates, finds the correct foreign keys throu lambda expressions
             if (!_context.RealEstates.Any())
             {
                 var realEstates = new RealEstate[]
@@ -247,6 +227,7 @@ namespace Entities.Initializer
                 _context.AddRange(realEstates);
                 _context.SaveChanges();
             }
+            // Adds ratings, finds the correct foreign keys throu lambda expressions
             if (!_context.Ratings.Any())
             {
                 var ratings = new Rating[]
@@ -315,6 +296,7 @@ namespace Entities.Initializer
                 _context.AddRange(ratings);
                 _context.SaveChanges();
             }
+            // Adds comments to the realestates
             if (!_context.Comments.Any())
             {
                 var comments = new Comment[]

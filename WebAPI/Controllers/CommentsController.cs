@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("user/{id}")]
-        public IActionResult GetCommentsFromUser([FromQuery] CommentsParameters commentsParameters, Guid id)
+        public IActionResult GetCommentsFromUser([FromQuery] CommentsParameters commentsParameters, int id)
         {
             List<Comment> comments = _repository.Comment.GetAllCommentsByUserId(commentsParameters, id, trackChanges: false);
             if (comments.Count() != 0)
