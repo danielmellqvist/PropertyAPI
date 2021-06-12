@@ -4,12 +4,14 @@ using Entities.Models;
 using Entities.RequestFeatures;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Areas.Identity.Data;
 
 namespace WebAPI.Controllers
 {
@@ -20,12 +22,14 @@ namespace WebAPI.Controllers
         private readonly ILoggerManager _logger;
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
+        private readonly UserManager<WebAPIUser> _userManger;
 
-        public RealEstatesController(ILoggerManager loggerManager, IRepositoryManager repositoryManager, IMapper mapper)
+        public RealEstatesController(ILoggerManager loggerManager, IRepositoryManager repositoryManager, IMapper mapper, UserManager<WebAPIUser> userManger)
         {
             _logger = loggerManager;
             _repository = repositoryManager;
             _mapper = mapper;
+            _userManger = userManger;
         }
 
         [HttpGet]
@@ -112,6 +116,8 @@ namespace WebAPI.Controllers
                 _logger.LogInfo($"Real Estate with the id : {id} doesn´t exist in the database.");
                 return NotFound();
             }
+
+            var loggedInUser = _userManger.GetUserId(HttpContext.User);
 
             var realEstateDto = _mapper.Map<RealEstateDto>(realEstate);
             return Ok(realEstateDto);
