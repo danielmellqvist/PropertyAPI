@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace WebAPI.Controllers
 {
     [Route("api/users")]
-    [ApiController]
+    //[ApiController]
     public class UsersController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
@@ -32,21 +32,23 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-
-        // ToDo: Impliment this...
         [HttpGet("{username}")]
-        public Task<IActionResult> GetInfoByUserName(string username)
+        public async Task<IActionResult> GetInfoByUserName(string username)
         {
-            throw new NotImplementedException();
-            //return null;
+            int userId = (await _repository.User.GetUserByUserName(username, trackChanges: false)).Id;
+            int contactId = (await _repository.Contact.GetContactByUserId(userId, trackChanges: false)).Id;
+            var ratingsByUserId = await _repository.Rating.GetRatingsByUserId(userId, trackChanges: false);
+            UserInformationDto userInformationDto = new UserInformationDto
+            {
+                UserName = username,
+                Realestates = (await _repository.RealEstate.GetAllRealEstatesByContactId(contactId, trackchanges: false)).Count(),
+                Comments = (await _repository.Comment.GetAllCommentsByUserId(userId, trackChanges: false)).Count(),
+                Rating = _repository.Rating.GetAverageRating(ratingsByUserId)
+
+            };
+            return Ok(userInformationDto);
         }
 
-
-
-        // { "UserName": " kallekarlsson ", 
-        //    "RealEstates": 3, 
-        //    "Comments": 16, 
-        //    "Rating": 3.111111111111111 
-        //}
-}
+        //[HttpPut("rate")]
+    }
 }

@@ -9,6 +9,8 @@ namespace Repository.Contracts
 {
     public interface IRatingRepository
     {
-        IEnumerable<Rating> GetAllRatings(bool trackChanges);
+        Task<IEnumerable<Rating>> GetRatingsByUserId(int userId, bool trackChanges);
+
+        double GetAverageRating(IEnumerable<Rating> rating);
     }
 }

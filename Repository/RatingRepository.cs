@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 using System;
 using System.Collections.Generic;
@@ -16,20 +17,26 @@ namespace Repository
 
         }
 
+        public async Task<IEnumerable<Rating>> GetRatingsByUserId(int userId, bool trackChanges) =>
+            await FindAll(trackChanges)
+            .Where(x => x.AboutUserId == userId)
+            .ToListAsync();
 
-        // ToDo: This method is not completed
-        public IEnumerable<Rating> GetAllRatingsAverage(string username, bool trackChanges) =>
-            FindAll(trackChanges)
-            .Where(x => x.AboutUserId.Equals(username))
-            //.Where(x => x.AboutUserId == ...(username))
-            .ToList();
-
-        // ToDo: Impliment this...
-        IEnumerable<Rating> IRatingRepository.GetAllRatings(bool trackChanges)
+        public double GetAverageRating(IEnumerable<Rating> rating)
         {
-            throw new NotImplementedException();
+            double average = ((GetAllRatings(rating)).Sum()) / rating.Count();
+            return average;
         }
 
+        public List<double> GetAllRatings(IEnumerable<Rating> rating)
+        {
+            List<double> ratings = new();
+            foreach (var item in rating)
+            {
+                ratings.Add(item.RatingValue);
+            }
+            return ratings;
+        }
 
     }
 }

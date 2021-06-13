@@ -9,6 +9,8 @@ namespace Repository.Contracts
 {
     public interface IUserRepository
     {
-        Task<User> GetUserName(int id, bool trackchanges);
+        Task<User> GetUserByUserId(int id, bool trackChanges);
+
+        Task<User> GetUserByUserName(string username, bool trackChanges);
     }
 }
