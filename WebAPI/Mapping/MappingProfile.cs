@@ -31,7 +31,7 @@ namespace WebAPI.Mapping
             CreateMap<CommentForCreationDto, Comment>();
             CreateMap<CommentForCreationDto, CommentForReturnDto>();
 
-
+            CreateMap<Rating, RatingAddNewRatingDto>();
 
             CreateMap<ConstructionYear, RealEstateDto>();
             CreateMap<RealEstate, RealEstatesDto>();

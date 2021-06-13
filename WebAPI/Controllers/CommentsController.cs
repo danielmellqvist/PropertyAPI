@@ -52,9 +52,9 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("user/{id}")]
-        public IActionResult GetCommentsFromUser([FromQuery] CommentsParameters commentsParameters, int id)
+        public async Task<IActionResult> GetCommentsFromUserAsync([FromQuery] CommentsParameters commentsParameters, int id)
         {
-            List<Comment> comments = _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, id, trackChanges: false);
+            IEnumerable<Comment> comments = await  _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, id, trackChanges: false);
             if (comments.Count() != 0)
             {
                 var username = _context.Users.FirstOrDefault(x => x.Id == id);

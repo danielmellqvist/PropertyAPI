@@ -11,7 +11,7 @@ namespace Repository.Contracts
     public interface ICommentRepository
     {
 
-        List<Comment> GetAllCommentsByUserIdWithParameters(CommentsParameters commentsParameters ,int id, bool trackChanges);
+        Task<IEnumerable<Comment>> GetAllCommentsByUserIdWithParameters(CommentsParameters commentsParameters ,int id, bool trackChanges);
 
         // marcus added
         Task<IEnumerable<Comment>> GetAllCommentsByUserId(int UserId, bool trackChanges);

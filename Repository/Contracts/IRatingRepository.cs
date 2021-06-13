@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Entities.DataTransferObjects;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Repository.Contracts
     {
         Task<IEnumerable<Rating>> GetRatingsByUserId(int userId, bool trackChanges);
 
+        //Task CreateNewRating(Rating rating);
         double GetAverageRating(IEnumerable<Rating> rating);
+        //Task<bool> CheckMultipleRatingsFromUser(RatingAddNewRatingDto ratingAddNewRatingDto);
     }
 }
