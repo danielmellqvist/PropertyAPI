@@ -11,5 +11,8 @@ namespace Repository.Contracts
     {
         void CreateContact(Contact contact);
         Task<Contact> GetContactByTelephoneAsync(string telephone, bool trackChanges);
+
+        // Marcus Added
+        Task<Contact> GetContactByUserId(int contactId, bool trackChanges);
     }
 }

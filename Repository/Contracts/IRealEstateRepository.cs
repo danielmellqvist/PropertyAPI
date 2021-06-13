@@ -12,6 +12,9 @@ namespace Repository.Contracts
     {
         Task<IEnumerable<RealEstate>> GetAllRealEstatesAsync(RealEstateParameters realEstateParameters, bool trackChanges);
         Task<RealEstate> GetRealEstateAsync(int realEstateId, bool trackChanges);
+
+        // Marcus Added
+        Task<IEnumerable<RealEstate>> GetAllRealEstatesByContactId(int contactId, bool trackchanges);
         Task CreateRealEstateAsync(RealEstate realEstate);
         void DeleteRealEstate(RealEstate realEstate);
     }

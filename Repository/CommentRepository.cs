@@ -18,7 +18,7 @@ namespace Repository
 
         }
 
-        public List<Comment> GetAllCommentsByUserId(CommentsParameters commentsParameters, int id, bool trackChanges) =>
+        public List<Comment> GetAllCommentsByUserIdWithParameters(CommentsParameters commentsParameters, int id, bool trackChanges) =>
             FindAll(trackChanges)
             .Where(x => x.UserId == id)
             .OrderBy(c => c.CreatedOn)
@@ -26,6 +26,11 @@ namespace Repository
             .Take(commentsParameters.Take)
             .ToList();
 
+        // Marcus added
+        public async Task<IEnumerable<Comment>> GetAllCommentsByUserId(int UserId, bool trackChanges) =>
+            await FindAll(trackChanges)
+            .Where(x => x.UserId == UserId)
+            .ToListAsync();
 
         public void CreateComment(Comment comment) => Create(comment);
 

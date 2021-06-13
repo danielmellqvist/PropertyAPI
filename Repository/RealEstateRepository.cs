@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Repository
 {
     public class RealEstateRepository : RepositoryBase<RealEstate>, IRealEstateRepository
@@ -38,6 +39,12 @@ namespace Repository
             return realEstate;
         }
 
+        // Marcus Added
+
+        public async Task<IEnumerable<RealEstate>> GetAllRealEstatesByContactId(int contactId, bool trackChanges) =>
+            await FindAll(trackChanges)
+                    .Where(x => x.ContactId == contactId)
+                    .ToListAsync();
         public async Task CreateRealEstateAsync(RealEstate realEstate)
         {
             await CreateAsync(realEstate);

@@ -4,25 +4,29 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 using LoggerService.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Areas.Identity.Data;
+using WebAPI.Data;
 
 namespace WebAPI.Controllers
 {
     [Route("api/Comments")]
     //[ApiController]
+    [Authorize]
     public class CommentsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly PropertyContext _context;
-
         public CommentsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, PropertyContext context)
         {
             _repository = repository;
@@ -50,7 +54,7 @@ namespace WebAPI.Controllers
         [HttpGet("user/{id}")]
         public IActionResult GetCommentsFromUser([FromQuery] CommentsParameters commentsParameters, int id)
         {
-            List<Comment> comments = _repository.Comment.GetAllCommentsByUserId(commentsParameters, id, trackChanges: false);
+            List<Comment> comments = _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, id, trackChanges: false);
             if (comments.Count() != 0)
             {
                 var username = _context.Users.FirstOrDefault(x => x.Id == id);
@@ -84,7 +88,7 @@ namespace WebAPI.Controllers
             await _repository.SaveAsync();
 
             var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
-            commentToReturn.UserName = (await _repository.User.GetUserName(id, trackchanges: false)).UserName;
+            commentToReturn.UserName = (await _repository.User.GetUserByUserId(id, trackChanges: false)).UserName;
 
             return Ok(commentToReturn);
         }
