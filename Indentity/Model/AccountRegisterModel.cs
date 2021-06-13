@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Identity.Model
 {
-    public class AccountLoginModel
+    public class AccountRegisterModel
     {
         public string Email { get; set; }
         public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

@@ -82,20 +82,20 @@ namespace WebAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("api/account/register")]
-        public async Task<ActionResult> Register([FromBody] AccountLoginModel loginModel)
+        public async Task<ActionResult> Register([FromBody] AccountRegisterModel registerModel)
         {
-            if (loginModel.Password != loginModel.ConfirmPassword)
+            if (registerModel.Password != registerModel.ConfirmPassword)
             {
                 return Ok("The confirm password does not match the password");
             }
             var webApiSecuredUser = new WebAPIUser()
             {
-                Email = loginModel.Email,
-                UserName = loginModel.Email,
+                Email = registerModel.Email,
+                UserName = registerModel.Email,
                 EmailConfirmed = true // TODO! Lägga till emailconfirmation?
             };
 
-            var result = await _userManager.CreateAsync(webApiSecuredUser, loginModel.Password);
+            var result = await _userManager.CreateAsync(webApiSecuredUser, registerModel.Password);
 
             if (result.Succeeded)
             {
