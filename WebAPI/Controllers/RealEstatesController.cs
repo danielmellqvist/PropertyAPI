@@ -3,6 +3,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 using LoggerService.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateRealEstate([FromBody] RealEstateForCreationDto newRealEstate)
         {
             if (newRealEstate == null)

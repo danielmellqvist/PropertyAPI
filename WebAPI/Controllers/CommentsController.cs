@@ -27,16 +27,19 @@ namespace WebAPI.Controllers
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly PropertyContext _context;
-        public CommentsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, PropertyContext context)
+        private readonly UserManager<WebAPIUser> _userManager;
+
+        public CommentsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, PropertyContext context, UserManager<WebAPIUser> userManager)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
             _context = context;
+            _userManager = userManager;
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "CommentById")]
         public async Task<IActionResult> GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParam)
         {
             var comments = await _repository.Comment.GetAllCommentsByRealEstateIdParametersAsync(commentsParameter: commentParam, id, trackChanges: false);
@@ -77,10 +80,13 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("Create/{id}", Name = "CommentById")]
-        public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, int id)
+        [HttpPost]
+        public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto)
         {
-            commentForCreationDto.UserId = id;
+            var userName = HttpContext.User.Identity.Name;
+            var user = await _repository.User.GetUserByUserNameAsync(userName, trackChanges: false);
+
+            commentForCreationDto.UserId = user.Id;
             commentForCreationDto.CreatedOn = DateTime.Now;
 
             var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
@@ -88,7 +94,7 @@ namespace WebAPI.Controllers
             await _repository.SaveAsync();
 
             var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
-            commentToReturn.UserName = (await _repository.User.GetUserByUserId(id, trackChanges: false)).UserName;
+            commentToReturn.UserName = (await _repository.User.GetUserByUserId(user.Id, trackChanges: false)).UserName;
 
             return Ok(commentToReturn);
         }

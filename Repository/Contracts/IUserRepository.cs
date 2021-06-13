@@ -11,6 +11,6 @@ namespace Repository.Contracts
     {
         Task<User> GetUserByUserId(int id, bool trackChanges);
 
-        Task<User> GetUserByUserName(string username, bool trackChanges);
+        Task<User> GetUserByUserNameAsync(string username, bool trackChanges);
     }
 }
