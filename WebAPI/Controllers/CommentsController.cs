@@ -83,6 +83,13 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto)
         {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("CommentForCreationDto was not valid");
+                return UnprocessableEntity(ModelState);
+            }
+
+
             var userName = HttpContext.User.Identity.Name;
             var user = await _repository.User.GetUserByUserNameAsync(userName, trackChanges: false);
 

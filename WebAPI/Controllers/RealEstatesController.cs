@@ -62,6 +62,13 @@ namespace WebAPI.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
+            if (newRealEstate.RentingPrice == null && newRealEstate.SellingPrice == null)
+            {
+                _logger.LogError("At least one of the fields RentigPrice and SellingPrice must have values");
+                return UnprocessableEntity("At least one of the fields RentigPrice and SellingPrice must have values");
+            }
+
+
             var constructionYear = await _repository.ConstructionYear.GetFromYearAsync(newRealEstate.ConstructionYear, trackChanges: false);
             if (constructionYear == null)
             {
