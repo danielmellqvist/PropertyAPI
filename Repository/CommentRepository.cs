@@ -18,13 +18,13 @@ namespace Repository
 
         }
 
-        public List<Comment> GetAllCommentsByUserIdWithParameters(CommentsParameters commentsParameters, int id, bool trackChanges) =>
-            FindAll(trackChanges)
+        public async Task<IEnumerable<Comment>> GetAllCommentsByUserIdWithParameters(CommentsParameters commentsParameters, int id, bool trackChanges) =>
+           await  FindAll(trackChanges)
             .Where(x => x.UserId == id)
             .OrderBy(c => c.CreatedOn)
             .Skip(commentsParameters.Skip)
             .Take(commentsParameters.Take)
-            .ToList();
+            .ToListAsync();
 
         // Marcus added
         public async Task<IEnumerable<Comment>> GetAllCommentsByUserId(int UserId, bool trackChanges) =>

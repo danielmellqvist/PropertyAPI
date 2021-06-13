@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
@@ -22,13 +23,22 @@ namespace Repository
             .Where(x => x.AboutUserId == userId)
             .ToListAsync();
 
+        // marcus added
+        //public async Task CreateNewRating(Rating rating) => await CreateAsync(rating);
+        
+
+        // marcus added 
+        //public async Task<bool> CheckMultipleRatingsFromUser(RatingAddNewRatingDto ratingAddNewRatingDto)
+        //{
+        //    var ratingsToCheck = FindAll().Where(x=>x.ByUserId == ratingAddNewRatingDto.ByUserId)
+        //}
         public double GetAverageRating(IEnumerable<Rating> rating)
         {
-            double average = ((GetAllRatings(rating)).Sum()) / rating.Count();
+            double average = ((GetAllRatingValues(rating)).Sum()) / rating.Count();
             return average;
         }
 
-        public List<double> GetAllRatings(IEnumerable<Rating> rating)
+        public List<double> GetAllRatingValues(IEnumerable<Rating> rating)
         {
             List<double> ratings = new();
             foreach (var item in rating)

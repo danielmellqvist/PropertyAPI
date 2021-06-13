@@ -50,5 +50,22 @@ namespace WebAPI.Controllers
         }
 
         //[HttpPut("rate")]
+        //public async Task<IActionResult> CreateRatingForUser([FromBody] RatingAddNewRatingDto ratingAddNewRatingDto)
+        //{
+            //ratingAddNewRatingDto.ByUserId == HttpContext.User.Identity.Name;
+            //bool checkUser = await _repository.Rating.CheckMultipleRatingsFromUser(ratingAddNewRatingDto);
+        //    if (checkUser)
+        //    {
+        //        var ratingCreated = _mapper.Map<Rating>(ratingAddNewRatingDto);
+        //        //await _repository.Rating.CreateNewRating(ratingCreated);
+        //        await _context.SaveChangesAsync();
+        //        return NoContent();
+        //    }
+        //    else
+        //    {
+        //        _logger.LogError($"User has already posted a rating about User {ratingAddNewRatingDto.UserId}. NO SPAM ALLOWED!");
+        //        return BadRequest("Dont Spam User");
+        //    }
+        //}
     }
 }
