@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
-    class CommentDto
+    public class CommentDto
     {
     }
 }

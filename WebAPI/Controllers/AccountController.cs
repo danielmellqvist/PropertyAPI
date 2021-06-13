@@ -99,7 +99,10 @@ namespace WebAPI.Controllers
 
             if (result.Succeeded)
             {
-                var newUser = new User { UserName = webApiSecuredUser.UserName };
+                var newUser = new User { 
+                    UserName = webApiSecuredUser.UserName,
+                    IdentityUserId = Guid.Parse(webApiSecuredUser.Id)
+                };
                 _propertyContext.Users.Add(newUser);
                 _propertyContext.SaveChanges();
                 return Ok(new { Result = "Register success" });

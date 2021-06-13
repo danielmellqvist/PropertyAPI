@@ -110,7 +110,8 @@ namespace WebAPI.Areas.Identity.Data
                 {
                     var newUser = new User
                     {
-                        UserName = user.Email
+                        UserName = user.Email,
+                        IdentityUserId = Guid.Parse(user.Id)
                     };
                     context.Users.Add(newUser);
                 }

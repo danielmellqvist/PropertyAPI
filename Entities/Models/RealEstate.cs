@@ -52,5 +52,7 @@ namespace Entities.Models
 
         [ForeignKey(nameof(RealEstateTypeId))]
         public RealEstateType RealEstateType { get; set; }
+
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }

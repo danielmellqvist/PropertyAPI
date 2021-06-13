@@ -23,7 +23,7 @@ namespace Repository
         {
             return await FindAll(trackChanges)
                 .OrderByDescending(x => x.CreatedUtc)
-                .Skip((realEstateParameters.Skip) * realEstateParameters.Take)
+                .Skip((realEstateParameters.Skip - 1) * realEstateParameters.Take)
                 .Take(realEstateParameters.Take)
                 .ToListAsync();
         }
@@ -33,6 +33,7 @@ namespace Repository
             var realEstate = await FindByCondition(x => x.Id.Equals(realEstateId), trackChanges).SingleOrDefaultAsync();
             if (realEstate != null)
             {
+                realEstate.Contact = await _context.Contacts.Where(x => x.Id == realEstate.ContactId).FirstOrDefaultAsync();
                 realEstate.ConstructionYear = await _context.ConstructionYears.Where(x => x.Id == realEstate.ConstructionYearId).FirstOrDefaultAsync();
                 realEstate.RealEstateType = await _context.RealEstateTypes.Where(x => x.Id == realEstate.RealEstateTypeId).FirstOrDefaultAsync();
             }
