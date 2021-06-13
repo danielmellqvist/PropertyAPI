@@ -18,7 +18,6 @@ namespace Repository.Contracts
         Task<IEnumerable<Comment>> GetAllCommentsByRealEstateIdParametersAsync(CommentsParameters commentsParameter, int id, bool trackChanges);
         // marcus added
         Task<IEnumerable<Comment>> GetAllCommentsByUserId(int UserId, bool trackChanges);
-        Task<IEnumerable<Comment>> GetAllCommentsByRealEstateIdAsync(CommentsParameters commentsParameter, int id, bool trackChanges);
 
         void CreateComment(Comment comment);
     }

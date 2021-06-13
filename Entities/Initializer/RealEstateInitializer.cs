@@ -52,12 +52,30 @@ namespace Entities.Initializer
             {
                 var contacts = new Contact[]
                 {
-                    new Contact { UserId = _context.Users.First(e => e.UserName.Contains("tyke")).Id },
-                    new Contact { UserId = _context.Users.First(e => e.UserName.Contains("roach")).Id },
-                    new Contact { UserId = _context.Users.First(e => e.UserName.Contains("bis")).Id },
-                    new Contact { UserId = _context.Users.First(e => e.UserName.Contains("syak")).Id },
-                    new Contact { UserId = _context.Users.First(e => e.UserName.Contains("man")).Id },
-                    new Contact { UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id },
+                    new Contact { 
+                        UserId = _context.Users.First(e => e.UserName.Contains("tyke")).Id,
+                        Telephone = "6595-1235"
+                    },
+                    new Contact { 
+                        UserId = _context.Users.First(e => e.UserName.Contains("roach")).Id,
+                        Telephone = "8555-64498"
+                    },
+                    new Contact { 
+                        UserId = _context.Users.First(e => e.UserName.Contains("bis")).Id,
+                        Telephone = "123456789636"
+                    },
+                    new Contact { 
+                        UserId = _context.Users.First(e => e.UserName.Contains("syak")).Id,
+                        Telephone = "5555-5555"
+                    },
+                    new Contact { 
+                        UserId = _context.Users.First(e => e.UserName.Contains("man")).Id,
+                        Telephone = "9982111112"
+                    },
+                    new Contact { 
+                        UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
+                        Telephone = "911"
+                    },
                     new Contact { Telephone = "8156-644-497"},
                     new Contact { Telephone = "2025-550-470"},
                     new Contact { Telephone = "5074-045-838"},

@@ -23,7 +23,7 @@ namespace Repository
         {
             return await FindAll(trackChanges)
                 .OrderByDescending(x => x.CreatedUtc)
-                .Skip((realEstateParameters.Skip) * realEstateParameters.Take)
+                .Skip((realEstateParameters.Skip - 1) * realEstateParameters.Take)
                 .Take(realEstateParameters.Take)
                 .ToListAsync();
         }

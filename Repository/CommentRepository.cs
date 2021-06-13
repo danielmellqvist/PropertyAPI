@@ -50,7 +50,7 @@ namespace Repository
                 .Where(x => x.RealEstateId == id)
                 .Include(x => x.User)
                 .OrderBy(c => c.CreatedOn)
-                .Skip((commentsParameter.Skip) * commentsParameter.Take)
+                .Skip((commentsParameter.Skip - 1) * commentsParameter.Take)
                 .Take(commentsParameter.Take)
                 .ToListAsync();
             return comments;
