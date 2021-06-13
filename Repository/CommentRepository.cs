@@ -34,13 +34,23 @@ namespace Repository
 
         public void CreateComment(Comment comment) => Create(comment);
 
-        public async Task<IEnumerable<Comment>> GetAllCommentsByRealEstateIdAsync(CommentsParameters commentsParameter, int id, bool trackChanges)
+        public async Task<IEnumerable<Comment>> GetAllCommentsByRealEstateIdAsync(int id, bool trackChanges)
         {
             var comments = await FindAll(trackChanges)
                 .Where(x => x.RealEstateId == id)
                 .Include(x => x.User)
                 .OrderBy(c => c.CreatedOn)
-                .Skip((commentsParameter.Skip) * commentsParameter.Take)
+                .ToListAsync();
+            return comments;
+        }
+
+        public async Task<IEnumerable<Comment>> GetAllCommentsByRealEstateIdParametersAsync(CommentsParameters commentsParameter, int id, bool trackChanges)
+        {
+            var comments = await FindAll(trackChanges)
+                .Where(x => x.RealEstateId == id)
+                .Include(x => x.User)
+                .OrderBy(c => c.CreatedOn)
+                .Skip((commentsParameter.Skip - 1) * commentsParameter.Take)
                 .Take(commentsParameter.Take)
                 .ToListAsync();
             return comments;

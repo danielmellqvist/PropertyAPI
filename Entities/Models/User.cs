@@ -12,6 +12,8 @@ namespace Entities.Models
         [Key]
         public int Id { get; set; }
 
+        public Guid IdentityUserId { get; set; }
+
         [Required]
         [MaxLength(150)]
         public string UserName { get; set; }

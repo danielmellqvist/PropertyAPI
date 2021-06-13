@@ -19,8 +19,8 @@ namespace Entities.RequestFeatures
 
         const int maxTake = 100;
 
-        private int _skip = 0;
-        public int Skip 
+        private int _skip = 1;
+        public int Skip
         {
             get
             {
@@ -28,7 +28,7 @@ namespace Entities.RequestFeatures
             }
             set
             {
-                _skip = (value == 0) ? 1 : value;
+                _skip = (value <= 0) ? 1 : value;
             }
         }
 
