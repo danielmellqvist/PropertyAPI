@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParameters)
         {
-            var comments = await _repository.Comment.GetAllCommentsByRealEstateIdAsync(commentParameters, id, trackChanges: false);
+            var comments = await _repository.Comment.GetAllCommentsByRealEstateIdParametersAsync(commentParameters, id, trackChanges: false);
             if (comments.Count() == 0)
             {
                 _logger.LogInfo($"There were no comments for the real estate with id {id}.");

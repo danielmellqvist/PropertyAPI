@@ -117,10 +117,18 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            var loggedInUser = _userManger.GetUserId(HttpContext.User);
-
-            var realEstateDto = _mapper.Map<RealEstateDto>(realEstate);
-            return Ok(realEstateDto);
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                var realEstatePrivate = _mapper.Map<RealEstatePrivateDto>(realEstate);
+                var comments = await _repository.Comment.GetAllCommentsByRealEstateIdAsync(id: realEstate.Id, trackChanges: false);
+                realEstatePrivate.Comments = _mapper.Map<IEnumerable<CommentsForRealEstateDto>>(comments);
+                return Ok(realEstatePrivate);
+            }
+            else
+            {
+                var realEstatePublicDto = _mapper.Map<RealEstatePublicDto>(realEstate);
+                return Ok(realEstatePublicDto);
+            }
         }
 
 
