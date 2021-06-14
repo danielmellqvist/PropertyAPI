@@ -67,7 +67,11 @@ namespace WebAPI.Controllers
                     var token = tokenHandler.CreateToken(tokenDescriptor);
                     var tokenString = tokenHandler.WriteToken(token);
 
-                    return Ok(new { Token = tokenString });
+                    return Ok(new
+                    {
+                        Token = tokenString,
+
+                    });
                 }
                 else
                 {
@@ -84,6 +88,12 @@ namespace WebAPI.Controllers
         [HttpPost("api/account/register")]
         public async Task<ActionResult> Register([FromBody] AccountRegisterModel registerModel)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Select(x => x.Value.Errors).ToList();
+                return Ok(errors);
+            }
+
             if (registerModel.Password != registerModel.ConfirmPassword)
             {
                 return Ok("The confirm password does not match the password");
@@ -99,7 +109,7 @@ namespace WebAPI.Controllers
 
             if (result.Succeeded)
             {
-                var newUser = new User { 
+                var newUser = new User {
                     UserName = webApiSecuredUser.UserName,
                     IdentityUserId = Guid.Parse(webApiSecuredUser.Id)
                 };
