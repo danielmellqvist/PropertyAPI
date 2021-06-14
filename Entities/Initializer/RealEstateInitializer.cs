@@ -262,61 +262,61 @@ namespace Entities.Initializer
                 {
                     new Rating
                     {
-                        RatingValue = 5,
+                        Value = 5,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("Tyke")).Id,
                         AboutUserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id
                     },
                     new Rating
                     {
-                        RatingValue = 4,
+                        Value = 4,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("Tyke")).Id,
                         AboutUserId = _context.Users.First(e => e.UserName.Contains("kitten")).Id
                     },
                     new Rating
                     {
-                        RatingValue = 3,
+                        Value = 3,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("roach")).Id,
                         AboutUserId = _context.Users.First(e => e.UserName.Contains("Tyke")).Id
                     },
                     new Rating
                     {
-                        RatingValue = 4,
+                        Value = 4,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("tibis")).Id,
                         AboutUserId = _context.Users.First(e => e.UserName.Contains("geek")).Id
                     },
                     new Rating
                     {
-                        RatingValue = 4,
+                        Value = 4,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("geek")).Id,
                         AboutUserId = _context.Users.First(e => e.UserName.Contains("cur")).Id
                     },
                     new Rating
                     {
-                        RatingValue = 5,
+                        Value = 5,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("man")).Id,
                         AboutUserId = _context.Users.First(e => e.UserName.Contains("fink")).Id
                     },
                     new Rating
                     {
-                        RatingValue = 3,
+                        Value = 3,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         AboutUserId = _context.Users.First(e => e.UserName.Contains("geek")).Id
                     },
                     new Rating
                     {
-                        RatingValue = 2,
+                        Value = 2,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("syak")).Id,
                         AboutUserId = _context.Users.First(e => e.UserName.Contains("fink")).Id
                     },
                     new Rating
                     {
-                        RatingValue = 3,
+                        Value = 3,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("fink")).Id,
                         AboutUserId = _context.Users.First(e => e.UserName.Contains("syak")).Id
                     },
                     new Rating
                     {
-                        RatingValue = 3,
+                        Value = 3,
                         ByUserId = _context.Users.First(e => e.UserName.Contains("bis")).Id,
                         AboutUserId  = _context.Users.First(e => e.UserName.Contains("cur")).Id
                     }

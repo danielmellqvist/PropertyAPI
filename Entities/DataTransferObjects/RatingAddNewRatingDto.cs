@@ -8,14 +8,14 @@ namespace Entities.DataTransferObjects
 {
     public class RatingAddNewRatingDto
     {
-        public Guid UserGuidId { get; set; }
+        public Guid UserId { get; set; }
 
         public Guid ByUserGuidId { get; set; }
 
         public int ByUserId { get; set; }
         public int AboutUserId { get; set; }
 
-        public int RatingValue { get; set; }
+        public int Value { get; set; }
 
     }
 }

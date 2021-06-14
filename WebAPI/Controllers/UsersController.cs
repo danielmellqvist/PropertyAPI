@@ -31,49 +31,101 @@ namespace WebAPI.Controllers
         private readonly IMapper _mapper;
         private readonly PropertyContext _context;
 
-        // marcus added
-        private readonly IdentityContext _identityContext;
 
-        public UsersController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, PropertyContext context, IdentityContext identityContext)
+        public UsersController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, PropertyContext context)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
             _context = context;
-            _identityContext = identityContext;
         }
 
         [HttpGet("{username}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetInfoByUserName(string username)
         {
-            int userId = (await _repository.User.GetUserByUserNameAsync(username, trackChanges: false)).Id;
-            int contactId = (await _repository.Contact.GetContactByUserId(userId, trackChanges: false)).Id;
-            var ratingsByUserId = await _repository.Rating.GetRatingsByUserId(userId, trackChanges: false);
-            UserInformationDto userInformationDto = new UserInformationDto
+            if (username == null)
+            {
+                _logger.LogError("Username is null");
+                return BadRequest("Username is null");
+            }
+            var userReturned = await _repository.User.GetUserByUserNameAsync(username, trackChanges: false);
+            if (userReturned == null)
+            {
+                _logger.LogError($"User: {username} Does Not Exist");
+                return BadRequest($"User: {username} Does Not Exist");
+            }
+            int userId = userReturned.Id;
+            var contactReturned = await _repository.Contact.GetContactByUserIdAsync(userId, trackChanges: false);
+            if (contactReturned == null)
+            {
+                _logger.LogError($"Contact Information about {username} does Not Exist");
+                return BadRequest($"Contact Information about {username} does Not Exist");
+            }
+            int contactId = contactReturned.Id;
+            var ratingsByUserId = await _repository.Rating.GetRatingsByUserIdAsync(userId, trackChanges: false);
+            UserInformationDto userInformationDto = new()
             {
                 UserName = username,
-                Realestates = (await _repository.RealEstate.GetAllRealEstatesByContactId(contactId, trackchanges: false)).Count(),
-                Comments = (await _repository.Comment.GetAllCommentsByUserId(userId, trackChanges: false)).Count(),
+                RealEstates = (await _repository.RealEstate.GetAllRealEstatesByContactIdAsync(contactId, trackchanges: false)).Count(),
+                Comments = (await _repository.Comment.GetAllCommentsByUserIdAsync(userId, trackChanges: false)).Count(),
                 Rating = _repository.Rating.GetAverageRating(ratingsByUserId)
 
             };
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid Model state for the User Object");
+                return UnprocessableEntity(ModelState);
+            }
             return Ok(userInformationDto);
         }
 
         [HttpPut("rate")]
         public async Task<IActionResult> CreateRatingForUser([FromBody] RatingAddNewRatingDto ratingAddNewRatingDto)
         {
-            var currentIdentityUser = _identityContext.Users.FirstOrDefault(x => x.UserName == HttpContext.User.Identity.Name.ToString());
-            var currentUser = (await _repository.User.GetUserByGuidId(Guid.Parse(currentIdentityUser.Id), trackChanges: false));
-            var aboutUser = (await _repository.User.GetUserByGuidId(ratingAddNewRatingDto.UserGuidId, trackChanges: false));
-
+            if (ratingAddNewRatingDto == null)
+            {
+                _logger.LogError("Rating Input object is null");
+                return BadRequest("Rating Input object is null");
+            }
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid Model state for the Rating Object");
+                return UnprocessableEntity(ModelState);
+            }
+            var currentIdentityUser = await _repository.User.GetUserByUserNameAsync(HttpContext.User.Identity.Name.ToString(), trackChanges:false);
+            if (currentIdentityUser == null)
+            {
+                _logger.LogError($"Information about {HttpContext.User.Identity.Name} does Not Exist");
+                return BadRequest($"Information about {HttpContext.User.Identity.Name} does Not Exist");
+            }
+            var currentUser = await _repository.User.GetUserByGuidIdAsync(currentIdentityUser.IdentityUserId, trackChanges: false);
+            if (currentUser == null)
+            {
+                _logger.LogError($"Information about User with Id: {currentIdentityUser.IdentityUserId} does Not Exist");
+                return BadRequest($"Information about User with Id: {currentIdentityUser.IdentityUserId} does Not Exist");
+            }
+            var aboutUser = await _repository.User.GetUserByGuidIdAsync(ratingAddNewRatingDto.UserId, trackChanges: false);
+            if (aboutUser == null)
+            {
+                _logger.LogError($"Information about User with Id: {aboutUser.IdentityUserId} does Not Exist");
+                return BadRequest($"Information about User with Id: {aboutUser.IdentityUserId} does Not Exist");
+            }
+            if (ratingAddNewRatingDto.UserId == ratingAddNewRatingDto.ByUserGuidId)
+            {
+                _logger.LogError($"User {currentUser.UserName} can not give themselves a rating NO SPAM ALLOWED!");
+                return BadRequest($"User {currentUser.UserName} can not give themselves a rating NO SPAM ALLOWED!");
+            }
             ratingAddNewRatingDto.ByUserGuidId = currentUser.IdentityUserId;
             ratingAddNewRatingDto.ByUserId = currentUser.Id;
             ratingAddNewRatingDto.AboutUserId = aboutUser.Id;
-            
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid Model state for the RatingDto Object");
+                return UnprocessableEntity(ModelState);
+            }
 
-            bool checkUser = await _repository.Rating.CheckMultipleRatingsFromUser(ratingAddNewRatingDto);
+            bool checkUser = await _repository.Rating.CheckMultipleRatingsFromUserAsync(ratingAddNewRatingDto);
             if (checkUser)
             {
                 var ratingCreated = _mapper.Map<Rating>(ratingAddNewRatingDto);

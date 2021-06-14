@@ -53,7 +53,7 @@ namespace WebAPI.Mapping
 
             // marcus added
             CreateMap<RatingAddNewRatingDto, Rating>()
-                .ForMember(destinationMember => destinationMember.RatingValue, x => x.MapFrom(sourceMember => sourceMember.RatingValue))
+                .ForMember(destinationMember => destinationMember.Value, x => x.MapFrom(sourceMember => sourceMember.Value))
                 .ForMember(destinationMember => destinationMember.AboutUserId, x => x.MapFrom(sourceMember => sourceMember.AboutUserId))
                 .ForMember(destinationMember => destinationMember.ByUserId, x => x.MapFrom(sourceMember => sourceMember.ByUserId));
         }

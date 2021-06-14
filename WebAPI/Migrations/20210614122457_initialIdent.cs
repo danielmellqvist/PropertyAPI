@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAPI.Migrations
 {
-    public partial class InitialIdentitySetup : Migration
+    public partial class initialIdent : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

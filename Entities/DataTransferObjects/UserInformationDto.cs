@@ -10,7 +10,7 @@ namespace Entities.DataTransferObjects
     {
         public string UserName { get; set; }
 
-        public int Realestates { get; set; }
+        public int RealEstates { get; set; }
 
         public int Comments { get; set; }
 

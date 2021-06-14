@@ -4,16 +4,14 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace WebAPI.Migrations.Property
 {
     [DbContext(typeof(PropertyContext))]
-    [Migration("20210611163655_SecondSetup")]
-    partial class SecondSetup
+    partial class PropertyContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,6 +44,8 @@ namespace WebAPI.Migrations.Property
 
                     b.HasIndex("RealEstateId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Comments");
                 });
 
@@ -71,8 +71,8 @@ namespace WebAPI.Migrations.Property
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("Telephone")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Telephone")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -95,7 +95,7 @@ namespace WebAPI.Migrations.Property
                     b.Property<int>("ByUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RatingValue")
+                    b.Property<int>("Value")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -121,7 +121,6 @@ namespace WebAPI.Migrations.Property
                         .HasColumnType("bit");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -132,7 +131,6 @@ namespace WebAPI.Migrations.Property
                         .HasColumnType("int");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -200,6 +198,9 @@ namespace WebAPI.Migrations.Property
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<Guid>("IdentityUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -213,12 +214,20 @@ namespace WebAPI.Migrations.Property
             modelBuilder.Entity("Entities.Models.Comment", b =>
                 {
                     b.HasOne("Entities.Models.RealEstate", "RealEstate")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("RealEstateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entities.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("RealEstate");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entities.Models.Rating", b =>
@@ -265,6 +274,11 @@ namespace WebAPI.Migrations.Property
                     b.Navigation("Contact");
 
                     b.Navigation("RealEstateType");
+                });
+
+            modelBuilder.Entity("Entities.Models.RealEstate", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>

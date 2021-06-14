@@ -10,10 +10,10 @@ namespace Repository.Contracts
 {
     public interface IRatingRepository
     {
-        Task<IEnumerable<Rating>> GetRatingsByUserId(int userId, bool trackChanges);
+        Task<IEnumerable<Rating>> GetRatingsByUserIdAsync(int userId, bool trackChanges);
 
         Task CreateNewRating(Rating rating);
         double GetAverageRating(IEnumerable<Rating> rating);
-        Task<bool> CheckMultipleRatingsFromUser(RatingAddNewRatingDto ratingAddNewRatingDto);
+        Task<bool> CheckMultipleRatingsFromUserAsync(RatingAddNewRatingDto ratingAddNewRatingDto);
     }
 }

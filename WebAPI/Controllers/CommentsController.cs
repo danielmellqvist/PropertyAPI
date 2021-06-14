@@ -39,10 +39,10 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParam)
         {
-            if (commentParam == null)
+            if (commentParam == null || id == 0)
             {
-                _logger.LogError("Comment Input object is null");
-                return BadRequest("Comment Input object is null");
+                _logger.LogError("Comment Input object or Id is null");
+                return BadRequest("Comment Input object or Id is null");
             }
             if (!ModelState.IsValid)
             {
