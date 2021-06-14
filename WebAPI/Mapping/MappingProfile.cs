@@ -51,6 +51,12 @@ namespace WebAPI.Mapping
 
 
             CreateMap<RealEstate, RealEstateCreatedDto>();
+
+            // marcus added
+            CreateMap<RatingAddNewRatingDto, Rating>()
+                .ForMember(destinationMember => destinationMember.RatingValue, x => x.MapFrom(sourceMember => sourceMember.RatingValue))
+                .ForMember(destinationMember => destinationMember.AboutUserId, x => x.MapFrom(sourceMember => sourceMember.AboutUserId))
+                .ForMember(destinationMember => destinationMember.ByUserId, x => x.MapFrom(sourceMember => sourceMember.ByUserId));
         }
     }
 }

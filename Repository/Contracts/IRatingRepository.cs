@@ -12,8 +12,8 @@ namespace Repository.Contracts
     {
         Task<IEnumerable<Rating>> GetRatingsByUserId(int userId, bool trackChanges);
 
-        //Task CreateNewRating(Rating rating);
+        Task CreateNewRating(Rating rating);
         double GetAverageRating(IEnumerable<Rating> rating);
-        //Task<bool> CheckMultipleRatingsFromUser(RatingAddNewRatingDto ratingAddNewRatingDto);
+        Task<bool> CheckMultipleRatingsFromUser(RatingAddNewRatingDto ratingAddNewRatingDto);
     }
 }

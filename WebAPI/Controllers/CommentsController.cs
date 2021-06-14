@@ -35,54 +35,96 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-
+        // Done
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParam)
         {
+            if (commentParam == null)
+            {
+                _logger.LogError("Comment Input object is null");
+                return BadRequest("Comment Input object is null");
+            }
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid Model state for the Comment Object");
+                return UnprocessableEntity(ModelState);
+            }
+            _logger.LogInfo($"Retrieving Comments for RealEstateId: {id}");
             var comments = await _repository.Comment.GetAllCommentsByRealEstateIdParametersAsync(commentsParameter: commentParam, id, trackChanges: false);
             if (comments.Count() == 0)
             {
                 _logger.LogInfo($"There were no comments for the real estate with id {id}.");
-                return NotFound();
+                return NotFound($"There were no comments for the real estate with id {id}.");
             }
+            _logger.LogInfo($"Succesfully Retrieved all comments for RealEstateId: {id}");
             var commentsDto = _mapper.Map<IEnumerable<CommentsForRealEstateDto>>(comments);
+            _logger.LogInfo($"Begin trimming of usernames");
+            foreach (var comment in commentsDto)
+            {
+                comment.UserName = comment.UserName.Substring(0, comment.UserName.IndexOf("@"));
+            }
+            _logger.LogInfo($"Succesfully Mapped Realestates");
             return Ok(commentsDto);
         }
 
 
-
-        [HttpGet("user/{id}")]
-        public async Task<IActionResult> GetCommentsFromUserAsync([FromQuery] CommentsParameters commentsParameters, int id)
+        // Done
+        [HttpGet("ByUser/{userName}")]
+        public async Task<IActionResult> GetCommentsFromUserAsync([FromQuery] CommentsParameters commentsParameters, string userName)
         {
-            IEnumerable<Comment> comments = await  _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, id, trackChanges: false);
+            if (commentsParameters == null || userName == null)
+            {
+                _logger.LogError("Comment Input or username is null");
+                return BadRequest("Comment Input or username is null");
+            }
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid Model state for the Comment Object");
+                return UnprocessableEntity(ModelState);
+            }
+            _logger.LogInfo("Begin Search of User by UserName");
+            var userId = (await _repository.User.GetUserByUserName(userName, trackChanges: false)).Id;
+            IEnumerable<Comment> comments = await  _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, userId, trackChanges: false);
             if (comments.Count() != 0)
             {
-                var username = _context.Users.FirstOrDefault(x => x.Id == id);
+                _logger.LogInfo("Begin Create User to return");
+                var cleanedUserName = userName.Substring(0, userName.IndexOf("@"));
                 CommentFromUserDto commentFromUserDto = new()
                 {
-                    UserName = username.UserName
+                    UserName = cleanedUserName
                 };
                 foreach (var line in comments)
                 {
                     commentFromUserDto.Content.Add(line.Content);
                     commentFromUserDto.CreatedOn.Add(line.CreatedOn);
                 }
+                _logger.LogInfo("Creation of User to return completed");
                 return Ok(commentFromUserDto);
             }
             else
             {
-                _logger.LogInfo($"User with id: {id} does not exist in the Database");
-                return NotFound();
+                _logger.LogInfo($"User with UserName: {userName} does not exist in the Database");
+                return NotFound($"User with UserName: {userName} does not exist in the Database");
             }
         }
 
-
+        // Done
         [HttpPost("Create/{id}", Name = "CommentById")]
         public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, int id)
         {
+            if (commentForCreationDto == null || id == 0)
+            {
+                _logger.LogError("Comment Input or Id is null");
+                return BadRequest("Comment Input or Id is null");
+            }
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid Model state for the Comment Object");
+                return UnprocessableEntity(ModelState);
+            }
             commentForCreationDto.UserId = id;
             commentForCreationDto.CreatedOn = DateTime.Now;
-
+            _logger.LogInfo("Comment created and Mapping to be done");
             var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
             _repository.Comment.CreateComment(commentCreated);
             await _repository.SaveAsync();

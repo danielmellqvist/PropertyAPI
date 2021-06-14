@@ -2,11 +2,13 @@ using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -68,6 +70,12 @@ namespace WebAPI
                     ValidateAudience = false,
                 };
             });
+
+
+            // Marcus added
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
 
             services.ConfigureCors();
             services.ConfigureIISIntegration();

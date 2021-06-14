@@ -611,14 +611,14 @@ namespace Entities.Initializer
                     },
                     new Comment
                     {
-                        Content = "This doesn't fancy me at all.",
+                        Content = "Polarised impactful local area network",
                         CreatedOn = new DateTime(2021, 04, 19, 12, 12, 12, 12),
                         UserId = _context.Users.First(e => e.UserName.Contains("kitten")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 48302).Id
                     },
                     new Comment
                     {
-                        Content = "Trump has left his things all over the place!",
+                        Content = "Future-proofed foreground success",
                         CreatedOn = new DateTime(2021, 02, 20, 11, 50, 40, 40),
                         UserId = _context.Users.First(e => e.UserName.Contains("man")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 20500).Id
@@ -632,14 +632,14 @@ namespace Entities.Initializer
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Synergistic systemic Graphic Interface",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "Love it! Give me a crossbow and I will defend it!",
+                        Content = "Re-contextualized responsive capacity",
                         CreatedOn = new DateTime(2021, 05, 05, 09, 30, 44, 58),
                         UserId = _context.Users.First(e => e.UserName.Contains("pony")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 41304).Id
@@ -667,7 +667,7 @@ namespace Entities.Initializer
                     },
                     new Comment
                     {
-                        Content = "I was walking by that area yesterday when I saw this building, I was thinking it would be a great place to live in!",
+                        Content = "Grass-roots leading edge array",
                         CreatedOn = new DateTime(2021, 03, 14, 08, 14, 15, 16),
                         UserId = _context.Users.First(e => e.UserName.Contains("fink")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 30071).Id
@@ -681,7 +681,7 @@ namespace Entities.Initializer
                     },
                     new Comment
                     {
-                        Content = "Trump has left his things all over the place!",
+                        Content = "Programmable intangible Graphical User Interface",
                         CreatedOn = new DateTime(2021, 02, 20, 11, 50, 40, 40),
                         UserId = _context.Users.First(e => e.UserName.Contains("man")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 20500).Id
@@ -695,98 +695,98 @@ namespace Entities.Initializer
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Reduced fault-tolerant analyzer",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Re-engineered interactive superstructure",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Profit-focused hybrid installation",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Sharable global approach",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Synergistic well-modulated analyzer",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Multi-tiered client-server hub",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Decentralized upward-trending function",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Proactive fresh-thinking throughput",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "User-friendly dedicated Graphical User Interface",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Business-focused bifurcated success",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Diverse transitional process improvement",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Re-contextualized directional encoding",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Streamlined upward-trending time-frame",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id
                     },
                     new Comment
                     {
-                        Content = "I just wan to go there, have an ale and then go out on adventures! ",
+                        Content = "Multi-tiered 24/7 ability",
                         CreatedOn = new DateTime(2021, 05,28, 14, 16, 50, 50),
                         UserId = _context.Users.First(e => e.UserName.Contains("unicorn")).Id,
                         RealEstateId = _context.RealEstates.First(x => x.ZipCode == 58788).Id

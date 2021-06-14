@@ -17,16 +17,24 @@ namespace Repository
 
         }
 
-        public async Task<User> GetUserByUserId(int id, bool trackchanges)
+
+        public async Task<User> GetUserByUserId(int id, bool trackChanges)
         {
-            var username = FindByCondition(x => x.Id == id, trackchanges).SingleOrDefaultAsync();
-            return await username;
+            var user = FindByCondition(x => x.Id == id, trackChanges).SingleOrDefaultAsync();
+            return await user;
         }
 
-        public async Task<User> GetUserByUserName(string username, bool trackchanges)
+        public async Task<User> GetUserByUserName(string username, bool trackChanges)
         {
-            var userid = FindByCondition(x => x.UserName == username, trackchanges).SingleOrDefaultAsync();
-            return await userid;
+            var user = FindByCondition(x => x.UserName == username, trackChanges).SingleOrDefaultAsync();
+            return await user;
         }
+
+        public async Task<User> GetUserByGuidId(Guid id, bool trackChanges)
+        {
+            var user = FindByCondition(x => x.IdentityUserId == id, trackChanges).SingleOrDefaultAsync();
+            return await user;
+        }
+
     }
 }

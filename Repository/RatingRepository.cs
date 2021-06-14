@@ -24,14 +24,23 @@ namespace Repository
             .ToListAsync();
 
         // marcus added
-        //public async Task CreateNewRating(Rating rating) => await CreateAsync(rating);
-        
+        public async Task CreateNewRating(Rating rating) => await CreateAsync(rating);
 
-        // marcus added 
-        //public async Task<bool> CheckMultipleRatingsFromUser(RatingAddNewRatingDto ratingAddNewRatingDto)
-        //{
-        //    var ratingsToCheck = FindAll().Where(x=>x.ByUserId == ratingAddNewRatingDto.ByUserId)
-        //}
+
+        //marcus added
+        public async Task<bool> CheckMultipleRatingsFromUser(RatingAddNewRatingDto ratingAddNewRatingDto)
+        {
+            bool checkSpam = true;
+            var aboutRatings = await GetRatingsByUserId(ratingAddNewRatingDto.AboutUserId, trackChanges:false);
+            foreach (var rating in aboutRatings)
+            {
+                if (rating.ByUserId == ratingAddNewRatingDto.ByUserId && rating.AboutUserId == ratingAddNewRatingDto.AboutUserId)
+                {
+                    checkSpam = false;
+                }
+            }
+            return checkSpam;
+        }
         public double GetAverageRating(IEnumerable<Rating> rating)
         {
             double average = ((GetAllRatingValues(rating)).Sum()) / rating.Count();
