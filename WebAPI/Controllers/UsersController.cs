@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
             UserInformationDto userInformationDto = new()
             {
                 UserName = username,
-                Realestates = (await _repository.RealEstate.GetAllRealEstatesByContactIdAsync(contactId, trackchanges: false)).Count(),
+                RealEstates = (await _repository.RealEstate.GetAllRealEstatesByContactIdAsync(contactId, trackchanges: false)).Count(),
                 Comments = (await _repository.Comment.GetAllCommentsByUserIdAsync(userId, trackChanges: false)).Count(),
                 Rating = _repository.Rating.GetAverageRating(ratingsByUserId)
 
@@ -93,10 +93,29 @@ namespace WebAPI.Controllers
                 _logger.LogError("Invalid Model state for the Rating Object");
                 return UnprocessableEntity(ModelState);
             }
-            var currentIdentityUser = _context.Users.FirstOrDefault(x => x.UserName == HttpContext.User.Identity.Name.ToString());
-            var currentUser = (await _repository.User.GetUserByGuidIdAsync(currentIdentityUser.IdentityUserId, trackChanges: false));
-            var aboutUser = (await _repository.User.GetUserByGuidIdAsync(ratingAddNewRatingDto.UserGuidId, trackChanges: false));
-
+            var currentIdentityUser = await _repository.User.GetUserByUserNameAsync(HttpContext.User.Identity.Name.ToString(), trackChanges:false);
+            if (currentIdentityUser == null)
+            {
+                _logger.LogError($"Information about {HttpContext.User.Identity.Name} does Not Exist");
+                return BadRequest($"Information about {HttpContext.User.Identity.Name} does Not Exist");
+            }
+            var currentUser = await _repository.User.GetUserByGuidIdAsync(currentIdentityUser.IdentityUserId, trackChanges: false);
+            if (currentUser == null)
+            {
+                _logger.LogError($"Information about User with Id: {currentIdentityUser.IdentityUserId} does Not Exist");
+                return BadRequest($"Information about User with Id: {currentIdentityUser.IdentityUserId} does Not Exist");
+            }
+            var aboutUser = await _repository.User.GetUserByGuidIdAsync(ratingAddNewRatingDto.UserId, trackChanges: false);
+            if (aboutUser == null)
+            {
+                _logger.LogError($"Information about User with Id: {aboutUser.IdentityUserId} does Not Exist");
+                return BadRequest($"Information about User with Id: {aboutUser.IdentityUserId} does Not Exist");
+            }
+            if (ratingAddNewRatingDto.UserId == ratingAddNewRatingDto.ByUserGuidId)
+            {
+                _logger.LogError($"User {currentUser.UserName} can not give themselves a rating NO SPAM ALLOWED!");
+                return BadRequest($"User {currentUser.UserName} can not give themselves a rating NO SPAM ALLOWED!");
+            }
             ratingAddNewRatingDto.ByUserGuidId = currentUser.IdentityUserId;
             ratingAddNewRatingDto.ByUserId = currentUser.Id;
             ratingAddNewRatingDto.AboutUserId = aboutUser.Id;

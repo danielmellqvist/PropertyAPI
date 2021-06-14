@@ -10,15 +10,15 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20210609112601_InitialIdentitySetup")]
-    partial class InitialIdentitySetup
+    [Migration("20210614122457_initialIdent")]
+    partial class initialIdent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

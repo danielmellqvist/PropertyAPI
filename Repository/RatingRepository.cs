@@ -52,7 +52,7 @@ namespace Repository
             List<double> ratings = new();
             foreach (var item in rating)
             {
-                ratings.Add(item.RatingValue);
+                ratings.Add(item.Value);
             }
             return ratings;
         }
