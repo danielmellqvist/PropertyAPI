@@ -3,6 +3,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 using LoggerService.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateRealEstate([FromBody] RealEstateForCreationDto newRealEstate)
         {
             if (newRealEstate == null)
@@ -59,6 +61,13 @@ namespace WebAPI.Controllers
                 _logger.LogError("Invalid model state for the DTO in the CreateRealEstate action");
                 return UnprocessableEntity(ModelState);
             }
+
+            if (newRealEstate.RentingPrice == null && newRealEstate.SellingPrice == null)
+            {
+                _logger.LogError("At least one of the fields RentigPrice and SellingPrice must have values");
+                return UnprocessableEntity("At least one of the fields RentigPrice and SellingPrice must have values");
+            }
+
 
             var constructionYear = await _repository.ConstructionYear.GetFromYearAsync(newRealEstate.ConstructionYear, trackChanges: false);
             if (constructionYear == null)

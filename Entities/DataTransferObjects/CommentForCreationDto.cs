@@ -18,6 +18,8 @@ namespace Entities.DataTransferObjects
 
         public int UserId { get; set; }
 
+        [Required(ErrorMessage = "RealEstateId is a required field")]
+        [Range(0, int.MaxValue, ErrorMessage = "RealEstateId must be an integer over 0")]
         public int RealEstateId { get; set; }
     }
 }

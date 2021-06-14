@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetInfoByUserName(string username)
         {
-            int userId = (await _repository.User.GetUserByUserName(username, trackChanges: false)).Id;
+            int userId = (await _repository.User.GetUserByUserNameAsync(username, trackChanges: false)).Id;
             int contactId = (await _repository.Contact.GetContactByUserId(userId, trackChanges: false)).Id;
             var ratingsByUserId = await _repository.Rating.GetRatingsByUserId(userId, trackChanges: false);
             UserInformationDto userInformationDto = new UserInformationDto
