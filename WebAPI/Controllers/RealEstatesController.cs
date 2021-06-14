@@ -17,7 +17,6 @@ using WebAPI.Areas.Identity.Data;
 namespace WebAPI.Controllers
 {
     [Route("api/RealEstates")]
-    //[ApiController]
     public class RealEstatesController : ControllerBase
     {
         private readonly ILoggerManager _logger;
@@ -33,6 +32,10 @@ namespace WebAPI.Controllers
             _userManger = userManger;
         }
 
+        /// <summary>
+        /// Returns a list of real estate listings. If the user is logged in some more informtion is added to the response
+        /// </summary>
+        /// <response code="200">Success</response>
         [HttpGet]
         public async Task<IActionResult> GetAllRealEstates([FromQuery] RealEstateParameters realEstateParameters)
         {

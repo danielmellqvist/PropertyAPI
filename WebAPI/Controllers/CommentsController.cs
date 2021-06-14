@@ -83,7 +83,7 @@ namespace WebAPI.Controllers
                 return UnprocessableEntity(ModelState);
             }
             _logger.LogInfo("Begin Search of User by UserName");
-            var userId = (await _repository.User.GetUserByUserName(userName, trackChanges: false)).Id;
+            var userId = (await _repository.User.GetUserByUserNameAsync(userName, trackChanges: false)).Id;
             IEnumerable<Comment> comments = await  _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, userId, trackChanges: false);
             if (comments.Count() != 0)
             {
