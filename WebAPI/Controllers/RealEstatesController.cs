@@ -33,10 +33,16 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Returns a list of real estate listings. If the user is logged in some more informtion is added to the response
+        /// Returns a list of Real Estate listings.
         /// </summary>
-        /// <response code="200">Success</response>
+        /// <remarks>
+        /// Sample
+        /// </remarks>
+        /// <response code="200">Returns a list of Real Estates</response>
+        /// <response code="404">Could not find any Real Estates</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllRealEstates([FromQuery] RealEstateParameters realEstateParameters)
         {
             var realEstates = await _repository.RealEstate.GetAllRealEstatesAsync(realEstateParameters, trackChanges: false);
