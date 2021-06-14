@@ -13,6 +13,6 @@ namespace Repository.Contracts
         Task<Contact> GetContactByTelephoneAsync(string telephone, bool trackChanges);
 
         // Marcus Added
-        Task<Contact> GetContactByUserId(int contactId, bool trackChanges);
+        Task<Contact> GetContactByUserIdAsync(int contactId, bool trackChanges);
     }
 }

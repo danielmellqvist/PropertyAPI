@@ -27,7 +27,7 @@ namespace Repository
             .ToListAsync();
 
         // Marcus added
-        public async Task<IEnumerable<Comment>> GetAllCommentsByUserId(int UserId, bool trackChanges) =>
+        public async Task<IEnumerable<Comment>> GetAllCommentsByUserIdAsync(int UserId, bool trackChanges) =>
             await FindAll(trackChanges)
             .Where(x => x.UserId == UserId)
             .ToListAsync();

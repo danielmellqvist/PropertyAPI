@@ -39,10 +39,10 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParam)
         {
-            if (commentParam == null)
+            if (commentParam == null || id == 0)
             {
-                _logger.LogError("Comment Input object is null");
-                return BadRequest("Comment Input object is null");
+                _logger.LogError("Comment Input object or Id is null");
+                return BadRequest("Comment Input object or Id is null");
             }
             if (!ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace WebAPI.Controllers
                 return UnprocessableEntity(ModelState);
             }
             _logger.LogInfo("Begin Search of User by UserName");
-            var userId = (await _repository.User.GetUserByUserName(userName, trackChanges: false)).Id;
+            var userId = (await _repository.User.GetUserByUserNameAsync(userName, trackChanges: false)).Id;
             IEnumerable<Comment> comments = await  _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, userId, trackChanges: false);
             if (comments.Count() != 0)
             {

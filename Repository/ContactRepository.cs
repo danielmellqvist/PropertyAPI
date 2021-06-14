@@ -26,7 +26,7 @@ namespace Repository
         public void CreateContact(Contact contact) => Create(contact);
 
         // marcus added
-        public async Task<Contact> GetContactByUserId(int contactId, bool trackChanges)
+        public async Task<Contact> GetContactByUserIdAsync(int contactId, bool trackChanges)
         {
             return await FindByCondition(x => x.Id == contactId, trackChanges).SingleOrDefaultAsync();
         }

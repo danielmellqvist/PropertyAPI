@@ -42,7 +42,7 @@ namespace Repository
 
         // Marcus Added
 
-        public async Task<IEnumerable<RealEstate>> GetAllRealEstatesByContactId(int contactId, bool trackChanges) =>
+        public async Task<IEnumerable<RealEstate>> GetAllRealEstatesByContactIdAsync(int contactId, bool trackChanges) =>
             await FindAll(trackChanges)
                     .Where(x => x.ContactId == contactId)
                     .ToListAsync();

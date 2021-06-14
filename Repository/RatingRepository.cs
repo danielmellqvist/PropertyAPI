@@ -18,7 +18,7 @@ namespace Repository
 
         }
 
-        public async Task<IEnumerable<Rating>> GetRatingsByUserId(int userId, bool trackChanges) =>
+        public async Task<IEnumerable<Rating>> GetRatingsByUserIdAsync(int userId, bool trackChanges) =>
             await FindAll(trackChanges)
             .Where(x => x.AboutUserId == userId)
             .ToListAsync();
@@ -28,10 +28,10 @@ namespace Repository
 
 
         //marcus added
-        public async Task<bool> CheckMultipleRatingsFromUser(RatingAddNewRatingDto ratingAddNewRatingDto)
+        public async Task<bool> CheckMultipleRatingsFromUserAsync(RatingAddNewRatingDto ratingAddNewRatingDto)
         {
             bool checkSpam = true;
-            var aboutRatings = await GetRatingsByUserId(ratingAddNewRatingDto.AboutUserId, trackChanges:false);
+            var aboutRatings = await GetRatingsByUserIdAsync(ratingAddNewRatingDto.AboutUserId, trackChanges:false);
             foreach (var rating in aboutRatings)
             {
                 if (rating.ByUserId == ratingAddNewRatingDto.ByUserId && rating.AboutUserId == ratingAddNewRatingDto.AboutUserId)
