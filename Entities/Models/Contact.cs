@@ -13,6 +13,8 @@ namespace Entities.Models
         [Key]
         public int Id { get; set; }
         public int? UserId { get; set; }
+
+        [RegularExpression("[0-9]", ErrorMessage = "Number must be numeric")]
         public string Telephone { get; set; }
 
         // Relational

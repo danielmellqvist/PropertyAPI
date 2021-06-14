@@ -16,6 +16,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity", "Indentity\Identity.csproj", "{EAC66DFE-EDA3-4920-A52B-A68D9358034F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fastigheter", "D:\Programming\School Programming\Handelsakademin\BED20GB\WEB API\Final Project\FastigheterProject-master (1)\FastigheterProject-master\Fastigheter\Fastigheter.csproj", "{EF729704-72F2-47E9-A809-C106FCE1588C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{EAC66DFE-EDA3-4920-A52B-A68D9358034F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAC66DFE-EDA3-4920-A52B-A68D9358034F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAC66DFE-EDA3-4920-A52B-A68D9358034F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF729704-72F2-47E9-A809-C106FCE1588C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF729704-72F2-47E9-A809-C106FCE1588C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF729704-72F2-47E9-A809-C106FCE1588C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF729704-72F2-47E9-A809-C106FCE1588C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
