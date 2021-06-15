@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -17,6 +18,7 @@ using Repository;
 using Repository.Contracts;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Areas.Identity.Data;
@@ -39,6 +41,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // This part adds the services for the tokens
             var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>( "EncryptionKey"));
 
             services.AddAuthentication(x =>
@@ -96,6 +99,12 @@ namespace WebAPI
             //// trial
             //services.AddScoped<UserRepository>();
 
+            // Testing
+            services.AddControllers(config =>
+            {
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters();
 
 
             services.AddControllers().AddJsonOptions(opt =>
@@ -135,11 +144,8 @@ namespace WebAPI
             });
 
             app.UseRouting();
-
             app.UseAuthentication();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

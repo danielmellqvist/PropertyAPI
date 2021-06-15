@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Identity.DataTransferObjects
 {
+    /// <summary>
+    /// Dto used in the AccountsController for log in.
+    /// </summary>
     public class AccountLoginDto
     {
         [Required(ErrorMessage ="Please enter your Email adress!")]

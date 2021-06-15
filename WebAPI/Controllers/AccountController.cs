@@ -6,11 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Areas.Identity.Data;
@@ -44,9 +42,16 @@ namespace WebAPI.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Tries to log in the user and returns a token.
+        /// This token is nestled into a JsonObject.
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <param name="grant_type"></param>
+        /// <returns></returns>
         [HttpPost("token")]
         [AllowAnonymous]
-        public async Task<ActionResult> Token([FromBody] AccountLoginDto loginModel)
+        public async Task<ActionResult> Token([FromForm] AccountLoginDto loginModel, string grant_type)
         {
             if (!ModelState.IsValid)
             {
@@ -56,38 +61,28 @@ namespace WebAPI.Controllers
             var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email);
             if (user is null)
             {
-                return Ok("Login failed, please fill in a registered Email adress");
+                return Ok("Login failed, please fill in a registered Email address");
             }
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
-            if (signInResult.Succeeded)
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("EncryptionKey"));
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, loginModel.Email)
-                }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials =
-                    new SigningCredentials(
-                        new SymmetricSecurityKey(key),
-                        SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
-
-                return Ok(new { Token = tokenString }); // TODO! Token är inte helt klar!
-            }
-            else
+            if (!signInResult.Succeeded)
             {
                 return Ok("Login failed, Signinresult was not successfull");
             }
+            var tokenGiver = new TokenObjectHelper(_config);
+            var tokenObject = tokenGiver.TokenHelper(loginModel.Email);
+            var jsonToken = JsonConvert.SerializeObject(tokenObject);
+
+            return Ok(jsonToken);
         }
+        /// <summary>
+        /// Tries to register a user - first in the
+        /// identityDb and then in the propertyDb
+        /// </summary>
+        /// <param name="registerModel"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("api/account/register")]
-        public async Task<ActionResult> Register([FromBody] AccountRegisterDto registerModel)
+        public async Task<ActionResult> Register([FromForm] AccountRegisterDto registerModel)
         {
             if (!ModelState.IsValid)
             {
