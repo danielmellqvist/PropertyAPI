@@ -1,6 +1,7 @@
 ﻿using Entities;
 using Entities.Models;
 using Identity.Model;
+using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,18 +27,21 @@ namespace WebAPI.Controllers
         private readonly UserManager<WebAPIUser> _userManager;
         private readonly SignInManager<WebAPIUser> _signInManager;
         private readonly IConfiguration _config;
+        private readonly ILoggerManager _logger;
 
         public AccountController(IdentityContext idDbContext,
             PropertyContext propertyContext,
             UserManager<WebAPIUser> userManager,
             SignInManager<WebAPIUser> signInManager,
-            IConfiguration config)
+            IConfiguration config,
+            ILoggerManager logger)
         {
             _idDbContext = idDbContext;
             _propertyContext = propertyContext;
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
+            _logger = logger;
         }
 
         [HttpPost("token")]
@@ -46,8 +50,8 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Select(x => x.Value.Errors).ToList();
-                return Ok(errors);
+                _logger.LogError("AccountLoginModel sent from client is null");
+                return UnprocessableEntity(ModelState);
             }
             var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email);
             if (user is null)
@@ -87,8 +91,8 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Select(x => x.Value.Errors).ToList();
-                return Ok(errors);
+                _logger.LogError("AccountRegisterModel sent from client is null");
+                return UnprocessableEntity(ModelState);
             }
 
             if (registerModel.Password != registerModel.ConfirmPassword)

@@ -71,6 +71,10 @@ namespace WebAPI
                 };
             });
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             // Marcus added
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -83,7 +87,7 @@ namespace WebAPI
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
-            
+
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -98,7 +102,7 @@ namespace WebAPI
                  opt.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             services.ConfigureSwagger();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
