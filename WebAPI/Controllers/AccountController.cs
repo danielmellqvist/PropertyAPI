@@ -1,6 +1,6 @@
 ﻿using Entities;
 using Entities.Models;
-using Identity.Model;
+using Identity.DataTransferObjects;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -46,11 +46,11 @@ namespace WebAPI.Controllers
 
         [HttpPost("token")]
         [AllowAnonymous]
-        public async Task<ActionResult> Token([FromBody] AccountLoginModel loginModel)
+        public async Task<ActionResult> Token([FromBody] AccountLoginDto loginModel)
         {
             if (!ModelState.IsValid)
             {
-                _logger.LogError("AccountLoginModel sent from client is null");
+                _logger.LogError("AccountLoginDto sent from client is null");
                 return UnprocessableEntity(ModelState);
             }
             var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email);
@@ -87,11 +87,11 @@ namespace WebAPI.Controllers
         }
         [AllowAnonymous]
         [HttpPost("api/account/register")]
-        public async Task<ActionResult> Register([FromBody] AccountRegisterModel registerModel)
+        public async Task<ActionResult> Register([FromBody] AccountRegisterDto registerModel)
         {
             if (!ModelState.IsValid)
             {
-                _logger.LogError("AccountRegisterModel sent from client is null");
+                _logger.LogError("AccountRegisterDto sent from client is null");
                 return UnprocessableEntity(ModelState);
             }
 

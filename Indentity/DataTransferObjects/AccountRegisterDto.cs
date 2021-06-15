@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Identity.Model
+namespace Identity.DataTransferObjects
 {
-    public class AccountRegisterModel
+    public class AccountRegisterDto
     {
         [Required]
         [EmailAddress(ErrorMessage = "Please enter an Email adress!")]
