@@ -130,7 +130,7 @@ namespace WebAPI.Controllers
             await _repository.SaveAsync();
 
             var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
-            commentToReturn.UserName = (await _repository.User.GetUserByUserId(id, trackChanges: false)).UserName;
+            commentToReturn.UserName = (await _repository.User.GetUserByUserIdAsync(id, trackChanges: false)).UserName;
 
             return Ok(commentToReturn);
         }
