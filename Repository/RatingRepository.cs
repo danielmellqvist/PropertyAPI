@@ -30,13 +30,14 @@ namespace Repository
         //marcus added
         public async Task<bool> CheckMultipleRatingsFromUserAsync(RatingAddNewRatingDto ratingAddNewRatingDto)
         {
-            bool checkSpam = true;
+            bool checkSpam = false;
             var aboutRatings = await GetRatingsByUserIdAsync(ratingAddNewRatingDto.AboutUserId, trackChanges:false);
             foreach (var rating in aboutRatings)
             {
                 if (rating.ByUserId == ratingAddNewRatingDto.ByUserId && rating.AboutUserId == ratingAddNewRatingDto.AboutUserId)
                 {
-                    checkSpam = false;
+                    checkSpam = true;
+                    return checkSpam;
                 }
             }
             return checkSpam;

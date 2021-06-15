@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Areas.Identity.Data;
+using System.Text.RegularExpressions;
 
 namespace WebAPI.Controllers
 {
@@ -78,8 +79,9 @@ namespace WebAPI.Controllers
                 await _repository.SaveAsync();
                 _logger.LogInfo($"Construction year {constructionYear.Year} with the ID {constructionYear.Id} added to the database");
             }
-
-            var contact = await _repository.Contact.GetContactByTelephoneAsync(newRealEstate.Contact, trackChanges: false);
+            
+            var cleanTelephone = Regex.Replace(newRealEstate.Contact, @"[^0-9+-]+", "");
+            var contact = await _repository.Contact.GetContactByTelephoneAsync(cleanTelephone, trackChanges: false);
             if (contact == null)
             {
                 _logger.LogInfo($"There were no contact with the phone number {newRealEstate.Contact} in the database");
