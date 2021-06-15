@@ -1,6 +1,7 @@
 ﻿using Entities;
 using Entities.Models;
-using Identity.Model;
+using Identity.DataTransferObjects;
+using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,64 +27,74 @@ namespace WebAPI.Controllers
         private readonly UserManager<WebAPIUser> _userManager;
         private readonly SignInManager<WebAPIUser> _signInManager;
         private readonly IConfiguration _config;
+        private readonly ILoggerManager _logger;
 
         public AccountController(IdentityContext idDbContext,
             PropertyContext propertyContext,
             UserManager<WebAPIUser> userManager,
             SignInManager<WebAPIUser> signInManager,
-            IConfiguration config)
+            IConfiguration config,
+            ILoggerManager logger)
         {
             _idDbContext = idDbContext;
             _propertyContext = propertyContext;
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
+            _logger = logger;
         }
 
         [HttpPost("token")]
         [AllowAnonymous]
-        public async Task<ActionResult> Token([FromBody] AccountLoginModel loginModel)
+        public async Task<ActionResult> Token([FromBody] AccountLoginDto loginModel)
         {
-            var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email);
-            if (user is not null)
+            if (!ModelState.IsValid)
             {
-                var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
-                if (signInResult.Succeeded)
+                _logger.LogError("AccountLoginDto sent from client is null");
+                return UnprocessableEntity(ModelState);
+            }
+            var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email);
+            if (user is null)
+            {
+                return Ok("Login failed, please fill in a registered Email adress");
+            }
+            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
+            if (signInResult.Succeeded)
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("EncryptionKey"));
+                var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("EncryptionKey"));
-                    var tokenDescriptor = new SecurityTokenDescriptor
-                    {
-                        Subject = new ClaimsIdentity(new Claim[]
-                    {
+                    Subject = new ClaimsIdentity(new Claim[]
+                {
                     new Claim(ClaimTypes.Name, loginModel.Email)
-                    }),
-                        Expires = DateTime.UtcNow.AddDays(1), // TODO! Hur länge skulle den gälla?
-                        SigningCredentials =
-                        new SigningCredentials(
-                            new SymmetricSecurityKey(key),
-                            SecurityAlgorithms.HmacSha256Signature)
-                    };
-                    var token = tokenHandler.CreateToken(tokenDescriptor);
-                    var tokenString = tokenHandler.WriteToken(token);
+                }),
+                    Expires = DateTime.UtcNow.AddDays(1),
+                    SigningCredentials =
+                    new SigningCredentials(
+                        new SymmetricSecurityKey(key),
+                        SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
 
-                    return Ok(new { Token = tokenString });
-                }
-                else
-                {
-                    return Ok("Login failed, Signinresult was not successfull");
-                }
+                return Ok(new { Token = tokenString }); // TODO! Token är inte helt klar!
             }
             else
             {
-                return Ok("Login failed, please fill in a user name and password");
+                return Ok("Login failed, Signinresult was not successfull");
             }
         }
-
         [AllowAnonymous]
         [HttpPost("api/account/register")]
-        public async Task<ActionResult> Register([FromBody] AccountRegisterModel registerModel)
+        public async Task<ActionResult> Register([FromBody] AccountRegisterDto registerModel)
         {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("AccountRegisterDto sent from client is null");
+                return UnprocessableEntity(ModelState);
+            }
+
             if (registerModel.Password != registerModel.ConfirmPassword)
             {
                 return Ok("The confirm password does not match the password");
@@ -92,14 +103,15 @@ namespace WebAPI.Controllers
             {
                 Email = registerModel.Email,
                 UserName = registerModel.Email,
-                EmailConfirmed = true // TODO! Lägga till emailconfirmation?
+                EmailConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(webApiSecuredUser, registerModel.Password);
 
             if (result.Succeeded)
             {
-                var newUser = new User { 
+                var newUser = new User
+                {
                     UserName = webApiSecuredUser.UserName,
                     IdentityUserId = Guid.Parse(webApiSecuredUser.Id)
                 };

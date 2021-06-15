@@ -18,7 +18,6 @@ using System.Text.RegularExpressions;
 namespace WebAPI.Controllers
 {
     [Route("api/RealEstates")]
-    //[ApiController]
     public class RealEstatesController : ControllerBase
     {
         private readonly ILoggerManager _logger;
@@ -34,7 +33,17 @@ namespace WebAPI.Controllers
             _userManger = userManger;
         }
 
+        /// <summary>
+        /// Returns a list of Real Estate listings.
+        /// </summary>
+        /// <remarks>
+        /// Sample
+        /// </remarks>
+        /// <response code="200">Returns a list of Real Estates</response>
+        /// <response code="404">Could not find any Real Estates</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllRealEstates([FromQuery] RealEstateParameters realEstateParameters)
         {
             var realEstates = await _repository.RealEstate.GetAllRealEstatesAsync(realEstateParameters, trackChanges: false);
