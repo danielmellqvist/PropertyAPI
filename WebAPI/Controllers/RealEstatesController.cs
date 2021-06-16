@@ -53,6 +53,11 @@ namespace WebAPI.Controllers
             return Ok(realEstatesDto);
         }
 
+        /// <summary>
+        /// Creates a new real estate ad
+        /// </summary>
+        /// <response code="200">Successfully created a real estate ad </response>
+        /// <response code="404">Could not create real estate ad</response>
         [HttpPost]
         [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -106,7 +111,11 @@ namespace WebAPI.Controllers
         }
 
 
-
+        /// <summary>
+        /// Retrieves information about the real estate with the specified ID number.
+        /// </summary>
+        /// <response code="200">Successfully created real estate ad</response>
+        /// <response code="404">Could not create real estate ad</response>
         [HttpGet("{id}", Name = "RealEstateById")]
         [ServiceFilter(typeof(ValidationSingleRealEstateExistsAttribute))]
         public async Task<IActionResult> GetRealEstate(int id)
@@ -126,7 +135,11 @@ namespace WebAPI.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Deletes the real estate ad with the specified ID number.
+        /// </summary>
+        /// <response code="200">Successfully deleted real estate</response>
+        /// <response code="404">Could not find real estate</response>
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidationSingleRealEstateExistsAttribute))]
         public async Task<IActionResult> DeleteRealEstate(int id)

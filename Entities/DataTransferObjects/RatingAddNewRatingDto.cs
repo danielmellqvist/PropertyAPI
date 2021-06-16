@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace Entities.DataTransferObjects
         public int ByUserId { get; set; }
         public int AboutUserId { get; set; }
 
+        [Required(ErrorMessage = "Rating is a required field")]
+        [Range(1, 5, ErrorMessage = "Rate a user from 1 to 5")]
         public int Value { get; set; }
 
     }

@@ -33,6 +33,14 @@ namespace WebAPI.Controllers
             _mapper = mapper;
         }
 
+
+
+        /// <summary>
+        /// Retrieves all comments for a property with a given ID
+        /// </summary>
+        /// <response code="200">Returns a list of comments on a realestate </response>
+        /// <response code="404">Could not find any comments</response>
+
         [HttpGet("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidationGettingCommentsForRealEstateAttribute))]
@@ -49,6 +57,11 @@ namespace WebAPI.Controllers
             return Ok(commentsDto);
         }
 
+        /// <summary>
+        /// Retrieves all comments written by the user with the specified username.
+        /// </summary>
+        /// <response code="200">Returns a list of comments on a user </response>
+        /// <response code="404">Could not find any comments</response>
         [HttpGet("ByUser/{userName}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> GetCommentsFromUserAsync([FromQuery] CommentsParameters commentsParameters, string userName)
@@ -84,7 +97,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("Create/{id}", Name = "CommentById")]
+        /// <summary>
+        /// Creates a new comment.
+        /// </summary>
+        /// <response code="200">Successfully created a comment </response>
+        /// <response code="404">Could not create comment </response>
+        [HttpPost("{id}", Name = "CommentById")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, int id)
         {
