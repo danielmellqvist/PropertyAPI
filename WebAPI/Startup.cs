@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using WebAPI.ActionFilters;
 using WebAPI.Areas.Identity.Data;
 using WebAPI.Extensions;
 
@@ -75,8 +76,6 @@ namespace WebAPI
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
-
-            // Marcus added
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
@@ -93,10 +92,12 @@ namespace WebAPI
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            //// trial
-            //services.AddScoped<UserRepository>();
+            services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidationRealEstatesExistsAttribute>();
+            services.AddScoped<ValidationSingleRealEstateExistsAttribute>();
+            services.AddScoped<ValidationGettingCommentsForRealEstateAttribute>();
 
-
+            
 
             services.AddControllers().AddJsonOptions(opt =>
                  opt.JsonSerializerOptions.PropertyNamingPolicy = null);

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using WebAPI.ActionFilters;
 using WebAPI.Areas.Identity.Data;
 using WebAPI.Data;
 
@@ -46,13 +47,9 @@ namespace WebAPI.Controllers
 
         [HttpPost("token")]
         [AllowAnonymous]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult> Token([FromBody] AccountLoginDto loginModel)
         {
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("AccountLoginDto sent from client is null");
-                return UnprocessableEntity(ModelState);
-            }
             var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email);
             if (user is null)
             {
@@ -87,14 +84,9 @@ namespace WebAPI.Controllers
         }
         [AllowAnonymous]
         [HttpPost("api/account/register")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult> Register([FromBody] AccountRegisterDto registerModel)
         {
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("AccountRegisterDto sent from client is null");
-                return UnprocessableEntity(ModelState);
-            }
-
             if (registerModel.Password != registerModel.ConfirmPassword)
             {
                 return Ok("The confirm password does not match the password");
