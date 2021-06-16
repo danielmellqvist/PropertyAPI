@@ -114,7 +114,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Retrieves information about the real estate with the specified ID number.
         /// </summary>
-        /// <response code="200">Successfully created real estate ad</response>
+        /// <response code="201">Successfully created real estate ad</response>
         /// <response code="404">Could not create real estate ad</response>
         [HttpGet("{id}", Name = "RealEstateById")]
         [ServiceFilter(typeof(ValidationSingleRealEstateExistsAttribute))]

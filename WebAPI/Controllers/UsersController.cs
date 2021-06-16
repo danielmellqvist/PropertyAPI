@@ -40,27 +40,52 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Retrieves information about the user chosen by their Username.
+        /// </summary>
+        /// <response code="200">Successfully shows user information in list of amounts of different properties</response>
+        /// <response code="404">Could not find a user</response>
         [HttpGet("{username}")]
         [AllowAnonymous]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> GetInfoByUserName(string username)
         {
             var userReturned = await _repository.User.GetUserByUserNameAsync(username, trackChanges: false);
-            int userId = userReturned.Id;
-            var contactReturned = await _repository.Contact.GetContactByUserIdAsync(userId, trackChanges: false);
-            int contactId = contactReturned.Id;
-            var ratingsByUserId = await _repository.Rating.GetRatingsByUserIdAsync(userId, trackChanges: false);
+            if (userReturned == null)
+            {
+                _logger.LogError("User does not exist");
+                return NotFound("User Not found");
+                 
+            }
+            var contactReturned = await _repository.Contact.GetContactByUserIdAsync(userReturned.Id, trackChanges: false);
+            if (contactReturned == null)
+            {
+                _logger.LogError("Contact for the user does not exist");
+                return NotFound("Contact for the user does not exist");
+
+            }
+            var ratingsByUserId = await _repository.Rating.GetRatingsByUserIdAsync(userReturned.Id, trackChanges: false);
+            string rating = _repository.Rating.GetAverageRating(ratingsByUserId).ToString();
+            if (rating == "0")
+            {
+                rating = "No Ratings Given Yet";
+            }
             UserInformationDto userInformationDto = new()
             {
                 UserName = username,
-                RealEstates = (await _repository.RealEstate.GetAllRealEstatesByContactIdAsync(contactId, trackchanges: false)).Count(),
-                Comments = (await _repository.Comment.GetAllCommentsByUserIdAsync(userId, trackChanges: false)).Count(),
-                Rating = _repository.Rating.GetAverageRating(ratingsByUserId)
+                RealEstates = (await _repository.RealEstate.GetAllRealEstatesByContactIdAsync(contactReturned.Id, trackchanges: false)).Count(),
+                Comments = (await _repository.Comment.GetAllCommentsByUserIdAsync(userReturned.Id, trackChanges: false)).Count(),
+                Rating = rating
 
             };
             return Ok(userInformationDto);
         }
 
+        /// <summary>
+        /// Creates a new Rating from a user about a user, checking for spam.
+        /// </summary>
+        /// <response code="200">Successfully created a new rating</response>
+        /// <response code="404">Could not create a new rating</response>
         [HttpPut("rate")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateRatingForUser([FromBody] RatingAddNewRatingDto ratingAddNewRatingDto)

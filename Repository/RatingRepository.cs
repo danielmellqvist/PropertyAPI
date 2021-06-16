@@ -44,6 +44,10 @@ namespace Repository
         }
         public double GetAverageRating(IEnumerable<Rating> rating)
         {
+            if (!rating.Any())
+            {
+                return 0;
+            }
             double average = ((GetAllRatingValues(rating)).Sum()) / rating.Count();
             return average;
         }
