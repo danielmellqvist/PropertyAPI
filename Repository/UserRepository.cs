@@ -17,7 +17,6 @@ namespace Repository
 
         }
 
-
         public async Task<User> GetUserByUserIdAsync(int id, bool trackChanges)
         {
             var user = FindByCondition(x => x.Id == id, trackChanges).SingleOrDefaultAsync();
@@ -38,9 +37,9 @@ namespace Repository
             return await user;
         }
 
-        public async Task<User> GetUserByGuidIdAsync(Guid id, bool trackChanges)
+        public async Task<User> GetUserByGuidIdAsync(Guid guidId, bool trackChanges)
         {
-            var user = FindByCondition(x => x.IdentityUserId == id, trackChanges).SingleOrDefaultAsync();
+            var user = FindByCondition(x => x.IdentityUserId == guidId, trackChanges).SingleOrDefaultAsync();
             if (user == null)
             {
                 return null;

@@ -13,26 +13,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.ActionFilters;
 using WebAPI.Areas.Identity.Data;
 using WebAPI.Data;
 
 namespace WebAPI.Controllers
 {
     [Route("api/Comments")]
-    //[ApiController]
     [Authorize]
     public class CommentsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
-        private readonly PropertyContext _context;
-        public CommentsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, PropertyContext context)
+        public CommentsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
-            _context = context;
         }
 
 
@@ -44,26 +42,11 @@ namespace WebAPI.Controllers
         /// <response code="404">Could not find any comments</response>
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParam)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidationGettingCommentsForRealEstateAttribute))]
+        public IActionResult GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParam)
         {
-            if (commentParam == null || id == 0)
-            {
-                _logger.LogError("Comment Input object or Id is null");
-                return BadRequest("Comment Input object or Id is null");
-            }
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid Model state for the Comment Object");
-                return UnprocessableEntity(ModelState);
-            }
-            _logger.LogInfo($"Retrieving Comments for RealEstateId: {id}");
-            var comments = await _repository.Comment.GetAllCommentsByRealEstateIdParametersAsync(commentsParameter: commentParam, id, trackChanges: false);
-            if (comments.Count() == 0)
-            {
-                _logger.LogInfo($"There were no comments for the real estate with id {id}.");
-                return NotFound($"There were no comments for the real estate with id {id}.");
-            }
-            _logger.LogInfo($"Succesfully Retrieved all comments for RealEstateId: {id}");
+            var comments = HttpContext.Items["foundCommentsRealestates"] as List<Comment>;
             var commentsDto = _mapper.Map<IEnumerable<CommentsForRealEstateDto>>(comments);
             _logger.LogInfo($"Begin trimming of usernames");
             foreach (var comment in commentsDto)
@@ -80,6 +63,7 @@ namespace WebAPI.Controllers
         /// <response code="200">Returns a list of comments on a user </response>
         /// <response code="404">Could not find any comments</response>
         [HttpGet("ByUser/{userName}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> GetCommentsFromUserAsync([FromQuery] CommentsParameters commentsParameters, string userName)
         {
             if (commentsParameters == null || userName == null)
@@ -87,15 +71,10 @@ namespace WebAPI.Controllers
                 _logger.LogError("Comment Input or username is null");
                 return BadRequest("Comment Input or username is null");
             }
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid Model state for the Comment Object");
-                return UnprocessableEntity(ModelState);
-            }
             _logger.LogInfo("Begin Search of User by UserName");
             var userId = (await _repository.User.GetUserByUserNameAsync(userName, trackChanges: false)).Id;
             IEnumerable<Comment> comments = await  _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, userId, trackChanges: false);
-            if (comments.Count() != 0)
+            if (comments.Any())
             {
                 _logger.LogInfo("Begin Create User to return");
                 var cleanedUserName = userName.Substring(0, userName.IndexOf("@"));
@@ -124,17 +103,13 @@ namespace WebAPI.Controllers
         /// <response code="200">Successfully created a comment </response>
         /// <response code="404">Could not create comment </response>
         [HttpPost("{id}", Name = "CommentById")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, int id)
         {
             if (commentForCreationDto == null || id == 0)
             {
                 _logger.LogError("Comment Input or Id is null");
                 return BadRequest("Comment Input or Id is null");
-            }
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid Model state for the Comment Object");
-                return UnprocessableEntity(ModelState);
             }
             commentForCreationDto.UserId = id;
             commentForCreationDto.CreatedOn = DateTime.Now;
