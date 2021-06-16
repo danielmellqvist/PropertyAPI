@@ -26,7 +26,6 @@ namespace WebAPI.ActionFilters
         {
             var method = context.HttpContext.Request.Method;
             bool trackChanges = (method.Equals("PUT") || method.Equals("GET")) ? true : false;
-
             RealEstateParameters realEstateParameter = (RealEstateParameters)context.ActionArguments["realEstateParameters"];
             var foundRealestates = await _repository.RealEstate.GetAllRealEstatesAsync(realEstateParameter, trackChanges);
             if (foundRealestates == null)

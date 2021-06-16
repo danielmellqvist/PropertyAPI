@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
         [HttpPost("token")]
         [AllowAnonymous]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult> Token([FromBody] AccountLoginDto loginModel)
+        public async Task<ActionResult> Token([FromBody] AccountLoginDto loginModel, string grant_type)
         {
-            var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email);
+            var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Username);
             if (user is null)
             {
                 return Ok("Login failed, please fill in a registered Email address");

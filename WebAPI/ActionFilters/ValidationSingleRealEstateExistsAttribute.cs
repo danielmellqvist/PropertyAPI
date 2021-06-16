@@ -25,7 +25,6 @@ namespace WebAPI.ActionFilters
         {
             var method = context.HttpContext.Request.Method;
             bool trackChanges = (method.Equals("DELETE") || method.Equals("GET")) ? true : false;
-
             var realEstateId = (int)context.ActionArguments["id"];
             var foundRealestates = await _repository.RealEstate.GetRealEstateAsync(realEstateId, trackChanges);
             if (foundRealestates == null)
