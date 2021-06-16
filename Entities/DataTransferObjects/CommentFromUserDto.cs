@@ -8,7 +8,6 @@ namespace Entities.DataTransferObjects
 {
     public class CommentFromUserDto
     {
-        // TODO Create list of the content and dates
         public string UserName { get; set; }
 
         public List<string> Content { get; set; } = new List<string>();
