@@ -100,7 +100,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Creates a new comment.
         /// </summary>
-        /// <response code="200">Successfully created a comment </response>
+        /// <response code="202">Successfully created a comment </response>
         /// <response code="404">Could not create comment </response>
         [HttpPost("{id}", Name = "CommentById")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]

@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Creates a new real estate ad
         /// </summary>
-        /// <response code="200">Successfully created a real estate ad </response>
+        /// <response code="202">Successfully created a real estate ad </response>
         /// <response code="404">Could not create real estate ad</response>
         [HttpPost]
         [Authorize]
@@ -114,8 +114,8 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Retrieves information about the real estate with the specified ID number.
         /// </summary>
-        /// <response code="201">Successfully created real estate ad</response>
-        /// <response code="404">Could not create real estate ad</response>
+        /// <response code="200">Returns a list of Real Estates</response>
+        /// <response code="404">Could not find any Real Estates</response>
         [HttpGet("{id}", Name = "RealEstateById")]
         [ServiceFilter(typeof(ValidationSingleRealEstateExistsAttribute))]
         public async Task<IActionResult> GetRealEstate(int id)
