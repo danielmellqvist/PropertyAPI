@@ -1,4 +1,5 @@
-﻿using Identity.JsonModels;
+﻿
+using Identity.DataTransferObjects;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -24,7 +25,7 @@ namespace WebAPI.Areas.Identity.Data
         /// </summary>
         /// <param name="userEmail"></param>
         /// <returns></returns>
-        public TokenObject TokenHelper(string userEmail)
+        public TokenObjectDto TokenHelper(string userEmail)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("EncryptionKey"));
@@ -50,7 +51,7 @@ namespace WebAPI.Areas.Identity.Data
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            var tokenObject = new TokenObject
+            var tokenObject = new TokenObjectDto
             {
                 AcessToken = tokenHandler.WriteToken(token),
                 TokenType = JwtBearerDefaults.AuthenticationScheme.ToLower(),
