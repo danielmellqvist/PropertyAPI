@@ -18,7 +18,7 @@ namespace Repository
         }
 
 
-        public async Task<User> GetUserByUserId(int id, bool trackChanges)
+        public async Task<User> GetUserByUserIdAsync(int id, bool trackChanges)
         {
             var user = FindByCondition(x => x.Id == id, trackChanges).SingleOrDefaultAsync();
             if (user == null)

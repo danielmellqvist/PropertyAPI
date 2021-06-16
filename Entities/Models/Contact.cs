@@ -14,7 +14,7 @@ namespace Entities.Models
         public int Id { get; set; }
         public int? UserId { get; set; }
 
-        [RegularExpression("[0-9]", ErrorMessage = "Number must be numeric")]
+        [RegularExpression(@"^[0-9+-]$", ErrorMessage = "Number must not contain illegal characters")]
         public string Telephone { get; set; }
 
         // Relational

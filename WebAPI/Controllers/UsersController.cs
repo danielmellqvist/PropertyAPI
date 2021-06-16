@@ -102,21 +102,21 @@ namespace WebAPI.Controllers
             var currentUser = await _repository.User.GetUserByGuidIdAsync(currentIdentityUser.IdentityUserId, trackChanges: false);
             if (currentUser == null)
             {
-                _logger.LogError($"Information about User with Id: {currentIdentityUser.IdentityUserId} does Not Exist");
-                return BadRequest($"Information about User with Id: {currentIdentityUser.IdentityUserId} does Not Exist");
+                _logger.LogError($"Information about Current User does Not Exist");
+                return BadRequest($"Information about Current User does Not Exist");
             }
             var aboutUser = await _repository.User.GetUserByGuidIdAsync(ratingAddNewRatingDto.UserId, trackChanges: false);
             if (aboutUser == null)
             {
-                _logger.LogError($"Information about User with Id: {aboutUser.IdentityUserId} does Not Exist");
-                return BadRequest($"Information about User with Id: {aboutUser.IdentityUserId} does Not Exist");
+                _logger.LogError($"Information about User does Not Exist");
+                return BadRequest($"Information about User does Not Exist");
             }
+            ratingAddNewRatingDto.ByUserGuidId = currentUser.IdentityUserId;
             if (ratingAddNewRatingDto.UserId == ratingAddNewRatingDto.ByUserGuidId)
             {
                 _logger.LogError($"User {currentUser.UserName} can not give themselves a rating NO SPAM ALLOWED!");
                 return BadRequest($"User {currentUser.UserName} can not give themselves a rating NO SPAM ALLOWED!");
             }
-            ratingAddNewRatingDto.ByUserGuidId = currentUser.IdentityUserId;
             ratingAddNewRatingDto.ByUserId = currentUser.Id;
             ratingAddNewRatingDto.AboutUserId = aboutUser.Id;
             if (!ModelState.IsValid)
@@ -126,7 +126,7 @@ namespace WebAPI.Controllers
             }
 
             bool checkUser = await _repository.Rating.CheckMultipleRatingsFromUserAsync(ratingAddNewRatingDto);
-            if (checkUser)
+            if (!checkUser)
             {
                 var ratingCreated = _mapper.Map<Rating>(ratingAddNewRatingDto);
                 await _repository.Rating.CreateNewRating(ratingCreated);

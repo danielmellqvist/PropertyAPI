@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Identity.DataTransferObjects
 {
+    /// <summary>
+    /// Dto used in the AccountsController for registering a user.
+    /// </summary>
     public class AccountRegisterDto
     {
         [Required]
