@@ -79,7 +79,7 @@ namespace WebAPI
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            // Marcus added
+
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
