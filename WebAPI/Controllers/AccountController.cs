@@ -3,6 +3,7 @@ using Entities.Models;
 using Identity.DataTransferObjects;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -46,12 +47,15 @@ namespace WebAPI.Controllers
         /// Tries to log in the user and returns a token.
         /// This token is nestled into a JsonObject.
         /// </summary>
-        /// 
         /// <param name="loginModel"></param>
         /// <param name="grant_type"></param>
-        /// <returns></returns>
+        /// <returns>A token</returns>
+        /// <response code="200">Returns the token object</response>
+        /// <response code="422">Object in the request is unprocessable</response>
         [HttpPost("token")]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult> Token([FromForm] AccountLoginDto loginModel, string grant_type)
         {
             if (!ModelState.IsValid)
@@ -62,11 +66,13 @@ namespace WebAPI.Controllers
             var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Username);
             if (user is null)
             {
+                _logger.LogError("Login information is null");
                 return Ok("Login failed, please fill in a registered Email address");
             }
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
             if (!signInResult.Succeeded)
             {
+                _logger.LogError("Login failed, credentials invalid");
                 return Ok("Login failed, Signinresult was not successfull");
             }
             var tokenGiver = new TokenObjectHelper(_config);
@@ -81,8 +87,12 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="registerModel"></param>
         /// <returns></returns>
+        /// <response code="200">Returns the token object</response>
+        /// <response code="422">Object in the request is unprocessable</response>
         [AllowAnonymous]
         [HttpPost("api/account/register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult> Register([FromForm] AccountRegisterDto registerModel)
         {
             if (!ModelState.IsValid)
@@ -93,6 +103,7 @@ namespace WebAPI.Controllers
 
             if (registerModel.Password != registerModel.ConfirmPassword)
             {
+                _logger.LogError("Passwords don´t match");
                 return Ok("The confirm password does not match the password");
             }
             var webApiSecuredUser = new WebAPIUser()
@@ -113,7 +124,7 @@ namespace WebAPI.Controllers
                 };
                 _propertyContext.Users.Add(newUser);
                 _propertyContext.SaveChanges();
-                return Ok(new { Result = "Register success" });
+                return Ok();
             }
             else
             {
