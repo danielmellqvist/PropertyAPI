@@ -84,13 +84,14 @@ namespace WebAPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> GetCommentsFromUserAsync([FromQuery] CommentsParameters commentsParameters, string userName)
         {
-            if (commentsParameters == null || userName == null)
-            {
-                _logger.LogError("Comment Input or username is null");
-                return BadRequest("Comment Input or username is null");
-            }
             _logger.LogInfo("Begin Search of User by UserName");
-            var userId = (await _repository.User.GetUserByUserNameAsync(userName, trackChanges: false)).Id;
+            var userTest = await _repository.User.GetUserByUserNameAsync(userName, trackChanges: false);
+            if (userTest == null)
+            {
+                _logger.LogError("User does not exist");
+                return NotFound("User does not exist");
+            }
+            var userId = userTest.Id;
             IEnumerable<Comment> comments = await  _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, userId, trackChanges: false);
             if (comments.Any())
             {
