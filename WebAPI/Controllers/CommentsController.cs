@@ -102,17 +102,19 @@ namespace WebAPI.Controllers
             {
                 _logger.LogInfo("Begin Create User to return");
                 var cleanedUserName = userName.Substring(0, userName.IndexOf("@"));
-                CommentFromUserDto commentFromUserDto = new()
-                {
-                    UserName = cleanedUserName
-                };
+                List<CommentFromUserDto> commentFromUserDtos = new();
                 foreach (var line in comments)
                 {
-                    commentFromUserDto.Content.Add(line.Content);
-                    commentFromUserDto.CreatedOn.Add(line.CreatedOn);
+                    CommentFromUserDto commentFromUserDto = new()
+                    {
+                        UserName = cleanedUserName,
+                        CreatedOn = line.CreatedOn,
+                        Content = line.Content
+                    };
+                    commentFromUserDtos.Add(commentFromUserDto);
                 }
                 _logger.LogInfo("Creation of User to return completed");
-                return Ok(commentFromUserDto);
+                return Ok(commentFromUserDtos);
             }
             else
             {
@@ -137,7 +139,7 @@ namespace WebAPI.Controllers
         /// <returns>A newly created Comment</returns>
         /// <response code="202">Successfully created a comment</response>
         /// <response code="404">Could not create comment</response>
-        [HttpPost("{id}", Name = "CommentById")]
+        [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto)
         {
