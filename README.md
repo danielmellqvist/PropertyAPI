@@ -3,7 +3,8 @@ There are an instance of this API running on the address https://propertyapi.azu
 
 
 ## Start the application (the API)
-Make sure the starting project is the WebAPIm it needs to be started with Cortana in order to get the correct address and port (https://localhost:5001).  
+Make sure the starting project is the WebAPIm it needs to be started with Cortana in order  
+to get the correct address and port (https://localhost:5001).  
 Press F5 to build and start the application. The database will initialize it self on the local SQL server.  
 
 ## Logging
