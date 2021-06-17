@@ -26,6 +26,9 @@ namespace WebAPI.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
+
+
         public CommentsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
             _repository = repository;
@@ -33,22 +36,22 @@ namespace WebAPI.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Retrieves all comments for a property with a given ID
-        /// </summary>
-        /// /// <remarks>
+        /// <summary> Retrieves all comments for a property with a given ID </summary>
+        /// <remarks>
         /// 
         ///     GET /Comments
         ///     {
         ///         "Id": "1", 
-        ///         "Skip": "?", 
-        ///         "Take": ?", 
+        ///         "Skip": "2", 
+        ///         "Take": 4", 
         ///     }
         /// </remarks>
         /// <response code="200">Returns a list of comments on a realestate </response>
+        /////////////////////// <response code="401">Unauthorized</response>
         /// <response code="404">Could not find any comments</response>
+        /// <response code="422">Unprocessable Entity</response>
 
-    [HttpGet("{id}")]
+        [HttpGet("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidationGettingCommentsForRealEstateAttribute))]
         public IActionResult GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParam)
@@ -64,34 +67,37 @@ namespace WebAPI.Controllers
             return Ok(commentsDto);
         }
 
-        /// <summary>
-        /// Retrieves all comments from a user with a given ID
-        /// </summary>
-        /// /// <remarks>
+        /// <summary> Retrieves all comments from a user with a given ID </summary>
+        /// <remarks>
         /// Sample request:
         /// 
         ///     GET /Comments
         ///         {
-        ///             "Id": "1", 
-        ///             "Skip": "?", 
-        ///             "Take": ?", 
+        ///             "Skip": "1", 
+        ///             "Take": 2", 
+        ///             "UserName: gasbagcur@mail.com"
         ///         }
         ///     
         /// </remarks>
         /// <response code="200">Returns a list of comments on a realestate </response>
+        /////////////////////// <response code="401">Unauthorized</response>
         /// <response code="404">Could not find any comments</response>
+        /// <response code="422">Unprocessable Entity</response>
         [HttpGet("ByUser/{userName}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> GetCommentsFromUserAsync([FromQuery] CommentsParameters commentsParameters, string userName)
         {
-            if (commentsParameters == null || userName == null)
-            {
-                _logger.LogError("Comment Input or username is null");
-                return BadRequest("Comment Input or username is null");
-            }
             _logger.LogInfo("Begin Search of User by UserName");
-            var userId = (await _repository.User.GetUserByUserNameAsync(userName, trackChanges: false)).Id;
+            var userTest = await _repository.User.GetUserByUserNameAsync(userName, trackChanges: false);
+            if (userTest == null)
+            {
+                _logger.LogError("User does not exist");
+                return NotFound("User does not exist");
+            }
+            var userId = userTest.Id;
+
             IEnumerable<Comment> comments = await  _repository.Comment.GetAllCommentsByUserIdWithParameters(commentsParameters, userId, trackChanges: false);
+
             if (comments.Any())
             {
                 _logger.LogInfo("Begin Create User to return");
@@ -115,9 +121,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        /// <summary>
-        /// Creates a new comment.
-        /// </summary>
+        /// <summary> Creates a new comment. </summary>
         /// <remarks>
         /// Sample request:
         /// 
