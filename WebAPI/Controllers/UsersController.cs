@@ -22,7 +22,7 @@ using WebAPI.ActionFilters;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/users")]
+    [Route("api/Users")]
     [Authorize]
     public class UsersController : ControllerBase
     {
@@ -43,6 +43,14 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Retrieves information about the user chosen by their Username.
         /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     GET /Users/USERNAME
+        ///     {
+        ///         "UserName": "tykepony@mail.com"
+        ///     }
+        /// </remarks>
         /// <response code="200">Successfully shows user information in list of amounts of different properties</response>
         /// <response code="404">Could not find a user</response>
         [HttpGet("{username}")]
@@ -78,9 +86,21 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Creates a new Rating from a user about a user, checking for spam.
         /// </summary>
+        /// <remarks>
+        /// 
+        ///     PUT /Users/Rate
+        ///     {
+        ///         "6972431e-e9b9-4291-95b0-b3f3ee5b611e",
+        ///         "Value": 5
+        ///     }
+        /// </remarks>
+        /// <returns>A new rating</returns>
         /// <response code="200">Successfully created a new rating</response>
+        /// <response code="400">You have already commented on this user</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="422">Rating must come from a valid user and be a number between 1-5</response>
         /// <response code="404">Could not create a new rating</response>
-        [HttpPut("rate")]
+        [HttpPut("Rate")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateRatingForUser([FromBody] RatingAddNewRatingDto ratingAddNewRatingDto)
         {
