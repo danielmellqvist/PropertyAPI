@@ -39,6 +39,7 @@ namespace WebAPI.Mapping
                 .ForMember(destination => destination.Address, y => y.MapFrom(source => $"{source.Street}, {source.ZipCode} {source.City}"))
                 .ForMember(destination => destination.CreatedOn, y => y.MapFrom(source => source.CreatedUtc.ToUniversalTime()))
                 .ForMember(destination => destination.ConstructionYear, y => y.MapFrom(source => source.ConstructionYear.Year))
+                .ForMember(destination => destination.RealEstateType, y => y.MapFrom(source => source.RealEstateType.Type))
                 .ReverseMap();
 
             CreateMap<RealEstate, RealEstatePrivateDto>()
