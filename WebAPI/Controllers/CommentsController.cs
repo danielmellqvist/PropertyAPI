@@ -136,7 +136,7 @@ namespace WebAPI.Controllers
         /// <returns>A newly created Comment</returns>
         /// <response code="202">Successfully created a comment</response>
         /// <response code="404">Could not create comment</response>
-        [HttpPost("{id}", Name = "CommentById")]
+        [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto)
         {
