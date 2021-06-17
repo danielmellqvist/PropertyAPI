@@ -11,7 +11,6 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebAPI.ActionFilters;
 using WebAPI.Areas.Identity.Data;
 using WebAPI.Data;
 
@@ -52,19 +51,21 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpPost("token")]
         [AllowAnonymous]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult> Token([FromBody] AccountLoginDto loginModel, string grant_type)
+        public async Task<ActionResult> Token([FromForm] AccountLoginDto loginModel, string grant_type)
         {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("AccountLoginDto sent from client is null");
+                return UnprocessableEntity(ModelState);
+            }
             var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Username);
             if (user is null)
             {
-                _logger.LogError("Log In Failed, please fill in a registered Email address");
                 return Ok("Login failed, please fill in a registered Email address");
             }
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
             if (!signInResult.Succeeded)
             {
-                _logger.LogError("Log In Failed, Login failed, Signinresult was not successfull");
                 return Ok("Login failed, Signinresult was not successfull");
             }
             var tokenGiver = new TokenObjectHelper(_config);
@@ -81,12 +82,16 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("api/account/register")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult> Register([FromBody] AccountRegisterDto registerModel)
+        public async Task<ActionResult> Register([FromForm] AccountRegisterDto registerModel)
         {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("AccountRegisterDto sent from client is null");
+                return UnprocessableEntity(ModelState);
+            }
+
             if (registerModel.Password != registerModel.ConfirmPassword)
             {
-                _logger.LogError("Log In Failed, Login failed, Signinresult was not successfull");
                 return Ok("The confirm password does not match the password");
             }
             var webApiSecuredUser = new WebAPIUser()
