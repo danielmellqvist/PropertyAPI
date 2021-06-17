@@ -135,14 +135,9 @@ namespace WebAPI.Controllers
         /// <response code="404">Could not create comment</response>
         [HttpPost("{id}", Name = "CommentById")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto, int id)
+        public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto)
         {
-            if (commentForCreationDto == null || id == 0)
-            {
-                _logger.LogError("Comment Input or Id is null");
-                return BadRequest("Comment Input or Id is null");
-            }
-            commentForCreationDto.UserId = id;
+            commentForCreationDto.UserId = (await _repository.User.GetUserByUserNameAsync(HttpContext.User.Identity.Name.ToString(), trackChanges:false)).Id;
             commentForCreationDto.CreatedOn = DateTime.Now;
             _logger.LogInfo("Comment created and Mapping to be done");
             var commentCreated = _mapper.Map<Comment>(commentForCreationDto);
@@ -150,7 +145,7 @@ namespace WebAPI.Controllers
             await _repository.SaveAsync();
 
             var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
-            commentToReturn.UserName = (await _repository.User.GetUserByUserIdAsync(id, trackChanges: false)).UserName;
+            commentToReturn.UserName = HttpContext.User.Identity.Name.ToString();
 
             return Ok(commentToReturn);
         }
