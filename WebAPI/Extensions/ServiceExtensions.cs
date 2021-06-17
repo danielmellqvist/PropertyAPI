@@ -9,7 +9,9 @@ using Microsoft.OpenApi.Models;
 using Repository;
 using Repository.Contracts;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace WebAPI.Extensions
@@ -52,9 +54,9 @@ namespace WebAPI.Extensions
 
         public static void ConfigureSwagger(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo 
+                options.SwaggerDoc("v1", new OpenApiInfo 
                 { 
                     Title = "Real Estate API", 
                     Version = "v1",
@@ -63,7 +65,29 @@ namespace WebAPI.Extensions
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                options.IncludeXmlComments(xmlPath);
+
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+
+                options.AddSecurityDefinition("Bearer", securitySchema);
+                var securityRequirements = new OpenApiSecurityRequirement
+                {
+                    {securitySchema, new[]{ "Bearer" } }
+                };
+
+                options.AddSecurityRequirement(securityRequirements);
             });
         }
             

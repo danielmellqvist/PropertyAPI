@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Returns a list of Real Estate listings.
+        /// Returns a list of RealEstate listings.
         /// </summary>
         /// <remarks>
         /// Sample
@@ -53,14 +53,36 @@ namespace WebAPI.Controllers
             return Ok(realEstatesDto);
         }
 
+
         /// <summary>
-        /// Creates a new real estate ad
+        /// Create one RealEstate
         /// </summary>
-        /// <response code="202">Successfully created a real estate ad </response>
-        /// <response code="404">Could not create real estate ad</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /RealEstates
+        ///     {
+        ///         "Title": "Some very interesting office", 
+        ///         "Description": "You will love it. The view is great!", 
+        ///         "Address": "Mladost 1A, Telerik Academy building", 
+        ///         "Contact": "0888-888-888", 
+        ///         "ConstructionYear": 2005, 
+        ///         "SellingPrice": 120000, 
+        ///         "RentingPrice": null, 
+        ///         "Type": 2 
+        ///     }
+        ///     
+        /// </remarks>
+        /// <returns>A newly created RealEstate</returns>
+        /// <response code="201">Returns the newly created Real Estate</response>
+        /// <response code="400">The object in the request is null</response>
+        /// <response code="422">Real Estate object in the request is un processable</response>
         [HttpPost]
         [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> CreateRealEstate([FromBody] RealEstateForCreationDto newRealEstate)
         {
             if (newRealEstate.RentingPrice == null && newRealEstate.SellingPrice == null)
@@ -112,11 +134,18 @@ namespace WebAPI.Controllers
 
 
         /// <summary>
-        /// Retrieves information about the real estate with the specified ID number.
+        /// Get one RealEstate by ID
+        /// 
+        /// If the user is logged in some additional information like the contact information and comments are sent.
         /// </summary>
-        /// <response code="200">Returns a list of Real Estates</response>
-        /// <response code="404">Could not find any Real Estates</response>
+        /// <remarks> 
+        /// </remarks>
+        /// <returns>One RealEstate by Id</returns>
+        /// <response code="200">Returns the Real Estate</response>
+        /// <response code="404">The object could not be found</response>
         [HttpGet("{id}", Name = "RealEstateById")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ServiceFilter(typeof(ValidationSingleRealEstateExistsAttribute))]
         public async Task<IActionResult> GetRealEstate(int id)
         {
@@ -136,12 +165,15 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Deletes the real estate ad with the specified ID number.
+        /// Delete a RealEstate from the database by Id
         /// </summary>
-        /// <response code="200">Successfully deleted real estate</response>
-        /// <response code="404">Could not find real estate</response>
+        /// <param name="id">Database Id of the RealEstate</param>
+        /// <response code="204">Post deleted</response>
+        /// /// <response code="404">The object could not be found</response>
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidationSingleRealEstateExistsAttribute))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteRealEstate(int id)
         {
             var realEstate = HttpContext.Items["RealEstate"] as RealEstate;
