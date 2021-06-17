@@ -1,5 +1,5 @@
 # PropertyAPI
-There are an instance running on the address https://propertyapi.azurewebsites.net/index.html  
+There are an instance of this API running on the address https://propertyapi.azurewebsites.net/  
 
 
 ## Start the application (the API)
