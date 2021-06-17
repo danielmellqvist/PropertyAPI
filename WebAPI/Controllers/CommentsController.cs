@@ -26,8 +26,6 @@ namespace WebAPI.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
-
 
         public CommentsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
@@ -47,7 +45,7 @@ namespace WebAPI.Controllers
         ///     }
         /// </remarks>
         /// <response code="200">Returns a list of comments on a realestate </response>
-        /////////////////////// <response code="401">Unauthorized</response>
+        /// <response code="401">Unauthorized</response>
         /// <response code="404">Could not find any comments</response>
         /// <response code="422">Unprocessable Entity</response>
 
@@ -80,7 +78,7 @@ namespace WebAPI.Controllers
         ///     
         /// </remarks>
         /// <response code="200">Returns a list of comments on a realestate </response>
-        /////////////////////// <response code="401">Unauthorized</response>
+        /// <response code="401">Unauthorized</response>
         /// <response code="404">Could not find any comments</response>
         /// <response code="422">Unprocessable Entity</response>
         [HttpGet("ByUser/{userName}")]
@@ -130,19 +128,26 @@ namespace WebAPI.Controllers
         ///     POST /Comment
         ///     {
         ///         "Content": "This is a comment, great! ",
-        ///         "CreatedOn": "2021-06-17T08:52:22.540Z",
-        ///         "UserId": 2,
         ///         "RealEstateId": 10
         ///     }
         ///     
         /// </remarks>
         /// <returns>A newly created Comment</returns>
-        /// <response code="202">Successfully created a comment</response>
+        /// <response code="201">Successfully created a comment</response>
+        /// <response code="401">Unauthorized</response>
         /// <response code="404">Could not create comment</response>
-        [HttpPost]
+        /// <response code="422">Unprocessable Entity</response>
+        [HttpPost (Name= "NewCommentOnUser")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto)
         {
+            var realestateTest = _repository.RealEstate.GetRealEstateAsync(commentForCreationDto.RealEstateId, trackChanges: false);
+            if (realestateTest.Result == null)
+            {
+                _logger.LogError("Real Estate does not exist");
+                return NotFound("Real Estate does not exist");
+            }
+
             commentForCreationDto.UserId = (await _repository.User.GetUserByUserNameAsync(HttpContext.User.Identity.Name.ToString(), trackChanges:false)).Id;
             commentForCreationDto.CreatedOn = DateTime.Now;
             _logger.LogInfo("Comment created and Mapping to be done");
@@ -153,7 +158,7 @@ namespace WebAPI.Controllers
             var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
             commentToReturn.UserName = (HttpContext.User.Identity.Name.ToString()).Substring(0, (HttpContext.User.Identity.Name.ToString()).IndexOf("@"));
 
-            return Ok(commentToReturn);
+            return CreatedAtRoute("NewCommentOnUser", commentToReturn);
         }
     }
 }
