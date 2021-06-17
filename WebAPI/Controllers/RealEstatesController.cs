@@ -170,6 +170,7 @@ namespace WebAPI.Controllers
         /// <response code="204">Post deleted</response>
         /// /// <response code="404">The object could not be found</response>
         [HttpDelete("{id}")]
+        [Authorize]
         [ServiceFilter(typeof(ValidationSingleRealEstateExistsAttribute))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

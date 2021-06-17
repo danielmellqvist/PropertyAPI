@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
         /// <response code="200">Returns a list of comments on a realestate </response>
         /// <response code="404">Could not find any comments</response>
 
-    [HttpGet("{id}")]
+        [HttpGet("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidationGettingCommentsForRealEstateAttribute))]
         public IActionResult GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParam)
