@@ -36,22 +36,24 @@ namespace WebAPI.Controllers
 
         /// <summary> Retrieves all comments for a property with a given ID </summary>
         /// <remarks>
-        /// 
-        ///     GET /Comments
-        ///     {
-        ///         "Id": "1", 
-        ///         "Skip": "2", 
-        ///         "Take": 4", 
-        ///     }
+        /// Get all comments for an RealEstate  
+        ///   
+        /// Skip and take are optional query string parameters.   
+        /// If they are missing, default skip is 0 and default take is 10  
+        /// Take cannot be more than 100  
+        ///   
+        /// Comments are sorted bu their time of creation in ascending order.
         /// </remarks>
         /// <response code="200">Returns a list of comments on a realestate </response>
         /// <response code="401">Unauthorized</response>
         /// <response code="404">Could not find any comments</response>
-        /// <response code="422">Unprocessable Entity</response>
 
         [HttpGet("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidationGettingCommentsForRealEstateAttribute))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetAllCommentsForRealEstate(int id, [FromQuery] CommentsParameters commentParam)
         {
             var comments = HttpContext.Items["foundCommentsRealestates"] as List<Comment>;
@@ -67,22 +69,21 @@ namespace WebAPI.Controllers
 
         /// <summary> Retrieves all comments from a user with a given ID </summary>
         /// <remarks>
-        /// Sample request:
-        /// 
-        ///     GET /Comments
-        ///         {
-        ///             "Skip": "1", 
-        ///             "Take": 2", 
-        ///             "UserName: gasbagcur@mail.com"
-        ///         }
-        ///     
+        /// Retrieves all comments from a specific user.  
+        ///   
+        /// Skip and take are optional query string parameters.   
+        /// If they are missing, default skip is 0 and default take is 10  
+        /// Take cannot be more than 100  
+        ///    
         /// </remarks>
         /// <response code="200">Returns a list of comments on a realestate </response>
         /// <response code="401">Unauthorized</response>
         /// <response code="404">Could not find any comments</response>
-        /// <response code="422">Unprocessable Entity</response>
         [HttpGet("ByUser/{userName}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCommentsFromUserAsync([FromQuery] CommentsParameters commentsParameters, string userName)
         {
             _logger.LogInfo("Begin Search of User by UserName");
@@ -124,13 +125,13 @@ namespace WebAPI.Controllers
 
         /// <summary> Creates a new comment. </summary>
         /// <remarks>
-        /// Sample request:
-        /// 
-        ///     POST /Comment
-        ///     {
-        ///         "Content": "This is a comment, great! ",
-        ///         "RealEstateId": 10
-        ///     }
+        /// Sample request:  
+        ///   
+        ///     POST /Comment  
+        ///     {  
+        ///         "Content": "This is a comment, great! ",  
+        ///         "RealEstateId": 10  
+        ///     }  
         ///     
         /// </remarks>
         /// <returns>A newly created Comment</returns>
@@ -140,6 +141,10 @@ namespace WebAPI.Controllers
         /// <response code="422">Unprocessable Entity</response>
         [HttpPost (Name= "NewCommentOnUser")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> CreateComment([FromBody] CommentForCreationDto commentForCreationDto)
         {
             var realestateTest = _repository.RealEstate.GetRealEstateAsync(commentForCreationDto.RealEstateId, trackChanges: false);

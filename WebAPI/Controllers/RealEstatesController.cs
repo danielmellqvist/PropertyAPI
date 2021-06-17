@@ -36,7 +36,11 @@ namespace WebAPI.Controllers
         /// Returns a list of RealEstate listings.
         /// </summary>
         /// <remarks>
-        /// Sample
+        /// Skip and take are optional query string parameters.   
+        /// If they are missing, default skip is 0 and default take is 10  
+        /// Take cannot be more than 100  
+        ///   
+        /// Real Estates are sorted by their time of creation in descending order  
         /// </remarks>
         /// <response code="200">Returns a list of Real Estates</response>
         /// <response code="404">Could not find any Real Estates</response>
@@ -58,18 +62,19 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <remarks>
         /// Sample request:
+        /// Creates one RealEstate in the database, if successful information about the new RealEstate will be returned.  
         /// 
         ///     POST /RealEstates
         ///     {
-        ///         "Title": "Some very interesting office", 
-        ///         "Description": "You will love it. The view is great!", 
-        ///         "Address": "Mladost 1A, Telerik Academy building", 
-        ///         "Contact": "0888-888-888", 
-        ///         "ConstructionYear": 2005, 
-        ///         "SellingPrice": 120000, 
-        ///         "RentingPrice": null, 
-        ///         "Type": 2 
-        ///     }
+        ///         "Title": "Some very interesting office",  
+        ///         "Description": "You will love it. The view is great!",  
+        ///         "Address": "Mladost 1A, Telerik Academy building",  
+        ///         "Contact": "0888-888-888",  
+        ///         "ConstructionYear": 2005,  
+        ///         "SellingPrice": 120000,  
+        ///         "RentingPrice": null,  
+        ///         "Type": 2  
+        ///     }  
         ///     
         /// </remarks>
         /// <returns>A newly created RealEstate</returns>
@@ -134,10 +139,11 @@ namespace WebAPI.Controllers
 
         /// <summary>
         /// Get one RealEstate by ID
-        /// 
-        /// If the user is logged in some additional information like the contact information and comments are sent.
         /// </summary>
-        /// <remarks> 
+        /// <remarks>
+        /// If the user is not authenticated, part of the full information for a real estate are provided.  
+        ///   
+        /// If the user is authenticated, additional information like contact information and comments are sent  
         /// </remarks>
         /// <returns>One RealEstate by Id</returns>
         /// <response code="200">Returns the Real Estate</response>
