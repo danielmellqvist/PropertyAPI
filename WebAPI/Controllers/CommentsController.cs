@@ -105,9 +105,10 @@ namespace WebAPI.Controllers
                 {
                     CommentFromUserDto commentFromUserDto = new()
                     {
+                        Content = line.Content,
                         UserName = cleanedUserName,
-                        CreatedOn = line.CreatedOn,
-                        Content = line.Content
+                        CreatedOn = line.CreatedOn
+                        
                     };
                     commentFromUserDtos.Add(commentFromUserDto);
                 }

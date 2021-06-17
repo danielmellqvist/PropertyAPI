@@ -8,10 +8,11 @@ namespace Entities.DataTransferObjects
 {
     public class CommentFromUserDto
     {
+        public string Content { get; set; }
 
         public string UserName { get; set; }
 
-        public string Content { get; set; }
+        
 
         public DateTime CreatedOn { get; set; }
     }
