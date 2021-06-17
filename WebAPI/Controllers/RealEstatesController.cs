@@ -45,7 +45,6 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidationRealEstatesExistsAttribute))]
-
         public IActionResult GetAllRealEstates([FromQuery] RealEstateParameters realEstateParameters)
         {
             var realEstates = HttpContext.Items["realEstateParameters"] as List<RealEstate>;
