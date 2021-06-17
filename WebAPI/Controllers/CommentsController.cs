@@ -114,7 +114,7 @@ namespace WebAPI.Controllers
             await _repository.SaveAsync();
 
             var commentToReturn = _mapper.Map<CommentForReturnDto>(commentForCreationDto);
-            commentToReturn.UserName = HttpContext.User.Identity.Name.ToString();
+            commentToReturn.UserName = (HttpContext.User.Identity.Name.ToString()).Substring(0, (HttpContext.User.Identity.Name.ToString()).IndexOf("@"));
 
             return Ok(commentToReturn);
         }
