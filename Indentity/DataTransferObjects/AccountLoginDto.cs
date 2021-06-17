@@ -13,7 +13,7 @@ namespace Identity.DataTransferObjects
     public class AccountLoginDto
     {
         [Required(ErrorMessage ="Please enter your Email adress!")]
-        public string Email { get; set; }
+        public string Username { get; set; }
 
         [Required(ErrorMessage = "Please enter your password!")]
         public string Password { get; set; }

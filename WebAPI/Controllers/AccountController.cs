@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
                 _logger.LogError("AccountLoginDto sent from client is null");
                 return UnprocessableEntity(ModelState);
             }
-            var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Email);
+            var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Username);
             if (user is null)
             {
                 return Ok("Login failed, please fill in a registered Email address");
@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
                 return Ok("Login failed, Signinresult was not successfull");
             }
             var tokenGiver = new TokenObjectHelper(_config);
-            var tokenObject = tokenGiver.TokenHelper(loginModel.Email);
+            var tokenObject = tokenGiver.TokenHelper(loginModel.Username);
             var jsonToken = JsonConvert.SerializeObject(tokenObject);
 
             return Ok(jsonToken);
