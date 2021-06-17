@@ -75,7 +75,7 @@ namespace WebAPI.Controllers
         /// <returns>A newly created RealEstate</returns>
         /// <response code="201">Returns the newly created Real Estate</response>
         /// <response code="400">The object in the request is null</response>
-        /// <response code="422">Real Estate object in the request is un processable</response>
+        /// <response code="422">Real Estate object in the request is unprocessable</response>
         [HttpPost]
         [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]

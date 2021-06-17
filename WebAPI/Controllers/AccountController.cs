@@ -46,6 +46,7 @@ namespace WebAPI.Controllers
         /// Tries to log in the user and returns a token.
         /// This token is nestled into a JsonObject.
         /// </summary>
+        /// 
         /// <param name="loginModel"></param>
         /// <param name="grant_type"></param>
         /// <returns></returns>
