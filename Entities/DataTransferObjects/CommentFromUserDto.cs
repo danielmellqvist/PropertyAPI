@@ -13,6 +13,5 @@ namespace Entities.DataTransferObjects
         public List<string> Content { get; set; } = new List<string>();
 
         public List<DateTime> CreatedOn { get; set; } = new List<DateTime>();
-
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
-    public class CommentsForRealEstateDto
+    public class CommentsForRealEstateDto : CommentInformationForReturn
     {
-        public string Content { get; set; }
-        public string UserName { get; set; }
-        public DateTime CreatedOn { get; set; }
+
     }
 }
