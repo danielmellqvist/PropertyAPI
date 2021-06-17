@@ -22,20 +22,47 @@ namespace WebAPI.ActionFilters
         {
             var action = context.RouteData.Values["action"];
             var controller = context.RouteData.Values["controller"];
-
-            var param = context.ActionArguments.SingleOrDefault(x => x.Value.ToString().Any()).Value;   // Here we check if anything is created
-            if (param == null)
+            if (context.ActionArguments.Count() == 1)
             {
-                _logger.LogError($"Object sent from client is null. Controller: {controller}, action: { action} "); 
-                context.Result = new BadRequestObjectResult($"Object is null. Controller: { controller }, action: { action} "); 
-                return;
+                var param = context.ActionArguments.SingleOrDefault(x => x.Value.ToString().Any()).Value;   // Here we check if anything is created
+                if (param == null)
+                {
+                    _logger.LogError($"Object sent from client is null. Controller: {controller}, action: { action} ");
+                    context.Result = new BadRequestObjectResult($"Object is null. Controller: { controller }, action: { action} ");
+                    return;
+                }
+
+                if (!context.ModelState.IsValid)        // if nothing was created we can check the model validity
+                {
+                    _logger.LogError($"Invalid model state for the object. Controller: {controller}, action: { action} ");
+                    context.Result = new UnprocessableEntityObjectResult(context.ModelState);
+                }
             }
-
-            if (!context.ModelState.IsValid)        // if nothing was created we can check the model validity
+            else if (context.ActionArguments.Count() > 1)
             {
-                _logger.LogError($"Invalid model state for the object. Controller: {controller}, action: { action} "); 
+                var param = context.ActionArguments.ToList();   // Here we check if anything is created
+                foreach (var item in param)
+                {
+                    if (item.Value == null)
+                    {
+                        _logger.LogError($"Object sent from client is null. Controller: {controller}, action: { action} ");
+                        context.Result = new BadRequestObjectResult($"Object is null. Controller: { controller }, action: { action} ");
+                        return;
+                    }
+
+                    if (!context.ModelState.IsValid)        // if nothing was created we can check the model validity
+                    {
+                        _logger.LogError($"Invalid model state for the object. Controller: {controller}, action: { action} ");
+                        context.Result = new UnprocessableEntityObjectResult(context.ModelState);
+                    }
+                }
+            }
+            else
+            {
+                _logger.LogError($"Invalid model state for the object. Controller: {controller}, action: { action} ");
                 context.Result = new UnprocessableEntityObjectResult(context.ModelState);
             }
+           
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
