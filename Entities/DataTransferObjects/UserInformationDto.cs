@@ -14,7 +14,7 @@ namespace Entities.DataTransferObjects
 
         public int Comments { get; set; }
 
-        public double Rating { get; set; }
+        public string Rating { get; set; }
 
     }
 }

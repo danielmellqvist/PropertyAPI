@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebAPI.ActionFilters;
 using WebAPI.Areas.Identity.Data;
 using WebAPI.Data;
 
@@ -51,13 +52,9 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpPost("token")]
         [AllowAnonymous]
-        public async Task<ActionResult> Token([FromForm] AccountLoginDto loginModel, string grant_type)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<ActionResult> Token([FromBody] AccountLoginDto loginModel, string grant_type)
         {
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("AccountLoginDto sent from client is null");
-                return UnprocessableEntity(ModelState);
-            }
             var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Username);
             if (user is null)
             {
@@ -82,14 +79,9 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("api/account/register")]
-        public async Task<ActionResult> Register([FromForm] AccountRegisterDto registerModel)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<ActionResult> Register([FromBody] AccountRegisterDto registerModel)
         {
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("AccountRegisterDto sent from client is null");
-                return UnprocessableEntity(ModelState);
-            }
-
             if (registerModel.Password != registerModel.ConfirmPassword)
             {
                 return Ok("The confirm password does not match the password");

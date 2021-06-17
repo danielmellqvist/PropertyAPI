@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Identity.JsonModels
+namespace Identity.DataTransferObjects
 {
 
     /// <summary>
     /// The model for creating a tokenobject
     /// </summary>
-    public class TokenObject
+    public class TokenObjectDto
     {
         // This holds the actual string
         [JsonProperty(PropertyName = "access_token")]

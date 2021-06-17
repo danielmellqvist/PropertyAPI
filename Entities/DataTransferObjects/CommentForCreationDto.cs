@@ -9,7 +9,6 @@ namespace Entities.DataTransferObjects
 {
     public class CommentForCreationDto
     {
-
         [Required(ErrorMessage = "Comment is a required field.")]
         [MaxLength(500, ErrorMessage = "Comments can be max 500 characters")]
         public string Content { get; set; }
