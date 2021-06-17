@@ -32,7 +32,6 @@ namespace WebAPI.Mapping
             CreateMap<CommentForCreationDto, CommentForReturnDto>()
                 .ForMember(destination => destination.CreatedOn, y => y.MapFrom(source => source.CreatedOn.ToUniversalTime()));
 
-
             CreateMap<RealEstate, RealEstatesDto>();
             CreateMap<ConstructionYear, RealEstatePublicDto>();
             CreateMap<RealEstate, RealEstatePublicDto>()
@@ -51,7 +50,6 @@ namespace WebAPI.Mapping
 
             CreateMap<RealEstate, RealEstateCreatedDto>();
 
-            // marcus added
             CreateMap<RatingAddNewRatingDto, Rating>()
                 .ForMember(destinationMember => destinationMember.Value, x => x.MapFrom(sourceMember => sourceMember.Value))
                 .ForMember(destinationMember => destinationMember.AboutUserId, x => x.MapFrom(sourceMember => sourceMember.AboutUserId))
