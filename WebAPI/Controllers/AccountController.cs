@@ -58,11 +58,13 @@ namespace WebAPI.Controllers
             var user = _idDbContext.Users.FirstOrDefault(x => x.Email == loginModel.Username);
             if (user is null)
             {
+                _logger.LogError("Log In Failed, please fill in a registered Email address");
                 return Ok("Login failed, please fill in a registered Email address");
             }
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
             if (!signInResult.Succeeded)
             {
+                _logger.LogError("Log In Failed, Login failed, Signinresult was not successfull");
                 return Ok("Login failed, Signinresult was not successfull");
             }
             var tokenGiver = new TokenObjectHelper(_config);
@@ -84,6 +86,7 @@ namespace WebAPI.Controllers
         {
             if (registerModel.Password != registerModel.ConfirmPassword)
             {
+                _logger.LogError("Log In Failed, Login failed, Signinresult was not successfull");
                 return Ok("The confirm password does not match the password");
             }
             var webApiSecuredUser = new WebAPIUser()
