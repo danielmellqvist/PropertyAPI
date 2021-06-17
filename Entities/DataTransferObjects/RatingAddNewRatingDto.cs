@@ -18,7 +18,10 @@ namespace Entities.DataTransferObjects
 
         [Required(ErrorMessage = "Rating is a required field")]
         [Range(1, 5, ErrorMessage = "Rate a user from 1 to 5")]
-        public int Value { get; set; }
+        public string Value { get; set; }
+
+        public int OutputValue { get; set; }
+
 
     }
 }

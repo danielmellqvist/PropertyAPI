@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
             {
                 _logger.LogError("User does not exist");
                 return NotFound("User Not found");
-                 
+
             }
             var contactReturned = await _repository.Contact.GetContactByUserIdAsync(userReturned.Id, trackChanges: false);
             if (contactReturned == null)
@@ -65,18 +65,12 @@ namespace WebAPI.Controllers
 
             }
             var ratingsByUserId = await _repository.Rating.GetRatingsByUserIdAsync(userReturned.Id, trackChanges: false);
-            string rating = _repository.Rating.GetAverageRating(ratingsByUserId).ToString();
-            if (rating == "0")
-            {
-                rating = "No Ratings Given Yet";
-            }
             UserInformationDto userInformationDto = new()
             {
                 UserName = username,
                 RealEstates = (await _repository.RealEstate.GetAllRealEstatesByContactIdAsync(contactReturned.Id, trackchanges: false)).Count(),
                 Comments = (await _repository.Comment.GetAllCommentsByUserIdAsync(userReturned.Id, trackChanges: false)).Count(),
-                Rating = rating
-
+                Rating = _repository.Rating.GetAverageRating(ratingsByUserId)
             };
             return Ok(userInformationDto);
         }
@@ -116,6 +110,13 @@ namespace WebAPI.Controllers
             }
             ratingAddNewRatingDto.ByUserId = currentUser.Id;
             ratingAddNewRatingDto.AboutUserId = aboutUser.Id;
+            bool checkRating = int.TryParse(ratingAddNewRatingDto.Value, out int a);
+            if (!checkRating)
+            {
+                _logger.LogError("Rating input is not valid, please try again");
+                return BadRequest("Rating input is not valid, please try again");
+            }
+            ratingAddNewRatingDto.OutputValue = Int32.Parse(ratingAddNewRatingDto.Value);
             bool checkUser = await _repository.Rating.CheckMultipleRatingsFromUserAsync(ratingAddNewRatingDto);
             if (!checkUser)
             {
