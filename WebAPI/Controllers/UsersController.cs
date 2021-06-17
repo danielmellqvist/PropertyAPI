@@ -22,7 +22,7 @@ using WebAPI.ActionFilters;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/users")]
+    [Route("api/Users")]
     [Authorize]
     public class UsersController : ControllerBase
     {
@@ -86,7 +86,7 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <response code="200">Successfully created a new rating</response>
         /// <response code="404">Could not create a new rating</response>
-        [HttpPut("rate")]
+        [HttpPut("Rate")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateRatingForUser([FromBody] RatingAddNewRatingDto ratingAddNewRatingDto)
         {
